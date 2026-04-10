@@ -1048,7 +1048,7 @@ def _advisor_fit_synthesis_system_prompt() -> str:
     "If a gap is not explicitly stated, phrase it as 'not evidenced in retrieved material'.\n"
     "Avoid duplicate strengths.\n"
     "The interview answer must sound spoken, concise, and natural.\n"
-    "Keep the rendered output under 180 words total.\n"
+    "Keep the rendered output under 1000 words total.\n"
     "No citations outside the supplied chunk ids."
   )
 
@@ -2346,7 +2346,7 @@ def _run_structured_fit_analysis(
     "- If a gap is not explicit in the facts, phrase it as 'not evidenced in retrieved material'.\n"
     "- Avoid duplicate strengths.\n"
     "- interview_answer must be 90 to 110 words, spoken, concise, and natural.\n"
-    "- Keep the rendered output under 180 words total.\n"
+    "- Keep the rendered output under 1000 words total.\n"
     "- Do not cite chunk ids that are not listed above."
   )
   payload = _run_structured_json_completion(
@@ -2926,8 +2926,8 @@ def _run_advisor(query: str, requested_mode: str) -> dict[str, Any]:
         structured_answer = _fallback_fit_analysis_structured_answer(retrieval)
         if not str(structured_answer.get("rendered") or "").strip():
           warnings.append(f"Advisor structured synthesis fell back ({advisor_provider}): {exc}")
-      if int(structured_answer.get("renderedWordCount") or 0) > 180:
-        warnings.append("Structured fit answer exceeded the 180-word target.")
+      if int(structured_answer.get("renderedWordCount") or 0) > 1000:
+        warnings.append("Structured fit answer exceeded the 1000-word target.")
       answer = str(structured_answer.get("rendered") or "").strip()
     elif profile.get("id") == "opportunity_analysis":
       try:
@@ -3225,7 +3225,7 @@ def _stream_advisor_response(query: str, requested_mode: str) -> Iterator[str]:
               "- Every factual strength or gap must cite allowed chunk ids inline.\n"
               "- If a gap is not explicit in the facts, phrase it as 'not evidenced in retrieved material'.\n"
               "- The interview answer must sound spoken, concise, and natural.\n"
-              "- Keep the output under 180 words when possible."
+              "- Keep the output under 1000 words when possible."
             )
             yield _stream_json_line(
               {"type": "status", "phase": "generation", "message": "Streaming fit synthesis."}
@@ -3244,8 +3244,8 @@ def _stream_advisor_response(query: str, requested_mode: str) -> Iterator[str]:
               answer_chunks.append(chunk)
               yield _stream_json_line({"type": "answer_delta", "text": chunk})
             answer = "".join(answer_chunks).strip()
-            if _word_count_text(answer) > 180:
-              warnings.append("Structured fit answer exceeded the 180-word target.")
+            if _word_count_text(answer) > 1000:
+              warnings.append("Structured fit answer exceeded the 1000-word target.")
           else:
             structured_answer = _run_structured_fit_analysis(
               query=query,
@@ -3253,8 +3253,8 @@ def _stream_advisor_response(query: str, requested_mode: str) -> Iterator[str]:
               provider=advisor_provider,
               model=advisor_model,
             )
-            if int(structured_answer.get("renderedWordCount") or 0) > 180:
-              warnings.append("Structured fit answer exceeded the 180-word target.")
+            if int(structured_answer.get("renderedWordCount") or 0) > 1000:
+              warnings.append("Structured fit answer exceeded the 1000-word target.")
             answer = str(structured_answer.get("rendered") or "").strip()
             for chunk in _iter_rendered_text_chunks(answer):
               yield _stream_json_line({"type": "answer_delta", "text": chunk})
