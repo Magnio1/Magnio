@@ -1,0 +1,92 @@
+tittle 
+Build it right. Make it last.
+Subtitle
+Independent engineers focused on automation, rapid builds, and production-ready systems.
+CTA 1
+Let’s talk
+CTA 2
+Our services
+
+---
+title (former Outcomes over output.)
+Results matter more than output.
+subtitle
+Here are a few examples of the work we do and the results that are meant to produce.
+
+title
+We Prevented a Half-Million Dollar Problem
+
+text
+$481K incident — gone
+
+Fixed in five months.
+1,721% ROI.
+$280K saved each year.
+
+Automation · Reliability · Operations
+
+CTA
+→ Review your incident risk
+
+--
+
+Move fast without boxing yourself
+
+MVP to production in weeks
+
+Clear scope.
+Small steps.
+Shipped and running from day one.
+
+Full-stack · Architecture · Delivery
+
+CTA
+→ Plan your MVP
+
+--
+title
+Performance. Scale. Security.
+
+text
+System audit and a plan
+
+Weak points found.
+Risks ranked.
+A roadmap your team can follow.
+
+Performance · Security · Scalability
+
+→ Walk through your system
+
+Text underneath:
+See how it works. Call me.
+---
+
+title (former How Magnio Can Help)
+
+Title: How Magnio Helps
+Subtitle: Fast, expert engineering for costly problems.
+
+1. Rapid Prototyping
+Micro-apps. Fast onboarding. Quick workflow checks.
+
+✓ Map workflows. Find gaps.
+✓ Build prototypes in days. Not months.
+✓ Build it right. Built to last.
+✓ Clear path: scale, improve or stop.
+
+CTA: Launch a prototype
+
+2. Problem Solving
+Costly problems. Stop them fast.
+
+✓ Assess. Design. Solve.
+✓ Fix systems. Add automation.
+✓ Keep processes running smoothly.
+✓ Train teams. Share knowledge.
+✓ Set up continuous improvement.
+
+Larger projects scoped separately.
+
+CTA: Get a solution plan
+

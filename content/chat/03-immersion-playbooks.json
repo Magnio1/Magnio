@@ -1,0 +1,50 @@
+[
+  {
+    "id": "K3",
+    "title": "AI immersion approach",
+    "body": "A strong AI immersion motion starts with workflow mapping, data readiness, and a narrow pilot tied to one measurable business outcome. Magnio's likely approach is to avoid theater, put guardrails around the first deployment, then expand only after the pilot shows speed, quality, or margin improvement.",
+    "tags": ["ai", "immersion", "pilot", "workflow", "guardrails"],
+    "focus": ["ai_immersion", "engagement"],
+    "phrases": ["ai immersion", "measurable business outcome"]
+  },
+  {
+    "id": "K10",
+    "title": "How to start AI without chaos",
+    "body": "The recommended entry point is usually not deploy AI everywhere. It is a scoped workflow audit that finds repetitive decisions, messy handoffs, and data bottlenecks. From there, pick one workflow with measurable impact, define guardrails, and run a pilot before scale.",
+    "tags": ["ai", "immersion", "workflow", "pilot", "guardrails"],
+    "focus": ["ai_immersion", "operations"],
+    "phrases": ["without chaos", "workflow audit", "before scale"]
+  },
+  {
+    "id": "K13",
+    "title": "Data readiness checkpoint",
+    "body": "Before recommending a heavier AI build, Magnio should check whether the workflow has accessible source data, a stable system of record, and enough operational consistency to judge outcomes. If those basics are missing, the first step is usually process and data discipline rather than deeper orchestration.",
+    "tags": ["data", "readiness", "workflow", "guardrails"],
+    "focus": ["ai_immersion", "operations"],
+    "phrases": ["data readiness", "system of record"]
+  },
+  {
+    "id": "K14",
+    "title": "Pilot selection rubric",
+    "body": "A good first AI pilot has repetitive decisions, measurable delay or cost, bounded risk, and a stakeholder who can own the outcome. A weak pilot is broad, politically loaded, or impossible to evaluate in under one quarter.",
+    "tags": ["pilot", "selection", "operations", "measurement"],
+    "focus": ["ai_immersion", "engagement"],
+    "phrases": ["first ai pilot", "bounded risk"]
+  },
+  {
+    "id": "K15",
+    "title": "When not to use agentic AI first",
+    "body": "Magnio should not push agentic AI as the first move when the process is still undefined, approvals are inconsistent, or the team lacks trustworthy data. In those cases, a simpler automation, portal, or workflow redesign usually comes before a multi-agent system.",
+    "tags": ["agentic", "guardrails", "workflow", "automation"],
+    "focus": ["agentic", "ai_immersion"],
+    "phrases": ["not to use agentic ai", "simpler automation first"]
+  },
+  {
+    "id": "K16",
+    "title": "Thirty-sixty-ninety structure",
+    "body": "A practical 30-60-90 path is: 30 days for discovery and workflow mapping, 60 days for pilot design and initial deployment, and 90 days for production hardening, instrumentation, and team adoption. Magnio should keep the sequence outcome-driven, not feature-driven.",
+    "tags": ["30-60-90", "roadmap", "pilot", "adoption"],
+    "focus": ["engagement", "ai_immersion"],
+    "phrases": ["30-60-90", "outcome-driven"]
+  }
+]

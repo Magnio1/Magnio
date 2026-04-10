@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K9",
+    "title": "Ideal lead signal",
+    "body": "Magnio is most credible when the lead has an expensive workflow problem, clear friction, and a business owner who wants speed with operational discipline. Good lead signals include manual work, disconnected systems, back-office delays, poor visibility, or AI interest without a practical execution plan.",
+    "tags": ["lead", "fit", "operations", "workflow"],
+    "focus": ["fit", "ai_immersion"],
+    "phrases": ["expensive workflow problem", "operational discipline"]
+  },
+  {
+    "id": "K17",
+    "title": "Strong buying signals",
+    "body": "Strong Magnio buying signals include a workflow with measurable cost or delay, executive sponsorship, a willingness to pilot before scale, and a need to connect systems rather than buy another generic dashboard. These leads usually care about throughput, visibility, and decision quality.",
+    "tags": ["lead", "buyer", "pilot", "integration"],
+    "focus": ["fit", "engagement"],
+    "phrases": ["buying signals", "pilot before scale"]
+  },
+  {
+    "id": "K18",
+    "title": "Weak fit signals",
+    "body": "Weak fit signals include purely experimental curiosity with no owner, a request for AI branding without workflow substance, or a desire to automate a process that has not been defined. If the ask is vague and there is no measurable outcome, Magnio should narrow the scope before proposing a build.",
+    "tags": ["fit", "qualification", "guardrails", "lead"],
+    "focus": ["fit", "ai_immersion"],
+    "phrases": ["weak fit", "no measurable outcome"]
+  },
+  {
+    "id": "K19",
+    "title": "Best inputs for a first call",
+    "body": "The most useful first-call inputs are the workflow that hurts, the systems involved, who owns the decision, the current delay or cost, and what a successful pilot would change. Magnio should use those inputs to decide whether the right next step is discovery, a pilot, or a lighter automation project.",
+    "tags": ["discovery", "lead", "workflow", "pilot"],
+    "focus": ["engagement", "fit"],
+    "phrases": ["first call", "systems involved", "successful pilot"]
+  }
+]

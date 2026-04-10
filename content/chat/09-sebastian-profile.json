@@ -1,0 +1,154 @@
+[
+  {
+    "id": "K37",
+    "title": "Sebastian profile: agentic systems engineer with production delivery focus",
+    "body": "Sebastian Rosales is a full-stack AI systems engineer focused on production-grade agentic workflows, LLM orchestration, RAG architectures, and end-to-end delivery. His background combines architecture, data modeling, deployment, monitoring, and optimization across finance-adjacent operations, healthcare, supply chain, and business automation. The recurring pattern is not chatbot demos but real systems that turn complex manual work into automated, decision-ready workflows.",
+    "tags": ["sebastian", "profile", "agentic", "rag", "orchestration", "production"],
+    "focus": ["fit", "agentic", "operations", "proof"],
+    "phrases": ["production-grade agentic workflows", "end-to-end delivery", "decision-ready workflows"]
+  },
+  {
+    "id": "K38",
+    "title": "Magnio demonstrates multi-model orchestration and grounded advisor design",
+    "body": "Magnio is a founder-built production platform for small-business automation on Google Cloud. It combines a multi-model orchestration engine with prompt classification, dynamic model routing, parallel evaluation, and judge-model synthesis, plus a RAG-powered advisor layer with feedback loops, evaluation logging, and prompt optimization. The platform also includes lead scoring, intake, scheduling, and Slack or email workflow automation, showing practical orchestration beyond a single chat surface.",
+    "tags": ["magnio", "google-cloud", "agentic", "orchestration", "judge", "rag", "evaluation"],
+    "focus": ["fit", "agentic", "operations", "proof"],
+    "phrases": ["judge-model synthesis", "rag-powered advisor", "evaluation logging"]
+  },
+  {
+    "id": "K39",
+    "title": "CIC shows audit-safe analytics over financial and ERP data",
+    "body": "At TwinMed, Sebastian led architecture and delivery of Agentic Credit Intelligence, a production-grade platform that replaced spreadsheet-based financial and billing workflows with a real-time operational system. The design used a deterministic-first pipeline with RAG-grounded analytics so outputs remained explainable and audit-safe in a regulated environment. The system automated credit intake, reconciliation, and audit tracking, improved billing match accuracy from 60 percent to 95 percent plus, reduced processing time by 80 percent, and contributed to more than 500 thousand dollars in recovered credits.",
+    "tags": ["cic", "finance", "erp", "audit", "reconciliation", "rag", "deterministic"],
+    "focus": ["fit", "operations", "proof", "agentic"],
+    "phrases": ["audit-safe", "financial and ERP data", "deterministic-first pipeline"]
+  },
+  {
+    "id": "K40",
+    "title": "Actus is a context-aware operations copilot with hybrid RAG and multi-step workflows",
+    "body": "Actus is a credit operations copilot built end to end for ticket analysis and decision support. Its architecture combines hybrid RAG, deterministic routing, and multi-step agent workflows so the system can handle ambiguous inputs without giving up reliability in high-stakes financial operations. The product delivers next-action recommendations, investigation summaries, operational search, and synthesized multi-intent answers, with 97 percent ticket coverage and sustained billing accuracy above 95 percent.",
+    "tags": ["actus", "copilot", "agentic", "hybrid-rag", "routing", "financial", "decision-support"],
+    "focus": ["fit", "operations", "proof", "agentic"],
+    "phrases": ["credit operations copilot", "multi-step agent workflows", "next-action recommendations", "high-stakes financial operations"]
+  },
+  {
+    "id": "K45",
+    "title": "Actus includes a designed copilot surface with contextual suggestions and operational UI outputs",
+    "body": "Actus is not only a backend analytics engine. It includes a React and TypeScript chat product with manual and auto modes, contextual follow-up suggestions, pending follow-up context, suggested actions, and structured operational outputs such as cards, tables, charts, and markdown summaries. That shows product-surface ownership and a copilot interaction model rather than only infrastructure work.",
+    "tags": ["actus", "copilot", "frontend", "ui", "product", "chat", "suggestions"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["contextual follow-up suggestions", "manual and auto modes", "cards tables charts", "copilot interaction model"]
+  },
+  {
+    "id": "K46",
+    "title": "Actus makes orchestration visible through Auto mode planning and executed-intent pipeline UX",
+    "body": "Actus Auto mode plans up to three specialist intents, runs them against the same live dataset, and synthesizes the outputs into one answer. The product makes that orchestration visible in the UI through executed-intent pipeline cards, planner metadata, follow-up suggestions, and status-aware specialist steps. This is evidence of both backend orchestration design and user-facing workflow design for an AI copilot.",
+    "tags": ["actus", "auto-mode", "orchestration", "planner", "pipeline", "ux", "copilot"],
+    "focus": ["fit", "agentic", "product", "proof"],
+    "phrases": ["executed-intent pipeline", "planner metadata", "visible orchestration", "user-facing workflow design"]
+  },
+  {
+    "id": "K47",
+    "title": "Sebastian designed and built the Actus copilot experience end to end",
+    "body": "In Actus, Sebastian did not only build the backend orchestration. He designed and built the copilot experience end to end, including manual and auto modes, pending follow-up context, contextual suggestions, pipeline visibility, and structured operational outputs such as cards, tables, charts, and markdown summaries. This is direct evidence of frontend ownership and interaction design, not only systems engineering.",
+    "tags": ["actus", "frontend", "ux", "product", "copilot", "interaction-design", "ownership"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["designed and built end to end", "frontend ownership", "interaction design", "manual and auto modes"]
+  },
+  {
+    "id": "K48",
+    "title": "Sebastian designed and built Magnio's advisor and arena product surfaces",
+    "body": "In Magnio, Sebastian designed and built the chat and evaluation experience, not only the orchestration backend. That includes the advisor and arena interaction model, retrieval presentation, candidate comparison views, operator review surfaces, streaming answer behavior, and mobile or desktop control panels. This is evidence that he owns AI product UX and frontend execution alongside model and workflow infrastructure.",
+    "tags": ["magnio", "frontend", "ux", "product", "advisor", "arena", "interaction-design"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["advisor and arena interaction model", "retrieval presentation", "candidate comparison views", "AI product UX"]
+  },
+  {
+    "id": "K49",
+    "title": "Across Actus and Magnio, Sebastian owns the UX decisions that make AI behavior legible",
+    "body": "Across Actus and Magnio, Sebastian's role includes deciding how AI behavior becomes understandable and usable to a human operator. He chooses when orchestration should be visible, how follow-up context and suggestions should appear, how citations and evaluation traces should be shown, and how users switch between guided and autonomous modes. This is evidence of product thinking and UX ownership in AI systems, not only implementation of frontend code.",
+    "tags": ["ux", "product", "ai-experience", "frontend", "interaction-design", "copilot", "ownership"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["AI behavior legible", "product thinking", "UX ownership", "guided and autonomous modes"]
+  },
+  {
+    "id": "K50",
+    "title": "Sebastian owns Actus end to end, including UI architecture, UX decisions, and rendering behavior",
+    "body": "Sebastian owns Actus end to end: UI architecture, UX decisions, LLM orchestration, agent flow design, rendering behavior, and output formatting. He made the product decisions that control how orchestration state becomes visible, how sections are organized, and how structured outputs are rendered for operators. This is direct evidence of full product ownership rather than only backend or model work.",
+    "tags": ["actus", "frontend", "ux", "rendering", "product", "ownership", "orchestration"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["owns Actus end to end", "UI architecture", "output formatting", "full product ownership"]
+  },
+  {
+    "id": "K51",
+    "title": "Sebastian designs with AI copilots and understands copilot UX from the inside",
+    "body": "Sebastian uses AI copilots as a primary design and development tool. He evaluates prompt quality, output structure, rendering behavior, and the gap between model output and user intent as part of the product-building loop. That gives him product instinct for copilot workflows that many backend-only AI engineers do not have, because he is both the builder of the system and an active user of AI copilots during design and implementation.",
+    "tags": ["copilot", "product", "ux", "design", "prompting", "evaluation", "ownership"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["designs with AI copilots", "copilot UX from the inside", "output structure", "user intent"]
+  },
+  {
+    "id": "K52",
+    "title": "Sebastian treats AI output rendering as a UX problem, not only a text-generation problem",
+    "body": "Sebastian treats AI output formatting as a UX problem, not only a text problem. In live production systems he has iterated on section structure, visual hierarchy, outlier rendering, and narrative clarity so AI outputs become legible, trustworthy, and actionable for non-technical operators. This is evidence of frontend and UX judgment applied directly to AI systems, not just model orchestration.",
+    "tags": ["ux", "rendering", "frontend", "ai-output", "product", "clarity", "trust"],
+    "focus": ["fit", "product", "proof", "agentic"],
+    "phrases": ["AI output rendering", "visual hierarchy", "narrative clarity", "legible trustworthy actionable"]
+  },
+  {
+    "id": "K53",
+    "title": "Actus was built through embedded workflow discovery with the credit operations team",
+    "body": "Actus was not built in isolation. Sebastian sat with the credit operations team, learned how analysts actually worked, and mapped the workflow bottlenecks that mattered in practice, including billing-queue delays, RTN assignment cycles, and recurring root-cause patterns. This is direct evidence of embedded operator discovery and process mapping with a non-technical business function before designing the system.",
+    "tags": ["actus", "workflow-discovery", "credit-ops", "process-mapping", "operator", "embedded", "non-technical"],
+    "focus": ["fit", "operations", "proof", "agentic"],
+    "phrases": ["embedded operator discovery", "sat with the credit operations team", "process mapping", "non-technical business function"]
+  },
+  {
+    "id": "K54",
+    "title": "Actus intent design came from real analyst work and human-judgment boundaries",
+    "body": "Sebastian designed Actus around the real questions analysts asked rather than around technical convenience. He defined 24 intents from actual credit-operations workflows, identified what still required human judgment, and separated those from the parts that could be automated or accelerated with AI. This is evidence of first-principles workflow redesign and judgment-aware automation design.",
+    "tags": ["actus", "intent-design", "human-judgment", "workflow-redesign", "automation", "analyst", "operations"],
+    "focus": ["fit", "operations", "proof", "agentic"],
+    "phrases": ["24 intents", "real analyst questions", "human judgment boundaries", "first-principles workflow redesign"]
+  },
+  {
+    "id": "K55",
+    "title": "Actus outputs were iterated around what non-technical operators could actually use",
+    "body": "Sebastian iterated the Actus output format based on what non-technical credit ops users could act on in their day-to-day work. That included how sections were ordered, how recommendations were framed, and how answers became actionable instead of merely technically correct. This is evidence of designing AI outputs around operator usability and stakeholder adoption, not only backend correctness.",
+    "tags": ["actus", "output-design", "operator-usability", "stakeholder", "adoption", "non-technical", "ux"],
+    "focus": ["fit", "operations", "proof", "product"],
+    "phrases": ["non-technical operators could act on", "operator usability", "stakeholder adoption", "actionable outputs"]
+  },
+  {
+    "id": "K41",
+    "title": "Sebastian's stack aligns with Google Cloud style platform work",
+    "body": "Sebastian's documented stack includes Python, FastAPI, REST APIs, Firebase RTDB, Firestore, Google Cloud, Docker, CI or CD, React, TypeScript, Vite, analytics pipelines, and operational dashboards. His project history emphasizes owning systems end to end, including backend services, frontend surfaces, data workflows, deployment, observability, and continuous optimization rather than only isolated prompt engineering tasks.",
+    "tags": ["google-cloud", "fastapi", "firebase", "docker", "deployment", "observability", "full-stack"],
+    "focus": ["fit", "operations", "proof"],
+    "phrases": ["Google Cloud", "owning systems end to end", "deployment observability"]
+  },
+  {
+    "id": "K42",
+    "title": "Documented impact supports production and ROI claims",
+    "body": "The documented impact across Sebastian's resume and project summary includes more than 500 thousand dollars in recovered credits, 280 thousand dollars in annual savings, 90 percent reduction in manual analysis workflows, 5x operational throughput gains, 100 percent enterprise adoption within 60 days, and billing accuracy improvements from 60 percent to 95 percent plus. These examples support claims about measurable business impact, production adoption, and operational reliability.",
+    "tags": ["impact", "roi", "adoption", "reliability", "operations", "proof"],
+    "focus": ["proof", "fit"],
+    "phrases": ["100 percent enterprise adoption", "90 percent reduction in manual analysis", "500 thousand dollars in recovered credits"]
+  },
+  {
+    "id": "K43",
+    "title": "Magnio now has a Google-native Vertex AI path for grounded advisory flows",
+    "body": "Magnio's current architecture includes a switchable Vertex AI path for the grounded advisor flow and for the arena judge, while preserving the original OpenRouter-based multi-model arena for candidate generation. In practice this means the system can run retrieval over Magnio's knowledge base, send grounded context to Gemini on Vertex AI, log runs to Firestore, and still keep the broader multi-model orchestration architecture reversible instead of hard-coding a single provider choice.",
+    "tags": ["vertex-ai", "gemini", "magnio", "google-cloud", "advisor", "judge", "firestore"],
+    "focus": ["fit", "agentic", "operations", "proof"],
+    "phrases": ["Vertex AI", "Gemini on Vertex AI", "switchable Vertex AI path"]
+  },
+  {
+    "id": "K44",
+    "title": "Architectural through-line: reliable AI systems with guardrails and ambiguity handling",
+    "body": "Across CIC, Actus, and Magnio, the through-line is a preference for reliable architectures that combine deterministic logic for safety and auditability with LLM reasoning only where ambiguity remains. This pattern shows up in intent routing, grounded retrieval, fallback behavior, evaluation logging, and human-usable operational outputs. The result is a profile that is strongest in production agent systems, orchestration, guardrails, and measurable operational improvement.",
+    "tags": ["architecture", "guardrails", "deterministic", "llm", "routing", "evaluation", "reliability"],
+    "focus": ["fit", "agentic", "operations", "proof"],
+    "phrases": ["deterministic logic for safety", "evaluation logging", "production agent systems"]
+  }
+]

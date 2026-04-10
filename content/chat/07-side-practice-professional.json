@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K29",
+    "title": "How to start a side practice while keeping your job",
+    "body": "The right path for a solo professional starting on the side is to reduce downside first. Keep the job, choose one narrow offer, validate demand with a small number of paying clients, and avoid building heavy infrastructure before revenue exists. The first win is proof that someone will pay for a focused service in your available hours.",
+    "tags": ["side-practice", "job", "validation", "solo", "offer"],
+    "focus": ["side_practice", "fit"],
+    "phrases": ["keeping your job", "side practice", "paying clients"]
+  },
+  {
+    "id": "K30",
+    "title": "Employment and licensing guardrails for a side practice",
+    "body": "Before taking side clients, a professional should review employer restrictions, conflict-of-interest policies, and any licensing or firm-registration requirements tied to their field. The practical rule is simple: keep employer resources and side work completely separate, confirm the work is allowed, and avoid overlapping client relationships or industries if that creates risk.",
+    "tags": ["employment", "licensing", "conflict", "guardrails", "side-practice"],
+    "focus": ["side_practice", "engagement"],
+    "phrases": ["conflict of interest", "employer restrictions", "keep employer resources separate"]
+  },
+  {
+    "id": "K31",
+    "title": "Use the day job as niche insight, not as a client source",
+    "body": "A side practice should use the operator's current role as market insight, not as a channel to poach business. If someone works in credit, underwriting, finance, or operations, the smarter move is to package that knowledge into a focused service for adjacent buyers. For a CPA path, that might mean loan-ready financials, bookkeeping cleanup before financing, or small-business reporting that helps owners look more credible to lenders.",
+    "tags": ["niche", "credit", "cpa", "positioning", "adjacent-market"],
+    "focus": ["side_practice", "fit"],
+    "phrases": ["credit department", "loan-ready financials", "adjacent buyers"]
+  },
+  {
+    "id": "K32",
+    "title": "Transition trigger from side income to full-time practice",
+    "body": "Do not leave a stable job on potential alone. Set a transition trigger in advance: a monthly revenue target, a number of recurring clients, and enough savings to absorb uneven months. A practical side-practice path is evenings and weekends first, then a deliberate transition only when revenue, pipeline, and operating capacity are visible.",
+    "tags": ["transition", "revenue", "savings", "job", "side-practice"],
+    "focus": ["side_practice", "engagement"],
+    "phrases": ["transition trigger", "monthly revenue target", "evenings and weekends"]
+  }
+]

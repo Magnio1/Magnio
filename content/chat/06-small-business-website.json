@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K25",
+    "title": "Best first website path for a solo service business",
+    "body": "For a solo operator such as a trainer, coach, or consultant, the first website should be a conversion system, not a software project. The job is to explain the offer clearly, build trust fast, and turn visitors into booked consultations or paid starter packages. The right first move is usually a lean site with booking, testimonials, pricing context, and a simple intake flow before adding heavier AI features.",
+    "tags": ["solo", "website", "conversion", "booking", "service", "trainer"],
+    "focus": ["starter_site", "fit"],
+    "phrases": ["solo personal trainer", "start a website", "service business website"]
+  },
+  {
+    "id": "K26",
+    "title": "Core pages and funnel for a trainer website",
+    "body": "A strong first website for a personal trainer usually needs six things: a clear home page, services or packages, proof or testimonials, an about page, a booking page, and a contact or intake form. The funnel should be simple: visitor understands who the training is for, sees proof, understands the offer, and books a consultation or intro session without friction.",
+    "tags": ["website", "pages", "booking", "funnel", "trainer", "proof"],
+    "focus": ["starter_site", "engagement"],
+    "phrases": ["trainer website", "book a consultation", "core pages"]
+  },
+  {
+    "id": "K27",
+    "title": "Where AI should help first on a small service website",
+    "body": "For a small service business website, AI should start in narrow places where it removes repetitive communication without owning the business. Good first uses are an FAQ assistant trained on the offer, draft follow-up messages after an intake form, or a summary of lead goals captured before a consultation. AI should not be the first layer for branding, site generation, or fully automated sales conversations.",
+    "tags": ["ai", "website", "faq", "followup", "intake", "small-business"],
+    "focus": ["starter_site", "ai_immersion"],
+    "phrases": ["where ai should help first", "faq assistant", "follow-up messages"]
+  },
+  {
+    "id": "K28",
+    "title": "What to postpone on version one of a business website",
+    "body": "Version one should not try to do everything. A solo business should postpone complex content engines, broad chatbot behavior, custom dashboards, advanced automations, and agentic workflows until the website is already producing leads. The first site wins by being clear, fast, and easy to book from. Once traffic and conversion data exist, the owner can add one measured AI layer.",
+    "tags": ["website", "version-one", "guardrails", "ai", "conversion"],
+    "focus": ["starter_site", "ai_immersion"],
+    "phrases": ["version one", "easy to book", "one measured ai layer"]
+  }
+]

@@ -1,0 +1,76 @@
+:root {
+  /* Primary Brand Colors */
+  --magnio-blue: #3B82F6;
+  --magnio-purple: #A855F7;
+  --magnio-pink: #EC4899;
+  
+  /* Gradient */
+  --magnio-gradient: linear-gradient(135deg, 
+    var(--magnio-blue) 0%, 
+    var(--magnio-purple) 50%, 
+    var(--magnio-pink) 100%);
+  
+  /* Neutrals */
+  --slate-950: #020617;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  
+  /* Semantic Colors */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+}
+
+/* Magnio Brand Gradient Text */
+.magnio-gradient-text {
+  background: var(--magnio-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Magnio Glow Effect */
+.magnio-glow {
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.3),
+              0 0 80px rgba(168, 85, 247, 0.2),
+              0 0 120px rgba(236, 72, 153, 0.1);
+}
+
+/* Magnio Button */
+.magnio-button {
+  background: var(--magnio-gradient);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.magnio-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+}
+
+.magnio-button:active {
+  transform: translateY(-1px);
+}
+
+.magnio-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35),
+              0 10px 30px rgba(59, 130, 246, 0.3);
+}
+
+.magnio-button--sm {
+  padding: 0.6rem 1rem;
+  border-radius: 0.7rem;
+}

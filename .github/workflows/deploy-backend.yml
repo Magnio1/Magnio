@@ -1,0 +1,57 @@
+name: Deploy Backend to Cloud Run
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api/**'
+      - 'Dockerfile'
+      - 'api/requirements.txt'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: 'projects/903156424574/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'magnio-deploy@magnio-rtdb.iam.gserviceaccount.com'
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+        with:
+          project_id: magnio-rtdb
+      
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+      
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/magnio-rtdb/magnio-api .
+          docker push gcr.io/magnio-rtdb/magnio-api
+      
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy magnio-api \
+            --image gcr.io/magnio-rtdb/magnio-api \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --cpu 1 \
+            --memory 1Gi \
+            --min-instances 0 \
+            --max-instances 5 \
+            --timeout 120s \
+            --service-account firebase-adminsdk-fbsvc@magnio-rtdb.iam.gserviceaccount.com \
+            --set-env-vars "^~^MAGNIO_CHAT_ANALYTICS_BACKEND=firestore~MAGNIO_CHAT_JUDGE_MODEL=openai/gpt-5.1~MAGNIO_CHAT_ADVISOR_MODEL=anthropic/claude-sonnet-4.6~MAGNIO_CHAT_MODEL_RANKINGS_BACKEND=dual~CORS_ALLOW_ORIGINS=https://magnio-rtdb.web.app,https://magnio.io,https://www.magnio.io,http://localhost:5173~FIREBASE_DATABASE_URL=https://magnio-rtdb-default-rtdb.firebaseio.com/~RESEND_FROM_EMAIL=hello@magnio.io~RESEND_TO_EMAIL=hello@magnio.io~RESEND_LEAD_AUTOREPLY_ENABLED=1~MAGNIO_ENV=prod" \
+            --set-secrets MAGNIO_OPENROUTER_API_KEY=MAGNIO_OPENROUTER_API_KEY:latest,RESEND_API_KEY=RESEND_API_KEY:latest,CALCOM_WEBHOOK_SECRET=CALCOM_WEBHOOK_SECRET:latest,TASKS_API_TOKEN=TASKS_API_TOKEN:latest,SLACK_WEBHOOK_URL=SLACK_WEBHOOK_URL:latest

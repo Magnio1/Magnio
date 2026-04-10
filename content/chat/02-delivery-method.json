@@ -1,0 +1,50 @@
+[
+  {
+    "id": "K2",
+    "title": "Delivery philosophy",
+    "body": "Magnio favors real workflow alignment over generic templates. The point is not to bolt AI onto a broken process. The point is to understand the workflow, clean the handoffs, shape the data, then automate the highest-friction path.",
+    "tags": ["workflow", "operations", "automation", "delivery"],
+    "focus": ["operations", "ai_immersion"],
+    "phrases": ["real workflow alignment", "not generic templates"]
+  },
+  {
+    "id": "K5",
+    "title": "Custom CRM and workflow systems",
+    "body": "Magnio builds custom CRM and workflow systems around real operating patterns. That includes structured tracking for tickets, credits, approvals, and status, plus dashboards and automations that reduce manual entry and improve visibility across teams.",
+    "tags": ["crm", "workflow", "tracking", "dashboard", "automation"],
+    "focus": ["operations", "fit"],
+    "phrases": ["custom crm", "workflow systems"]
+  },
+  {
+    "id": "K6",
+    "title": "Portal and intake automation",
+    "body": "Magnio's portal automation work focuses on self-service intake, validation at the source, automatic routing into the right workflow, and reducing spreadsheet and email chaos. The goal is to let customers or internal teams submit requests directly without creating more manual cleanup downstream.",
+    "tags": ["portal", "intake", "workflow", "automation"],
+    "focus": ["operations", "fit"],
+    "phrases": ["self-service", "data at the source"]
+  },
+  {
+    "id": "K7",
+    "title": "Internal process improvement",
+    "body": "Magnio frames internal process work as assess, design, solve. Fix the system, add targeted automation, keep the process stable, train the team, and then create a continuous improvement loop instead of a one-off build.",
+    "tags": ["operations", "process", "training", "continuous improvement"],
+    "focus": ["operations", "engagement"],
+    "phrases": ["continuous improvement", "train the team"]
+  },
+  {
+    "id": "K11",
+    "title": "Engagement shape",
+    "body": "A sensible Magnio engagement likely starts with discovery and problem framing, moves into a prototype or pilot that proves the operational and financial case, and then graduates into production hardening, systems integration, and team enablement.",
+    "tags": ["engagement", "discovery", "pilot", "production"],
+    "focus": ["engagement", "ai_immersion"],
+    "phrases": ["discovery and problem framing", "production hardening"]
+  },
+  {
+    "id": "K21",
+    "title": "Magnio working style",
+    "body": "Magnio should be framed as an operator-minded builder, not a slideware consultant. The value comes from translating ambiguous business pain into a concrete system, pilot, or workflow intervention that can survive contact with production.",
+    "tags": ["delivery", "operator", "production", "engagement"],
+    "focus": ["fit", "engagement"],
+    "phrases": ["operator-minded builder", "survive contact with production"]
+  }
+]

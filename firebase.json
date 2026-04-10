@@ -1,0 +1,72 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "run": {
+          "serviceId": "magnio-api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/lead",
+        "run": {
+          "serviceId": "magnio-api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/webhooks/**",
+        "run": {
+          "serviceId": "magnio-api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/intake/**",
+        "run": {
+          "serviceId": "magnio-api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/tasks/**",
+        "run": {
+          "serviceId": "magnio-api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/admin/**",
+        "run": {
+          "serviceId": "magnio-api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/assets/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=31536000,immutable"
+          }
+        ]
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}

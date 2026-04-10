@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K4",
+    "title": "Agentic AI services",
+    "body": "Magnio's agentic AI and intelligent automation offer is about turning repetitive work into reliable workflows, connecting systems so information moves automatically, reducing manual effort, and keeping AI behavior aligned with the business instead of shipping an unmanaged experiment.",
+    "tags": ["agentic", "ai", "automation", "integration"],
+    "focus": ["agentic", "operations"],
+    "phrases": ["intelligent automation", "repetitive work"]
+  },
+  {
+    "id": "K22",
+    "title": "What makes the arena useful",
+    "body": "The value of the arena pattern is not that three models talk at once. The value is that routing, model selection, comparison, and judging are visible. That makes the orchestration legible to the user and turns the interface into a product demonstration rather than a hidden backend trick.",
+    "tags": ["agentic", "arena", "judge", "orchestration"],
+    "focus": ["agentic", "fit"],
+    "phrases": ["visible orchestration", "product demonstration"]
+  },
+  {
+    "id": "K23",
+    "title": "How Magnio should describe agentic systems",
+    "body": "Magnio should describe agentic systems as workflow operators with guardrails, observability, and business-specific context. The pitch should emphasize orchestration, judgment, and reliability instead of making the system sound magical or autonomous for its own sake.",
+    "tags": ["agentic", "orchestration", "observability", "guardrails"],
+    "focus": ["agentic", "engagement"],
+    "phrases": ["workflow operators", "guardrails and observability"]
+  },
+  {
+    "id": "K24",
+    "title": "Advisor to contact conversion",
+    "body": "The advisor should convert when it detects a practical fit. If the lead has a costly workflow, an owner, and a candidate pilot, the right close is a scoped discovery or workflow audit. If the situation is still vague, the advisor should clarify the problem before pushing a sales call.",
+    "tags": ["conversion", "lead", "advisor", "engagement"],
+    "focus": ["fit", "engagement"],
+    "phrases": ["scoped discovery", "workflow audit"]
+  }
+]

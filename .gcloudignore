@@ -1,0 +1,22 @@
+# Keep Cloud Run source deploys small and prevent local secrets from being uploaded.
+.git
+.github
+.firebase
+.venv
+venv
+node_modules
+dist
+data
+coverage
+playwright-report
+test-results
+.DS_Store
+.env
+.env.local
+.env.production.local
+api.env
+serviceAccount.json
+*.log
+__pycache__/
+*.pyc
+*.pyo

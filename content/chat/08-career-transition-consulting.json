@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K33",
+    "title": "Turn role expertise into a consulting wedge",
+    "body": "A good career-transition consulting offer is not 'I do consulting.' It is a narrow wedge built from the operator's current expertise. A recruiter should pick a hiring problem and client type. A lawyer should narrow to a contract or compliance pain point. A finance operator or future fractional CFO should pick one repeatable planning or reporting problem. The wedge matters because it makes first clients easier to win while the operator is still employed.",
+    "tags": ["career-transition", "consulting", "positioning", "wedge", "fractional"],
+    "focus": ["career_transition", "fit"],
+    "phrases": ["consulting wedge", "fractional cfo", "first clients"]
+  },
+  {
+    "id": "K34",
+    "title": "Start with one offer and one client type",
+    "body": "The safest path from salary to consulting is to choose one offer and one client type before building a brand. Examples: recruiter to interview-process advisory for seed startups, lawyer to contract-review package for agencies, finance leader to cash-flow and reporting support for founder-led companies. The goal is not scale on day one. The goal is a sellable, repeatable offer that fits nights and weekends.",
+    "tags": ["career-transition", "offer", "clients", "niche", "consulting"],
+    "focus": ["career_transition", "engagement"],
+    "phrases": ["one offer", "one client type", "repeatable offer"]
+  },
+  {
+    "id": "K35",
+    "title": "Side consulting guardrails while employed",
+    "body": "A side consulting business should treat employer overlap as the main risk. Review non-solicit and confidentiality restrictions, avoid selling into your employer's client base, keep assets and communications separate, and package your knowledge instead of repurposing employer materials. For regulated roles, confirm any professional rules that apply before taking clients.",
+    "tags": ["career-transition", "employment", "conflict", "confidentiality", "guardrails"],
+    "focus": ["career_transition", "side_practice"],
+    "phrases": ["non-solicit", "confidentiality restrictions", "keep assets separate"]
+  },
+  {
+    "id": "K36",
+    "title": "Transition from side consulting to full-time",
+    "body": "The move from side consulting to full-time independence should follow evidence, not emotion. Look for a stable offer, repeatable delivery, a pipeline instead of one-off projects, and a revenue threshold that can support the operator for several uneven months. A practical transition path is to prove the wedge, tighten delivery, then leave only when the business has enough demand to survive your full attention.",
+    "tags": ["career-transition", "transition", "pipeline", "revenue", "consulting"],
+    "focus": ["career_transition", "engagement"],
+    "phrases": ["stable offer", "repeatable delivery", "pipeline instead of one-off projects"]
+  }
+]

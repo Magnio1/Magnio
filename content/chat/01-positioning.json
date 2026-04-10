@@ -1,0 +1,34 @@
+[
+  {
+    "id": "K1",
+    "title": "Magnio positioning",
+    "body": "Magnio positions itself as an independent engineering partner focused on automation, rapid builds, and production-ready systems. The core message is to build the right thing fast and make sure it lasts in production.",
+    "tags": ["positioning", "automation", "engineering", "delivery"],
+    "focus": ["fit", "engagement"],
+    "phrases": ["build the right thing fast", "production-ready systems"]
+  },
+  {
+    "id": "K8",
+    "title": "Documented public proof points",
+    "body": "The current Magnio site highlights three proof points: 481K dollars in loss prevented, 1,721 percent ROI delivered, and 280K dollars in recurring annual savings. These are the main quantified outcomes visible in the current public positioning.",
+    "tags": ["proof", "roi", "savings", "impact"],
+    "focus": ["proof", "fit"],
+    "phrases": ["481k", "1721 percent roi", "280k"]
+  },
+  {
+    "id": "K12",
+    "title": "Advisor mode purpose",
+    "body": "The hybrid advisor concept for Magnio is meant to guide leads on how to approach AI immersion, what Magnio has already done, and how the work should be sequenced. It should feel like a grounded operator helping a buyer choose the right starting point.",
+    "tags": ["advisor", "rag", "lead", "ai", "guidance"],
+    "focus": ["agentic", "ai_immersion", "fit"],
+    "phrases": ["hybrid advisor", "grounded operator"]
+  },
+  {
+    "id": "K20",
+    "title": "How Magnio should frame its proof",
+    "body": "Magnio should use its public proof points as credibility anchors, but avoid inventing details that are not already documented. If the advisor references the 481K, 1,721 percent, or 280K outcomes, it should treat them as validated top-line results and not as license to fabricate implementation specifics.",
+    "tags": ["proof", "credibility", "case_study", "grounding"],
+    "focus": ["proof", "engagement"],
+    "phrases": ["credibility anchors", "validated top-line results"]
+  }
+]

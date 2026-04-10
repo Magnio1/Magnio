@@ -1,0 +1,19 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "leads": {
+      ".read": false,
+      ".write": false,
+      ".indexOn": ["contact/email"]
+    },
+    "lead_index": {
+      ".read": false,
+      ".write": false
+    },
+    "unmatched_calcom_events": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
