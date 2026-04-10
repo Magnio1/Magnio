@@ -1088,20 +1088,16 @@ def _firestore_model_trends(limit: int) -> list[dict[str, Any]]:
   docs = _firestore_stream(
     get_firestore_client()
     .collection(FIRESTORE_CASES_RECENT)
+    .where("resolvedMode", "==", "arena")
     .order_by("createdAtUnix", direction="DESCENDING")
-    .limit(safe_limit * 4)
+    .limit(safe_limit)
   )
   trends: list[dict[str, Any]] = []
   for doc in docs:
     payload = doc.to_dict() or {}
-    if payload.get("resolvedMode") != "arena":
-      continue
     winner = payload.get("winnerModelId") or (payload.get("evaluation") or {}).get("winnerModelId")
-    if not winner:
-      continue
-    trends.append({"winnerModelId": winner, "createdAt": payload.get("createdAt")})
-    if len(trends) >= safe_limit:
-      break
+    if winner:
+      trends.append({"winnerModelId": winner, "createdAt": payload.get("createdAt")})
   return trends
 
 
