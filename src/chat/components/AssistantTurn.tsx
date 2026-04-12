@@ -119,7 +119,7 @@ function AssistantTurn({
           <span className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
             {response.topic.label}
           </span>
-          <span className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+          <span className="hidden sm:inline-block rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 max-w-[220px] truncate" title={response.diagnostics.strategy}>
             {response.diagnostics.strategy}
           </span>
         </div>
@@ -232,43 +232,45 @@ function AssistantTurn({
                               Mark whether the final answer is usable. Revisions can carry an optional review note.
                             </p>
                           </div>
-                          <div className="flex flex-wrap items-center gap-3">
+                          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3 w-full sm:w-auto">
                             {onRegenerate ? (
                               <button
                                 type="button"
                                 onClick={onRegenerate}
-                                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-bold text-slate-200 transition hover:bg-white/[0.08]"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/[0.08] sm:w-auto sm:py-2"
                               >
                                 <RefreshCw className="h-4 w-4" />
                                 Regenerate
                               </button>
                             ) : null}
-                            <button
-                              type="button"
-                              disabled={isSubmittingFeedback}
-                              onClick={() => void handleVote('up')}
-                              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition ${
-                                response.feedback?.vote === 'up'
-                                  ? 'bg-emerald-400 text-slate-950'
-                                  : 'border border-white/10 bg-white/[0.03] text-slate-200 hover:bg-white/[0.08]'
-                              }`}
-                            >
-                              <ThumbsUp className="h-4 w-4" />
-                              Approve
-                            </button>
-                            <button
-                              type="button"
-                              disabled={isSubmittingFeedback}
-                              onClick={() => void handleVote('down')}
-                              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition ${
-                                response.feedback?.vote === 'down'
-                                  ? 'bg-amber-300 text-slate-950'
-                                  : 'border border-white/10 bg-white/[0.03] text-slate-200 hover:bg-white/[0.08]'
-                              }`}
-                            >
-                              <ThumbsDown className="h-4 w-4" />
-                              Needs revision
-                            </button>
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                disabled={isSubmittingFeedback}
+                                onClick={() => void handleVote('up')}
+                                className={`inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition sm:flex-none sm:py-2 ${
+                                  response.feedback?.vote === 'up'
+                                    ? 'bg-emerald-400 text-slate-950'
+                                    : 'border border-white/10 bg-white/[0.03] text-slate-200 hover:bg-white/[0.08]'
+                                }`}
+                              >
+                                <ThumbsUp className="h-4 w-4" />
+                                Approve
+                              </button>
+                              <button
+                                type="button"
+                                disabled={isSubmittingFeedback}
+                                onClick={() => void handleVote('down')}
+                                className={`inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition sm:flex-none sm:py-2 ${
+                                  response.feedback?.vote === 'down'
+                                    ? 'bg-amber-300 text-slate-950'
+                                    : 'border border-white/10 bg-white/[0.03] text-slate-200 hover:bg-white/[0.08]'
+                                }`}
+                              >
+                                <ThumbsDown className="h-4 w-4" />
+                                Revision
+                              </button>
+                            </div>
                           </div>
                         </div>
 
@@ -370,7 +372,7 @@ function AssistantTurn({
                       {response.judge?.rationale ||
                         'Arena candidates are arriving. Magnio will score them and synthesize the final answer when the judge completes.'}
                     </p>
-                    <div className="grid items-start gap-3 sm:gap-5 lg:grid-cols-3">
+                    <div className="grid items-start gap-3 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
                       {response.candidates.map((candidate, idx) => (
                         <CandidateCard
                           key={candidate.modelId}

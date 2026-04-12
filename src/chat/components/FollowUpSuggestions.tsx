@@ -83,7 +83,7 @@ function FollowUpSuggestions({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.06 }}
                 onClick={() => onSelect(s)}
-                className="rounded-full border border-violet-400/20 bg-violet-400/10 px-3 py-1.5 text-left text-xs font-medium text-violet-200 transition hover:border-violet-400/40 hover:bg-violet-400/20 hover:text-white"
+                className="max-w-[280px] rounded-full border border-violet-400/20 bg-violet-400/10 px-3 py-1.5 text-left text-xs font-medium text-violet-200 transition hover:border-violet-400/40 hover:bg-violet-400/20 hover:text-white"
               >
                 {s}
               </motion.button>

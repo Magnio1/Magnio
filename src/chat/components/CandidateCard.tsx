@@ -46,7 +46,7 @@ function CandidateCard({
           : 'border-white/6 bg-white/[0.02] hover:bg-white/[0.04]'
       }`}
     >
-      <header className="flex flex-col gap-5 p-5 sm:p-6">
+      <header className="flex flex-col gap-4 p-4 sm:gap-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.16em] text-slate-400">
@@ -91,7 +91,7 @@ function CandidateCard({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-5 p-5 pt-0 sm:p-6 sm:pt-0">
+        <div className="flex flex-col gap-4 p-4 pt-0 sm:gap-5 sm:p-6 sm:pt-0">
           {score ? (
             <div className="grid grid-cols-2 gap-2">
               {METRIC_LABELS.map(({ key, short, full }) => {

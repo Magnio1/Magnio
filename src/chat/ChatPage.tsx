@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowLeft, Download, Loader2, PanelLeft, Search, Send, X } from 'lucide-react'
+import { ArrowDown, ArrowLeft, Download, Loader2, MoreHorizontal, PanelLeft, Search, Send, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   useDeferredValue,
@@ -90,6 +90,7 @@ function ChatPage() {
 
   const [isDesktopPanelOpen, setIsDesktopPanelOpen] = useState(false)
   const [isMobileControlOpen, setIsMobileControlOpen] = useState(false)
+  const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
   const [promptSearch, setPromptSearch] = useState('')
 
   const deferredPromptSearch = useDeferredValue(promptSearch)
@@ -132,7 +133,8 @@ function ChatPage() {
     const textarea = textareaRef.current
     if (!textarea) return
     textarea.style.height = 'auto'
-    const nextHeight = Math.min(Math.max(textarea.scrollHeight, 132), 260)
+    const isMobile = window.innerWidth < 640
+    const nextHeight = Math.min(Math.max(textarea.scrollHeight, isMobile ? 56 : 88), isMobile ? 140 : 260)
     textarea.style.height = `${nextHeight}px`
   }, [query])
 
@@ -323,7 +325,8 @@ function ChatPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Desktop panel button — xl only */}
             <motion.button
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
@@ -334,6 +337,8 @@ function ChatPage() {
               <PanelLeft className="h-4 w-4" />
               Panel
             </motion.button>
+
+            {/* Search + Export visible on sm+ */}
             {messages.length > 0 && (
               <>
                 <motion.button
@@ -342,10 +347,10 @@ function ChatPage() {
                   type="button"
                   onClick={() => setIsSearchOpen((prev) => !prev)}
                   aria-label="Search conversation"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.08] sm:px-4"
+                  className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.08]"
                 >
                   <Search className="h-4 w-4" />
-                  <span className="hidden sm:inline">Search</span>
+                  Search
                 </motion.button>
                 <motion.button
                   whileHover={{ y: -1 }}
@@ -353,17 +358,71 @@ function ChatPage() {
                   type="button"
                   onClick={handleExport}
                   aria-label="Export conversation"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.08] sm:px-4"
+                  className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.08]"
                 >
                   <Download className="h-4 w-4" />
-                  <span className="hidden sm:inline">Export</span>
+                  Export
                 </motion.button>
+
+                {/* Mobile overflow menu */}
+                <div className="relative sm:hidden">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={() => setIsOverflowMenuOpen((prev) => !prev)}
+                    aria-label="More options"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-slate-200 transition hover:bg-white/[0.08]"
+                  >
+                    <MoreHorizontal className="h-4 w-4" />
+                  </motion.button>
+                  <AnimatePresence>
+                    {isOverflowMenuOpen && (
+                      <>
+                        <motion.button
+                          type="button"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 z-40"
+                          onClick={() => setIsOverflowMenuOpen(false)}
+                          aria-label="Close menu"
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                          transition={{ duration: 0.14 }}
+                          className="absolute right-0 top-11 z-50 min-w-[148px] overflow-hidden rounded-2xl border border-white/10 bg-black/80 shadow-2xl backdrop-blur-2xl"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => { setIsSearchOpen((prev) => !prev); setIsOverflowMenuOpen(false) }}
+                            className="flex w-full items-center gap-2.5 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.06]"
+                          >
+                            <Search className="h-4 w-4 text-slate-400" />
+                            Search
+                          </button>
+                          <div className="h-px bg-white/5" />
+                          <button
+                            type="button"
+                            onClick={() => { handleExport(); setIsOverflowMenuOpen(false) }}
+                            className="flex w-full items-center gap-2.5 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.06]"
+                          >
+                            <Download className="h-4 w-4 text-slate-400" />
+                            Export
+                          </button>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
               </>
             )}
+
             <motion.a
               whileHover={{ x: -2 }}
               href="/"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.08]"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.08] sm:px-4"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden sm:inline">Home</span>
@@ -649,7 +708,7 @@ function ChatPage() {
                       placeholder={activeModeOption.placeholder}
                       aria-label="Ask Magnio a question"
                       aria-describedby="magnio-chat-composer-help"
-                      className="custom-scrollbar min-h-[72px] max-h-[180px] w-full resize-none overflow-y-auto bg-transparent py-1.5 text-[15px] font-medium leading-7 text-white outline-none placeholder:text-slate-500/90 focus-visible:ring-0 focus-visible:ring-offset-0 sm:min-h-[88px] sm:max-h-[220px]"
+                      className="custom-scrollbar min-h-[56px] max-h-[140px] w-full resize-none overflow-y-auto bg-transparent py-1.5 text-[15px] font-medium leading-7 text-white outline-none placeholder:text-slate-500/90 focus-visible:ring-0 focus-visible:ring-offset-0 sm:min-h-[88px] sm:max-h-[220px]"
                     />
                   </div>
 
