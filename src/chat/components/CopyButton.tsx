@@ -29,7 +29,7 @@ function CopyButton({ text, className }: { text: string; className?: string }) {
       ) : (
         <Copy className="h-3 w-3" />
       )}
-      {copied ? 'Copied' : 'Copy'}
+      <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
     </button>
   )
 }

@@ -141,9 +141,9 @@ function AssistantTurn({
             </div>
             <div className="flex items-center gap-2">
               {isStreaming ? (
-                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-200">
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  {streamingPhaseLabel}
+                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-200 max-w-[180px] sm:max-w-none">
+                  <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />
+                  <span className="truncate">{streamingPhaseLabel}</span>
                 </div>
               ) : null}
               {!isStreaming && response.answer ? (
@@ -209,7 +209,7 @@ function AssistantTurn({
                           {response.runId ? response.runId.slice(0, 8) : 'not logged'}
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 sm:col-span-2">
+                      <div className="col-span-2 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
                         <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-2">latency</div>
                         <LatencyBar totalMs={response.latencyMs} candidates={response.candidates} />
                       </div>
@@ -228,7 +228,7 @@ function AssistantTurn({
                             <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500">
                               Operator review
                             </div>
-                            <p className="mt-2 text-sm font-medium leading-6 text-slate-400">
+                            <p className="mt-2 hidden sm:block text-sm font-medium leading-6 text-slate-400">
                               Mark whether the final answer is usable. Revisions can carry an optional review note.
                             </p>
                           </div>
@@ -344,12 +344,17 @@ function AssistantTurn({
               </div>
               <div className="flex items-center gap-3">
                 {response.judge ? (
-                  <div className="hidden sm:block rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-right shadow-sm">
-                    <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-500">decision engine</div>
-                    <div className="mt-1 text-xs font-bold tracking-widest text-cyan-300/80">
+                  <>
+                    <div className="hidden sm:block rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-right shadow-sm">
+                      <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-500">decision engine</div>
+                      <div className="mt-1 text-xs font-bold tracking-widest text-cyan-300/80">
+                        {response.judge.judgeModelId?.split('/').pop() ?? 'Judge'}
+                      </div>
+                    </div>
+                    <div className="sm:hidden rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-[9px] font-bold text-cyan-300/80 truncate max-w-[120px]" title={response.judge.judgeModelId ?? 'Judge'}>
                       {response.judge.judgeModelId?.split('/').pop() ?? 'Judge'}
                     </div>
-                  </div>
+                  </>
                 ) : null}
                 <motion.span animate={{ rotate: collapsed.candidates ? -90 : 0 }} transition={{ duration: 0.2 }}>
                   <ChevronDown className="h-4 w-4 text-slate-400" />
@@ -470,7 +475,7 @@ function AssistantTurn({
                   transition={{ duration: 0.22, ease: 'easeOut' }}
                   className="overflow-hidden"
                 >
-                  <div className="grid gap-2 sm:gap-4 px-4 pb-4 sm:px-6 sm:pb-6 lg:grid-cols-2">
+                  <div className="grid gap-2 sm:gap-4 px-4 pb-4 sm:px-6 sm:pb-6 sm:grid-cols-2">
                     {response.retrieval.map((item, idx) => (
                       <RetrievalCard key={item.id} item={item} index={idx} />
                     ))}

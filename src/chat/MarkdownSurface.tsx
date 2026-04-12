@@ -114,7 +114,7 @@ function MarkdownSurface({ content }: MarkdownSurfaceProps) {
             }
 
             return (
-              <pre className="my-6 overflow-x-auto rounded-[24px] border border-white/10 bg-[#03080e]/80 p-6 text-sm text-slate-200 shadow-xl custom-scrollbar">
+              <pre className="my-6 overflow-x-auto rounded-[24px] border border-white/10 bg-[#03080e]/80 p-4 sm:p-6 text-sm text-slate-200 shadow-xl custom-scrollbar">
                 <code {...props} className={`${className} font-medium`}>
                   {children}
                 </code>

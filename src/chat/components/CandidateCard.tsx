@@ -65,7 +65,7 @@ function CandidateCard({
         </div>
 
         <div>
-          <h4 className="text-[18px] font-bold leading-tight tracking-tight text-white transition-colors sm:text-[20px]">
+          <h4 className="text-[15px] font-bold leading-tight tracking-tight text-white transition-colors sm:text-[18px] line-clamp-2">
             {candidate.modelName}
           </h4>
           <div className="mt-2 truncate text-[8px] font-medium uppercase tracking-[0.08em] text-slate-500 opacity-60">
