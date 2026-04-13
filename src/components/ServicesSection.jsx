@@ -76,10 +76,9 @@ const ServiceAccordionItem = ({ icon, title, description, delay }) => {
 
   return (
     <RevealOnScroll delay={delay}>
-      <motion.div
-        layout
+      <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`group cursor-pointer overflow-hidden rounded-2xl border bg-zinc-900/20 p-6 transition-all hover:bg-zinc-900/40 hover:shadow-lg hover:shadow-blue-900/5 ${isOpen ? "border-blue-500/30 ring-1 ring-blue-500/20" : "border-zinc-800/50 hover:border-zinc-700/80"
+        className={`group cursor-pointer rounded-2xl border bg-zinc-900/20 p-6 transition-colors hover:bg-zinc-900/40 hover:shadow-lg hover:shadow-blue-900/5 ${isOpen ? "border-blue-500/30 ring-1 ring-blue-500/20" : "border-zinc-800/50 hover:border-zinc-700/80"
           }`}
       >
         <div className="flex items-center justify-between gap-4">
@@ -93,16 +92,17 @@ const ServiceAccordionItem = ({ icon, title, description, delay }) => {
               {title}
             </h3>
           </div>
-          <ChevronDown className={`h-5 w-5 text-zinc-500 transition-transform duration-300 ${isOpen ? "rotate-180 text-blue-400" : ""}`} />
+          <ChevronDown className={`h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-200 ${isOpen ? "rotate-180 text-blue-400" : ""}`} />
         </div>
 
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="overflow-hidden"
             >
               <div className="pt-4 pl-[3.25rem]">
                 <div className="text-sm text-zinc-400 leading-relaxed">
@@ -112,7 +112,7 @@ const ServiceAccordionItem = ({ icon, title, description, delay }) => {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     </RevealOnScroll>
   );
 };
