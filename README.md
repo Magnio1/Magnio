@@ -8,11 +8,11 @@
 
 **Live:** [magnio.io](https://magnio.io)
 
-Magnio is a small-business automation platform that combines **agentic AI chat** with a complete **lead qualification and intake workflow**. It moves leads from first contact to booked calls with minimal manual work — built on FastAPI, React, and Google Cloud.
+Magnio is a personal AI platform with three live systems: **agentic AI chat** (multi-model arena + hybrid RAG advisor), a complete **lead qualification and intake workflow**, and **JobRadar** — an AI-powered job intelligence pipeline that scrapes, scores, and triages roles against a personal profile using Claude.
 
 ### What makes this different
 
-Most AI chat demos call one model and return the result. Magnio runs a **multi-model arena** — 3 LLMs execute in parallel, a judge model synthesizes the best response, and model selection is driven by **benchmark rankings that update without redeploying**. The advisor path uses **hybrid RAG** (keyword expansion + semantic similarity) over a structured knowledge base instead of naive vector search. On the lead side, the entire pipeline from contact form to booked call runs autonomously with human-in-the-loop guardrails only where they matter.
+Most AI chat demos call one model and return the result. Magnio runs a **multi-model arena** — 3 LLMs execute in parallel, a judge model synthesizes the best response, and model selection is driven by **benchmark rankings that update without redeploying**. The advisor path uses **hybrid RAG** (keyword expansion + semantic similarity) over a structured knowledge base instead of naive vector search. On the lead side, the entire pipeline from contact form to booked call runs autonomously with human-in-the-loop guardrails only where they matter. JobRadar adds a third dimension: instead of browsing job boards, a pipeline scrapes 4 sources, scores each role with a Claude prompt grounded in personal experience and hard-coded red-flag patterns, and surfaces a ranked triage dashboard with a streaming AI Advisor chat per role.
 
 ---
 
@@ -24,6 +24,7 @@ Most AI chat demos call one model and return the result. Magnio runs a **multi-m
 - [Getting Started](#getting-started)
 - [Magnio Chat](#magnio-chat)
 - [Lead Automation & Intake](#lead-automation--intake)
+- [JobRadar](#jobradar)
 - [API Reference](#api-reference)
 - [Environment Variables](#environment-variables)
 - [Deployment](#deployment)
@@ -33,52 +34,52 @@ Most AI chat demos call one model and return the result. Magnio runs a **multi-m
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Firebase Hosting                         │
-│                     React + Vite Frontend                       │
-│         ┌──────────┐  ┌──────────┐  ┌──────────────┐            │
-│         │  /chat   │  │  /#admin │  │ Contact Form │            │
-│         └────┬─────┘  └────┬─────┘  └──────┬───────┘            │
-└──────────────┼─────────────┼───────────────┼────────────────────┘
-               │             │               │
-        ┌──────▼─────────────▼───────────────▼──────┐
-        │              Cloud Run (FastAPI)          │
-        │                                           │
-        │  ┌─────────-┐  ┌────────┐  ┌───────────┐  │
-        │  │  Arena   │  │Advisor │  │   Leads   │  │
-        │  │ 3 models │  │  RAG   │  │  Pipeline │  │
-        │  │   +judge │  │        │  │           │  │
-        │  └────┬─────┘  └───┬────┘  └─────┬─────┘  │
-        └───────┼────────────┼─────────────┼───────-┘
-                │            │             │
-     ┌──────────▼──-┐  ┌─────▼─────┐  ┌────▼────────-──┐
-     │  OpenRouter  │  │ Vertex AI │  │ Firebase RTDB  │
-     │  (parallel   │  │ (optional │  │ (leads, state) │
-     │   LLM calls) │  │  provider)│  │                │
-     └──────────────┘  └───────────┘  └────────────────┘
-                                             │
-     ┌───────────────┐  ┌───────────┐  ┌─────▼─────┐
-     │   Firestore   │  │   Slack   │  │  Cal.com  │
-     │  (analytics,  │  │  (alerts) │  │ (bookings)│
-     │  evaluations) │  │           │  │           │
-     └───────────────┘  └───────────┘  └───────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│                          Firebase Hosting                            │
+│                       React + Vite Frontend                          │
+│    ┌──────────┐  ┌──────────┐  ┌──────────────┐  ┌───────────────┐   │
+│    │  /chat   │  │ /#admin  │  │ Contact Form │  │  /jobs (auth) │   │
+│    └────┬─────┘  └────┬─────┘  └──────┬───────┘  └──────┬────────┘   │
+└─────────┼─────────────┼───────────────┼─────────────────┼────────────┘
+          │             │               │                 │
+   ┌──────▼─────────────▼───────────────▼─────────────────▼──────┐
+   │                    Cloud Run (FastAPI)                       │
+   │                                                              │
+   │  ┌──────────┐  ┌──────────┐  ┌───────────┐  ┌────────────┐  │
+   │  │  Arena   │  │ Advisor  │  │   Leads   │  │  JobRadar  │  │
+   │  │ 3 models │  │  RAG     │  │ Pipeline  │  │  Pipeline  │  │
+   │  │  +judge  │  │          │  │           │  │ scrape→score│  │
+   │  └────┬─────┘  └────┬─────┘  └─────┬─────┘  └─────┬──────┘  │
+   └───────┼─────────────┼──────────────┼───────────────┼─────────┘
+           │             │              │               │
+┌──────────▼──┐  ┌───────▼─────┐  ┌────▼──────────┐  ┌─▼────────────┐
+│ OpenRouter  │  │ Vertex AI   │  │ Firebase RTDB │  │  Firestore   │
+│ (parallel   │  │ (optional   │  │ (leads, state)│  │ (jobs_raw,   │
+│  LLM calls) │  │  provider)  │  │               │  │  jobs_enrich,│
+└─────────────┘  └─────────────┘  └───────────────┘  │  runs)       │
+                                                       └──────────────┘
+                                        │
+     ┌──────────────┐  ┌────────────┐  ┌─▼──────────┐
+     │    Slack     │  │  Cal.com   │  │   Resend   │
+     │   (alerts)   │  │ (bookings) │  │   (email)  │
+     └──────────────┘  └────────────┘  └────────────┘
 ```
 
 ---
 
 ## Tech Stack
 
-| Layer        | Technology                                           |
-|--------------|------------------------------------------------------|
-| Frontend     | React 18, TypeScript, Vite, Tailwind CSS 4           |
-| Backend      | FastAPI, Uvicorn, Pydantic                           |
-| Database     | Firebase RTDB (leads/workflow), Firestore (analytics)|
-| AI           | OpenRouter (multi-model arena), Vertex AI (optional) |
-| Hosting      | Firebase Hosting (frontend), Cloud Run (backend)     |
-| Secrets      | Google Secret Manager                                |
-| Email        | Resend                                               |
-| Scheduling   | Cal.com (webhooks)                                   |
-| Notifications| Slack (webhooks)                                     |
+| Layer        | Technology                                                |
+|--------------|-----------------------------------------------------------|
+| Frontend     | React 18, TypeScript, Vite, Tailwind CSS, Framer Motion   |
+| Backend      | FastAPI, Uvicorn, Pydantic                                |
+| Database     | Firebase RTDB (leads/workflow), Firestore (jobs, analytics)|
+| AI           | OpenRouter (multi-model arena + JobRadar scorer), Vertex AI (optional) |
+| Hosting      | Firebase Hosting (frontend), Cloud Run (backend)          |
+| Secrets      | Google Secret Manager                                     |
+| Email        | Resend                                                    |
+| Scheduling   | Cal.com (webhooks)                                        |
+| Notifications| Slack (webhooks)                                          |
 
 ---
 
@@ -89,24 +90,32 @@ magnio/
 ├── src/                        # React frontend
 │   ├── chat/                   #   Chat UI (Arena + Advisor)
 │   ├── components/             #   Landing page, admin panel, intake form
+│   │   └── JobRadarPanel.tsx   #   JobRadar triage dashboard + AI Advisor chat
 │   ├── App.tsx                 #   Router
 │   └── main.tsx                #   Entry point
 ├── api/                        # FastAPI backend
 │   ├── main.py                 #   App setup & middleware
 │   ├── routes_chat.py          #   Chat endpoints
 │   ├── routes_leads.py         #   Lead & intake endpoints
+│   ├── routes_jobs.py          #   JobRadar endpoints (list, pipeline, chat)
+│   ├── jobs_pipeline.py        #   Pipeline orchestrator: scrape → score → rank
+│   ├── jobs_scraper.py         #   Multi-source scraper (YC, GH, Lever, Ashby)
+│   ├── jobs_prompt_builder.py  #   Claude scorer: prompt builder + batch runner
 │   ├── openrouter_client.py    #   OpenRouter multi-model client
 │   ├── vertex_ai_client.py     #   Vertex AI client
 │   ├── firebase_client.py      #   Firebase Admin SDK init
-│   ├── magnio_knowledge.py     #   Hybrid RAG: keyword expansion + semantic similarity search
-│   ├── chat_analytics.py       #   Dual-backend eval logging (SQLite local / Firestore prod)
+│   ├── magnio_knowledge.py     #   Hybrid RAG: keyword expansion + semantic search
+│   ├── chat_analytics.py       #   Dual-backend eval logging (SQLite / Firestore)
 │   └── model_rankings.py       #   Benchmark ranking storage
-├── content/chat/               # Advisor knowledge base (JSON)
+├── content/chat/               # Advisor + JobRadar knowledge base (JSON)
 ├── data/                       # Runtime data (rankings, SQLite)
+├── docs/                       # Deployment & feature guides
+│   ├── jobradar.md             #   JobRadar feature deep-dive
+│   ├── google-deploy.md        #   Cloud Run deployment guide
+│   └── github-secrets.md       #   CI/CD secrets setup
 ├── scripts/                    # Dev & benchmark utilities
 │   ├── dev-all.sh              #   Combined local dev runner
 │   └── benchmark_openrouter_models.py
-├── docs/                       # Deployment & ops guides
 ├── Dockerfile                  # Backend container
 ├── firebase.json               # Firebase Hosting config
 └── vite.config.js              # Vite + dev proxy config
@@ -121,7 +130,7 @@ magnio/
 - **Node.js** >= 18
 - **Python** >= 3.11
 - **OpenRouter API key** ([openrouter.ai](https://openrouter.ai))
-- **Firebase project** (for leads/analytics — optional for chat-only dev)
+- **Firebase project** (for leads/analytics/jobs — optional for chat-only dev)
 
 ### 1. Clone and install
 
@@ -169,6 +178,7 @@ uvicorn api.main:app --reload --port 8000
 - Landing page: `http://localhost:5173`
 - Chat Arena & Advisor: `http://localhost:5173/chat`
 - Admin panel: `http://localhost:5173/#admin`
+- JobRadar dashboard: `http://localhost:5173/#jobs` (requires `TASKS_API_TOKEN`)
 
 ---
 
@@ -262,6 +272,47 @@ Cal.com booking  →  Webhook  →  Intake form generated  →  Follow-up flow
 
 ---
 
+## JobRadar
+
+JobRadar is a personal job intelligence pipeline — token-gated and accessible at `/#jobs`.
+
+### How it works
+
+**One-click pipeline** (`Run Pipeline` button) runs three stages:
+
+1. **Scrape** — pulls jobs from 4 sources in parallel into Firestore `jobs_raw`:
+   - `YC` — YC Work at a Startup (Algolia API)
+   - `GH` — Greenhouse public job boards
+   - `LV` — Lever public job boards
+   - `AH` — Ashby public job boards
+
+   Each source has a **Watchlist** lane (high-signal tracked companies) and a **Discovery** lane (broader startup pool). Deduplication runs before scoring.
+
+2. **Score** — every pending job is scored by **Claude Sonnet 4.6** in parallel (up to 8 workers). The prompt is loaded with personal profile context from `content/chat/*.json` (knowledge chunks tagged `fit`, `proof`, `operations`, `agentic`) and a hard-coded list of red-flag patterns. Claude returns structured JSON written to `jobs_enriched`:
+
+   | Field | Description |
+   |-------|-------------|
+   | `fit_score` | 0–100 integer |
+   | `summary` | Honest 2–3 sentence fit assessment |
+   | `red_flags` | Specific flags detected in this JD |
+   | `strengths` | Specific matches between profile and role |
+   | `positioning_note` | How to frame experience for this specific role |
+   | `outreach_draft` | Personalized cold-outreach opening |
+   | `recommendation` | `pursue` / `review` / `bypass` |
+
+3. **Rank** — jobs are ordered `pursue` first (by score desc), then `review`, top N shortlisted and logged to `pipeline_runs`.
+
+### Dashboard
+
+- **Stats bar** — live counters for AI recommendation tiers (pursue / review) and user decisions (pursuing)
+- **Job cards** — source badge, lane badge, fit score, recommendation, red flags, Pursue / Bypass actions
+- **AI Advisor chat** — streaming chat per role, grounded in the full JD, scores, flags, strengths, positioning note, and outreach draft. Responses stream in real time with RAF-batched rendering.
+- **Mobile** — full-screen panel switching: job list → tap a card → full-screen chat → back button returns to list
+
+See [docs/jobradar.md](docs/jobradar.md) for a complete feature breakdown.
+
+---
+
 ## API Reference
 
 ### Chat
@@ -285,6 +336,18 @@ Cal.com booking  →  Webhook  →  Intake form generated  →  Follow-up flow
 | POST   | `/admin/leads/{id}/intake-token`      | Generate intake link           |
 | POST   | `/webhooks/calcom`                    | Cal.com booking webhook        |
 | POST   | `/intake/submit`                      | Submit intake form             |
+
+### JobRadar
+
+All JobRadar endpoints require the `x-task-token` header.
+
+| Method | Endpoint                      | Description                                  |
+|--------|-------------------------------|----------------------------------------------|
+| GET    | `/jobs/`                      | List curated jobs sorted by fit score        |
+| POST   | `/jobs/pipeline/run`          | Trigger full scrape → score → rank pipeline  |
+| GET    | `/jobs/pipeline/runs`         | List recent pipeline run metadata            |
+| POST   | `/jobs/{job_id}/status`       | Update job status (approved / bypassed)      |
+| POST   | `/jobs/chat`                  | Streaming AI Advisor chat for a job          |
 
 ---
 
@@ -327,7 +390,7 @@ Cal.com booking  →  Webhook  →  Intake form generated  →  Follow-up flow
 | `FIREBASE_SERVICE_ACCOUNT_JSON_PATH` | — | Path to service account file |
 | `CORS_ALLOW_ORIGINS` | — | Comma-separated allowed origins |
 | `MAGNIO_ENV` | — | Set to `dev` to skip webhook secret validation |
-| `TASKS_API_TOKEN` | — | Admin API auth token |
+| `TASKS_API_TOKEN` | — | Admin API auth token (leads + JobRadar) |
 | `CALCOM_WEBHOOK_SECRET` | — | Cal.com webhook secret (required in prod) |
 | `CALCOM_BOOKING_URL` | — | Cal.com booking link |
 | `SLACK_WEBHOOK_URL` | — | Slack notification webhook |
@@ -340,6 +403,23 @@ Cal.com booking  →  Webhook  →  Intake form generated  →  Follow-up flow
 | `INTAKE_FORM_BASE_URL` | `http://localhost:5173/#intake` | Intake form URL prefix |
 | `INTAKE_ALLOW_RESUBMIT` | — | Allow intake form resubmission |
 | `INTAKE_TOKEN_TTL_HOURS` | `168` | Intake token expiry (hours) |
+
+### JobRadar
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `JOBRADAR_SCORER_MODEL` | `anthropic/claude-sonnet-4-6` | Claude model used for job scoring |
+| `JOBRADAR_MAX_JD_CHARS` | `6000` | Max job description characters sent to Claude |
+| `JOBRADAR_YC_ALGOLIA_APP_ID` | `45BWZJ1SGC` | YC Algolia app ID |
+| `JOBRADAR_YC_ALGOLIA_API_KEY` | — | YC Algolia public search key |
+| `JOBRADAR_YC_LIMIT` | `40` | Max YC jobs per run |
+| `JOBRADAR_GREENHOUSE_COMPANIES` | — | Comma-separated Greenhouse watchlist slugs |
+| `JOBRADAR_GREENHOUSE_DISCOVERY_COMPANIES` | — | Comma-separated Greenhouse discovery slugs |
+| `JOBRADAR_LEVER_COMPANIES` | — | Comma-separated Lever watchlist slugs |
+| `JOBRADAR_LEVER_DISCOVERY_COMPANIES` | — | Comma-separated Lever discovery slugs |
+| `JOBRADAR_LEVER_MAX_PER_COMPANY` | `25` | Cap Lever jobs per company |
+| `JOBRADAR_ASHBY_COMPANIES` | — | Comma-separated Ashby watchlist slugs |
+| `JOBRADAR_ASHBY_DISCOVERY_COMPANIES` | — | Comma-separated Ashby discovery slugs |
 
 ### Frontend
 
@@ -362,7 +442,7 @@ Cal.com booking  →  Webhook  →  Intake form generated  →  Follow-up flow
 
 ### Routing
 
-Firebase Hosting rewrites `/api/**`, `/lead`, `/webhooks/**`, `/intake/**`, `/tasks/**`, and `/admin/**` to the Cloud Run `magnio-api` service. Everything else serves the SPA.
+Firebase Hosting rewrites `/api/**`, `/lead`, `/webhooks/**`, `/intake/**`, `/tasks/**`, `/jobs/**`, and `/admin/**` to the Cloud Run `magnio-api` service. Everything else serves the SPA.
 
 ### Deploy
 

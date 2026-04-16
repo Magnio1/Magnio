@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   Briefcase,
   CheckCircle,
+  ChevronLeft,
   ChevronRight,
   CircleDashed,
   Loader2,
@@ -486,7 +487,7 @@ function StreamingDots() {
 // Chat panel (right panel)
 // ---------------------------------------------------------------------------
 
-function ChatPanel({ job, token }: { job: Job; token: string }) {
+function ChatPanel({ job, token, onBack }: { job: Job; token: string; onBack?: () => void }) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -600,6 +601,16 @@ function ChatPanel({ job, token }: { job: Job; token: string }) {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
+            {/* Back button — mobile only */}
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="sm:hidden flex items-center gap-1 text-zinc-400 hover:text-slate-200 transition-colors flex-shrink-0 -ml-1"
+              >
+                <ChevronLeft size={18} />
+                <span className="text-xs font-medium">Jobs</span>
+              </button>
+            )}
             <div className="relative flex-shrink-0">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/10 border border-blue-500/25 shadow-[0_0_12px_rgba(59,130,246,0.15)]">
                 <Briefcase size={13} className="text-blue-300" />
@@ -820,6 +831,7 @@ export default function JobRadarPanel() {
 
   const [jobs, setJobs] = useState<Job[]>([])
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
+  const [mobileView, setMobileView] = useState<'jobs' | 'chat'>('jobs')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -1005,8 +1017,13 @@ export default function JobRadarPanel() {
 
       {/* Body: split panel */}
       <div className="flex flex-1 min-h-0 overflow-hidden relative z-10">
-        {/* Left panel: job list */}
-        <div className="w-full sm:w-[42%] lg:w-[38%] border-r border-white/5 bg-black/20 backdrop-blur-md flex flex-col min-h-0 flex-shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.2)]">
+        {/* Left panel: job list — hidden on mobile when chat is open */}
+        <div className={`
+          border-r border-white/5 bg-black/20 backdrop-blur-md flex flex-col min-h-0 flex-shrink-0
+          shadow-[4px_0_24px_rgba(0,0,0,0.2)]
+          w-full sm:w-[42%] lg:w-[38%]
+          ${mobileView === 'chat' ? 'hidden sm:flex' : 'flex'}
+        `}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 flex-shrink-0">
             <span className="text-xs text-zinc-500">{jobs.length} jobs</span>
             {error && <span className="text-xs text-red-400">{error}</span>}
@@ -1039,7 +1056,10 @@ export default function JobRadarPanel() {
                   key={job.id}
                   job={job}
                   selected={selectedJob?.id === job.id}
-                  onClick={() => setSelectedJob(job)}
+                  onClick={() => {
+                    setSelectedJob(job)
+                    setMobileView('chat')
+                  }}
                   onStatusChange={(s) => handleJobStatusChange(job.id, s)}
                   token={token}
                 />
@@ -1048,8 +1068,11 @@ export default function JobRadarPanel() {
           </div>
         </div>
 
-        {/* Right panel: chat */}
-        <div className="flex-1 min-w-0 flex flex-col min-h-0">
+        {/* Right panel: chat — hidden on mobile when jobs list is open */}
+        <div className={`
+          flex-1 min-w-0 flex flex-col min-h-0
+          ${mobileView === 'jobs' ? 'hidden sm:flex' : 'flex'}
+        `}>
           <AnimatePresence mode="wait">
             {selectedJob ? (
               <motion.div
@@ -1060,7 +1083,14 @@ export default function JobRadarPanel() {
                 transition={{ duration: 0.15 }}
                 className="h-full"
               >
-                <ChatPanel job={selectedJob} token={token} />
+                <ChatPanel
+                  job={selectedJob}
+                  token={token}
+                  onBack={() => {
+                    setMobileView('jobs')
+                    setSelectedJob(null)
+                  }}
+                />
               </motion.div>
             ) : (
               <motion.div
