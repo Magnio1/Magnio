@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.routes_chat import router as chat_router
+from api.routes_jobs import router as jobs_router
 from api.routes_leads import router as leads_router
 
 project_root = Path(__file__).resolve().parents[1]
@@ -29,3 +30,4 @@ app.add_middleware(
 
 app.include_router(leads_router)
 app.include_router(chat_router)
+app.include_router(jobs_router)

@@ -708,7 +708,7 @@ function ChatPage() {
                       placeholder={activeModeOption.placeholder}
                       aria-label="Ask Magnio a question"
                       aria-describedby="magnio-chat-composer-help"
-                      className="custom-scrollbar min-h-[56px] max-h-[140px] w-full resize-none overflow-y-auto bg-transparent py-1.5 text-[15px] font-medium leading-7 text-white outline-none placeholder:text-slate-500/90 focus-visible:ring-0 focus-visible:ring-offset-0 sm:min-h-[88px] sm:max-h-[220px]"
+                      className="custom-scrollbar min-h-[56px] max-h-[140px] w-full resize-none appearance-none overflow-y-auto rounded-none border-0 bg-transparent py-1.5 text-[15px] font-medium leading-7 text-white shadow-none outline-none placeholder:text-slate-500/90 focus:border-0 focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:min-h-[88px] sm:max-h-[220px]"
                     />
                   </div>
 

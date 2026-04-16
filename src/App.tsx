@@ -8,16 +8,19 @@ import Navigation from './components/Navigation'
 import ServicesSection from './components/ServicesSection'
 
 const ChatPage = lazy(() => import('./chat/ChatPage'))
+const JobRadarPanel = lazy(() => import('./components/JobRadarPanel'))
 
-type AppRoute = 'main' | 'admin' | 'chat' | 'intake'
+type AppRoute = 'main' | 'admin' | 'chat' | 'intake' | 'jobs'
 
 function resolveRoute(): AppRoute {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
   if (pathname === '/chat') return 'chat'
+  if (pathname === '/jobs') return 'jobs'
 
   const hash = window.location.hash
   if (hash.startsWith('#admin')) return 'admin'
   if (hash.startsWith('#intake')) return 'intake'
+  if (hash.startsWith('#jobs')) return 'jobs'
   return 'main'
 }
 
@@ -113,6 +116,22 @@ function App() {
       <div className="min-h-screen">
         <AdminLeadsSection />
       </div>
+    )
+  }
+
+  if (route === 'jobs') {
+    return (
+      <Suspense
+        fallback={
+          <div className="flex min-h-screen items-center justify-center bg-[#060c14] text-slate-100">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.04] px-6 py-5 text-sm text-slate-300">
+              Loading JobRadar...
+            </div>
+          </div>
+        }
+      >
+        <JobRadarPanel />
+      </Suspense>
     )
   }
 
