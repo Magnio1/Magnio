@@ -16,10 +16,11 @@ Four job sources are scraped in parallel and written to Firestore `jobs_raw` wit
 
 | Source | Label | How |
 |--------|-------|-----|
-| YC Work at a Startup | `YC` | Algolia search API (public frontend key) |
+| YC Work at a Startup | `YC` | Public HTML + JSON extraction from ycombinator.com/jobs |
 | Greenhouse | `GH` | Public job board API, no auth needed |
-| Lever | `LV` | Public Lever board API |
-| Ashby | `AH` | Public Ashby board API |
+| Lever | `LV` | Public Lever board HTML + job detail pages |
+| Ashby | `AH` | Public Ashby posting API (`api.ashbyhq.com`) |
+| Workable | `WK` | Public apply API (`apply.workable.com`) |
 
 Each source has two lanes:
 - **Watchlist** — companies you explicitly track (high signal)

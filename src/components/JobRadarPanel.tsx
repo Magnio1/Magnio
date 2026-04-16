@@ -4,10 +4,10 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import {
   AlertTriangle,
+  ArrowLeft,
   ArrowUpRight,
   Briefcase,
   CheckCircle,
-  ChevronLeft,
   ChevronRight,
   CircleDashed,
   Loader2,
@@ -40,7 +40,6 @@ interface Job {
   jd_full: string
   scraped_at: string
   status: string
-  // enriched fields
   fit_score?: number
   summary?: string
   red_flags?: string[]
@@ -61,12 +60,8 @@ interface PipelineRun {
   scrape_summary: {
     yc_fetched: number
     greenhouse_fetched: number
-    lever_fetched?: number
-    ashby_fetched?: number
     total_fetched: number
     new_written: number
-    deduped_in_batch?: number
-    skipped_existing?: number
     sources?: {
       yc?: {
         status?: string
@@ -76,26 +71,6 @@ interface PipelineRun {
         fallback_used?: boolean
       }
       greenhouse?: {
-        status?: string
-        strategy?: string
-        fetched?: number
-        watchlist_companies?: number
-        watchlist_fetched?: number
-        discovery_companies?: number
-        discovery_fetched?: number
-        error?: string | null
-      }
-      lever?: {
-        status?: string
-        strategy?: string
-        fetched?: number
-        watchlist_companies?: number
-        watchlist_fetched?: number
-        discovery_companies?: number
-        discovery_fetched?: number
-        error?: string | null
-      }
-      ashby?: {
         status?: string
         strategy?: string
         fetched?: number
@@ -128,13 +103,13 @@ function scoreColor(score: number | undefined): string {
   return 'text-red-400'
 }
 
-function scoreBg(score: number | undefined): string {
-  if (score === undefined || score === null) return 'bg-zinc-800'
-  if (score >= 85) return 'bg-emerald-500/10 border border-emerald-500/20'
-  if (score >= 70) return 'bg-blue-500/10 border border-blue-500/20'
-  if (score >= 55) return 'bg-amber-500/10 border border-amber-500/20'
-  if (score >= 40) return 'bg-orange-500/10 border border-orange-500/20'
-  return 'bg-red-500/10 border border-red-500/20'
+function scoreRing(score: number | undefined): string {
+  if (score === undefined || score === null) return 'ring-zinc-700 bg-zinc-800/40'
+  if (score >= 85) return 'ring-emerald-500/40 bg-emerald-500/5'
+  if (score >= 70) return 'ring-blue-500/40 bg-blue-500/5'
+  if (score >= 55) return 'ring-amber-500/40 bg-amber-500/5'
+  if (score >= 40) return 'ring-orange-500/40 bg-orange-500/5'
+  return 'ring-red-500/40 bg-red-500/5'
 }
 
 function recommendationBadge(rec: string | undefined) {
@@ -167,24 +142,6 @@ function sourceBadge(source: string) {
         YC
       </span>
     )
-  if (source === 'hackernews')
-    return (
-      <span className="rounded-full bg-[#ff6600]/10 px-2 py-0.5 text-[10px] font-medium text-[#ff6600] border border-[#ff6600]/20">
-        HN
-      </span>
-    )
-  if (source === 'lever')
-    return (
-      <span className="rounded-full bg-cyan-500/10 px-2 py-0.5 text-[10px] font-medium text-cyan-300 border border-cyan-500/20">
-        LV
-      </span>
-    )
-  if (source === 'ashby')
-    return (
-      <span className="rounded-full bg-fuchsia-500/10 px-2 py-0.5 text-[10px] font-medium text-fuchsia-300 border border-fuchsia-500/20">
-        AH
-      </span>
-    )
   return (
     <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-700/50">
       GH
@@ -210,38 +167,6 @@ function laneBadge(lane: string | undefined) {
   return null
 }
 
-function sourceRunPills(lastRun: PipelineRun | null) {
-  const summary = lastRun?.scrape_summary
-  const sourceEntries = [
-    { key: 'yc', label: 'YC', fetched: summary?.sources?.yc?.fetched ?? summary?.yc_fetched, tone: 'text-orange-400 border-orange-500/20 bg-orange-500/10' },
-    { key: 'greenhouse', label: 'GH', fetched: summary?.sources?.greenhouse?.fetched ?? summary?.greenhouse_fetched, tone: 'text-zinc-300 border-zinc-700/60 bg-zinc-800/60' },
-    { key: 'lever', label: 'LV', fetched: summary?.sources?.lever?.fetched ?? summary?.lever_fetched, tone: 'text-cyan-300 border-cyan-500/20 bg-cyan-500/10' },
-    { key: 'ashby', label: 'AH', fetched: summary?.sources?.ashby?.fetched ?? summary?.ashby_fetched, tone: 'text-fuchsia-300 border-fuchsia-500/20 bg-fuchsia-500/10' },
-  ].filter((entry) => typeof entry.fetched === 'number')
-
-  if (!sourceEntries.length) return null
-
-  return (
-    <div className="hidden xl:flex items-center gap-1.5">
-      {sourceEntries.map((entry) => (
-        <span
-          key={entry.key}
-          className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[10px] ${entry.tone}`}
-        >
-          <span className="font-medium">{entry.label}</span>
-          <span className="text-[11px] font-semibold">{entry.fetched ?? 0}</span>
-        </span>
-      ))}
-      {typeof summary?.deduped_in_batch === 'number' && summary.deduped_in_batch > 0 && (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[10px] text-zinc-400">
-          <span>deduped</span>
-          <span className="font-semibold text-slate-200">{summary.deduped_in_batch}</span>
-        </span>
-      )}
-    </div>
-  )
-}
-
 function relativeTime(iso: string): string {
   if (!iso) return ''
   const delta = Date.now() - new Date(iso).getTime()
@@ -252,6 +177,16 @@ function relativeTime(iso: string): string {
   return `${Math.floor(hrs / 24)}d ago`
 }
 
+function addedDateLabel(iso: string): string {
+  if (!iso) return ''
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return ''
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
 // ---------------------------------------------------------------------------
 // Token gate
 // ---------------------------------------------------------------------------
@@ -260,7 +195,7 @@ function TokenGate({ onSubmit }: { onSubmit: (t: string) => void }) {
   const [value, setValue] = useState('')
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#060c14] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/15 via-[#060c14] to-[#060c14] relative">
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
       <div className="w-full max-w-sm rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative overflow-hidden">
         <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
         <div className="mb-6 flex items-center gap-3">
@@ -344,27 +279,34 @@ function JobCard({
           : 'border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-white/10 hover:bg-white/[0.04]'
       } ${isBypassed ? 'opacity-40' : ''}`}
     >
+      {/* Selected accent bar */}
+      {selected && (
+        <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-gradient-to-b from-blue-400 to-blue-600 rounded-l-xl" />
+      )}
+
       {/* Header row */}
-      <div className="flex items-start justify-between gap-2 mb-2">
+      <div className="flex items-start justify-between gap-3 mb-2.5">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
             {sourceBadge(job.source)}
             {laneBadge(job.collection_lane)}
             <span className="text-[10px] text-zinc-600">{relativeTime(job.scraped_at)}</span>
+            <span className="text-[10px] text-zinc-700">·</span>
+            <span className="text-[10px] text-zinc-600">Added {addedDateLabel(job.scraped_at)}</span>
           </div>
-          <div className="mt-1 text-sm font-semibold text-slate-100 leading-tight truncate">
+          <div className="text-[13px] font-bold text-slate-100 leading-snug">
             {job.title}
           </div>
           <div className="text-xs text-zinc-400 mt-0.5">{job.company}</div>
         </div>
 
-        {/* Fit score */}
+        {/* Circular fit score */}
         {job.fit_score !== undefined && (
-          <div className={`flex-shrink-0 rounded-xl px-3 py-2 text-center ${scoreBg(job.fit_score)}`}>
-            <div className={`text-lg font-bold leading-none ${scoreColor(job.fit_score)}`}>
+          <div className={`flex-shrink-0 w-12 h-12 rounded-full ring-2 flex flex-col items-center justify-center ${scoreRing(job.fit_score)}`}>
+            <div className={`text-base font-bold leading-none ${scoreColor(job.fit_score)}`}>
               {job.fit_score}
             </div>
-            <div className="text-[9px] text-zinc-500 mt-0.5">score</div>
+            <div className="text-[8px] text-zinc-500 mt-0.5 uppercase tracking-wide">fit</div>
           </div>
         )}
       </div>
@@ -379,7 +321,7 @@ function JobCard({
       )}
 
       {/* Recommendation + salary */}
-      <div className="flex items-center gap-2 flex-wrap mb-3">
+      <div className="flex items-center gap-2 flex-wrap mb-2.5">
         {recommendationBadge(job.recommendation)}
         {job.salary && (
           <span className="text-xs text-zinc-500">{job.salary}</span>
@@ -388,7 +330,7 @@ function JobCard({
 
       {/* Summary */}
       {job.summary && (
-        <p className="text-xs text-zinc-400 leading-relaxed mb-3 line-clamp-2">
+        <p className="text-xs text-zinc-400 leading-relaxed mb-2.5 line-clamp-2">
           {job.summary}
         </p>
       )}
@@ -460,30 +402,6 @@ function JobCard({
 }
 
 // ---------------------------------------------------------------------------
-// Streaming dots indicator
-// ---------------------------------------------------------------------------
-
-function StreamingDots() {
-  return (
-    <span className="inline-flex items-center gap-[3px] ml-1 align-middle">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="inline-block h-1.5 w-1.5 rounded-full bg-blue-400/70"
-          style={{ animation: `bounceDot 1.2s ease-in-out ${i * 0.2}s infinite` }}
-        />
-      ))}
-      <style>{`
-        @keyframes bounceDot {
-          0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-          40% { transform: translateY(-4px); opacity: 1; }
-        }
-      `}</style>
-    </span>
-  )
-}
-
-// ---------------------------------------------------------------------------
 // Chat panel (right panel)
 // ---------------------------------------------------------------------------
 
@@ -493,20 +411,14 @@ function ChatPanel({ job, token, onBack }: { job: Job; token: string; onBack?: (
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  // RAF handle to batch chunk-level state updates into one render per frame
-  const rafRef = useRef<number | null>(null)
-  const accRef = useRef('')
 
-  // Reset chat when job changes
   useEffect(() => {
     setMessages([])
     setInput('')
   }, [job.id])
 
-  // Scroll: instant during streaming (no animation fighting), smooth for new messages
   useEffect(() => {
-    const isStreaming = messages[messages.length - 1]?.isStreaming
-    bottomRef.current?.scrollIntoView({ behavior: isStreaming ? 'instant' : 'smooth' })
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
   async function sendMessage() {
@@ -535,42 +447,25 @@ function ChatPanel({ job, token, onBack }: { job: Job; token: string; onBack?: (
 
       const reader = resp.body.getReader()
       const decoder = new TextDecoder()
-      accRef.current = ''
+      let accumulated = ''
 
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
-        accRef.current += decoder.decode(value, { stream: true })
-
-        // Collapse multiple chunks arriving in the same animation frame into one render
-        if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-        const snapshot = accRef.current
-        rafRef.current = requestAnimationFrame(() => {
-          setMessages((prev) => {
-            const next = [...prev]
-            next[next.length - 1] = { role: 'assistant', content: snapshot, isStreaming: true }
-            return next
-          })
-          rafRef.current = null
+        accumulated += decoder.decode(value, { stream: true })
+        setMessages((prev) => {
+          const next = [...prev]
+          next[next.length - 1] = { role: 'assistant', content: accumulated, isStreaming: true }
+          return next
         })
       }
 
-      // Cancel any pending frame and commit final state
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
-      }
-      const finalContent = accRef.current
       setMessages((prev) => {
         const next = [...prev]
-        next[next.length - 1] = { role: 'assistant', content: finalContent, isStreaming: false }
+        next[next.length - 1] = { role: 'assistant', content: accumulated, isStreaming: false }
         return next
       })
     } catch (err) {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
-      }
       setMessages((prev) => {
         const next = [...prev]
         next[next.length - 1] = {
@@ -587,177 +482,109 @@ function ChatPanel({ job, token, onBack }: { job: Job; token: string; onBack?: (
   }
 
   const suggestions = [
-    { text: 'Why did this score the way it did?', icon: '◎' },
-    { text: 'What are my biggest risks here?', icon: '⚑' },
-    { text: 'Rewrite the outreach for this role', icon: '✦' },
-    { text: 'Which story should I lead with?', icon: '◈' },
+    'Why did this score the way it did?',
+    'What are my biggest risks here?',
+    'Rewrite the outreach for this role',
+    'Which story should I lead with?',
   ]
 
   return (
     <div className="flex h-full flex-col">
       {/* Chat header */}
-      <div className="border-b border-white/5 bg-white/[0.015] backdrop-blur-xl px-5 py-3.5 flex-shrink-0 relative">
-        {/* Top gradient accent line */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            {/* Back button — mobile only */}
-            {onBack && (
-              <button
-                onClick={onBack}
-                className="sm:hidden flex items-center gap-1 text-zinc-400 hover:text-slate-200 transition-colors flex-shrink-0 -ml-1"
-              >
-                <ChevronLeft size={18} />
-                <span className="text-xs font-medium">Jobs</span>
-              </button>
-            )}
-            <div className="relative flex-shrink-0">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/10 border border-blue-500/25 shadow-[0_0_12px_rgba(59,130,246,0.15)]">
-                <Briefcase size={13} className="text-blue-300" />
-              </div>
-              <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-[#060c14] shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+      <div className="border-b border-white/5 bg-white/[0.01] backdrop-blur-md px-4 py-3 flex-shrink-0 relative">
+        <div className="flex items-center gap-3">
+          {/* Back button — mobile only */}
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="sm:hidden flex items-center justify-center w-8 h-8 rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 hover:text-slate-200 hover:border-white/20 transition-colors flex-shrink-0"
+              aria-label="Back to job list"
+            >
+              <ArrowLeft size={14} />
+            </button>
+          )}
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 flex-shrink-0">
+            <Briefcase size={13} className="text-blue-400" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-semibold text-slate-100 truncate">
+              {job.title} · {job.company}
             </div>
-            <div className="min-w-0">
-              <div className="text-[13px] font-semibold text-slate-100 truncate leading-tight">
-                {job.title}
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[11px] text-zinc-400">{job.company}</span>
-                {job.fit_score !== undefined && (
-                  <>
-                    <span className="text-zinc-700">·</span>
-                    <span className={`text-[11px] font-semibold ${scoreColor(job.fit_score)}`}>
-                      {job.fit_score}
-                    </span>
-                  </>
-                )}
-                {job.recommendation && (
-                  <>
-                    <span className="text-zinc-700">·</span>
-                    {recommendationBadge(job.recommendation)}
-                  </>
-                )}
-              </div>
+            <div className="flex items-center gap-2 text-[10px] text-zinc-500">
+              <span className={`font-medium ${scoreColor(job.fit_score)}`}>
+                {job.fit_score !== undefined ? `${job.fit_score}/100` : 'Unscored'}
+              </span>
+              {job.recommendation && (
+                <>
+                  <span>·</span>
+                  <span className="capitalize">{job.recommendation}</span>
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5 min-h-0 scroll-smooth">
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0">
         {messages.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-4 pt-1"
-          >
-            {/* Intro blurb */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-indigo-500/10 border border-blue-500/20 mt-0.5">
-                <Zap size={12} className="text-blue-300" />
-              </div>
-              <div className="rounded-2xl rounded-tl-sm bg-white/[0.04] border border-white/[0.07] backdrop-blur-md px-4 py-3 shadow-sm">
-                <p className="text-[12.5px] text-zinc-300 leading-relaxed">
-                  I've analyzed this role for you. Ask me about fit reasoning, red flags, positioning strategy, or outreach copy.
-                </p>
-              </div>
-            </div>
-
-            {/* Suggestion chips */}
-            <div className="grid grid-cols-1 gap-2 pl-9">
+          <div className="space-y-3 pt-2">
+            <p className="text-xs text-zinc-500">
+              Ask anything about this role — fit reasoning, red flags, positioning, outreach.
+            </p>
+            <div className="grid grid-cols-1 gap-2">
               {suggestions.map((s) => (
                 <button
-                  key={s.text}
-                  onClick={() => { setInput(s.text); textareaRef.current?.focus() }}
-                  className="group relative rounded-xl border border-white/[0.07] bg-white/[0.025] px-4 py-2.5 text-left text-[12.5px] text-zinc-400 hover:border-blue-500/30 hover:bg-blue-500/[0.05] hover:text-slate-200 transition-all duration-200 flex items-center justify-between overflow-hidden backdrop-blur-sm"
+                  key={s}
+                  onClick={() => { setInput(s); textareaRef.current?.focus() }}
+                  className="rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2 text-left text-xs text-zinc-400 hover:border-white/10 hover:bg-white/[0.04] hover:text-slate-200 transition-all flex items-center justify-between group backdrop-blur-sm"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-blue-500/0 group-hover:from-blue-500/[0.04] group-hover:to-transparent transition-all duration-300 pointer-events-none" />
-                  <div className="flex items-center gap-2.5 relative z-10">
-                    <span className="text-[11px] text-zinc-600 group-hover:text-blue-400/70 transition-colors font-mono">
-                      {s.icon}
-                    </span>
-                    <span>{s.text}</span>
-                  </div>
-                  <ChevronRight
-                    size={13}
-                    className="text-zinc-700 group-hover:text-blue-400/60 group-hover:translate-x-0.5 transition-all flex-shrink-0 relative z-10"
-                  />
+                  {s}
+                  <ChevronRight size={12} className="text-zinc-600 group-hover:text-zinc-400 flex-shrink-0" />
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
-        <AnimatePresence initial={false}>
-          {messages.map((msg, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className={`flex items-end gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              {/* Assistant avatar */}
-              {msg.role === 'assistant' && (
-                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/20 to-indigo-500/10 border border-blue-500/20 mb-0.5">
-                  <Zap size={12} className="text-blue-300" />
-                </div>
-              )}
-
-              {msg.role === 'user' ? (
-                <div className="max-w-[78%] rounded-2xl rounded-br-sm bg-gradient-to-br from-blue-600 to-blue-500 shadow-[0_4px_24px_rgba(59,130,246,0.35)] border border-blue-400/30 px-4 py-2.5 text-[13px] text-white leading-relaxed">
+        {messages.map((msg, i) => (
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            {msg.role === 'user' ? (
+              <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-blue-600 shadow-md shadow-blue-500/20 border border-blue-500 px-4 py-2.5 text-xs text-white">
+                {msg.content}
+              </div>
+            ) : (
+              <div className="max-w-[92%] rounded-2xl rounded-tl-sm bg-white/[0.03] backdrop-blur-md border border-white/5 shadow-sm px-4 py-3 text-xs text-slate-300 leading-relaxed">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h1: ({ ...props }) => <h1 className="text-lg font-bold mt-4 mb-2 text-white" {...props} />,
+                    h2: ({ ...props }) => <h2 className="text-base font-semibold mt-4 mb-2 text-white" {...props} />,
+                    h3: ({ ...props }) => <h3 className="text-sm font-semibold mt-3 mb-1 text-blue-300" {...props} />,
+                    p: ({ ...props }) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
+                    ul: ({ ...props }) => <ul className="list-disc pl-4 mb-3 space-y-1" {...props} />,
+                    ol: ({ ...props }) => <ol className="list-decimal pl-4 mb-3 space-y-1" {...props} />,
+                    li: ({ ...props }) => <li className="mb-0.5" {...props} />,
+                    strong: ({ ...props }) => <strong className="font-semibold text-slate-100" {...props} />,
+                    hr: ({ ...props }) => <hr className="my-4 border-white/10" {...props} />,
+                    code: ({ ...props }) => <code className="bg-white/10 rounded px-1 py-0.5 font-mono text-[11px]" {...props} />,
+                  }}
+                >
                   {msg.content}
-                </div>
-              ) : (
-                <div className="max-w-[88%] rounded-2xl rounded-tl-sm relative overflow-hidden">
-                  {/* Left accent bar */}
-                  <div className="absolute left-0 top-3 bottom-3 w-[2px] rounded-full bg-gradient-to-b from-blue-500/60 to-indigo-500/40" />
-                  <div className="bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-[0_2px_16px_rgba(0,0,0,0.3)] px-4 pl-5 py-3 text-[13px] text-slate-300 leading-relaxed">
-                    {msg.content === '' && msg.isStreaming ? (
-                      <StreamingDots />
-                    ) : (
-                      <>
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            h1: ({ ...props }) => <h1 className="text-base font-bold mt-4 mb-2 text-white" {...props} />,
-                            h2: ({ ...props }) => <h2 className="text-[13px] font-semibold mt-4 mb-2 text-white" {...props} />,
-                            h3: ({ ...props }) => <h3 className="text-[13px] font-semibold mt-3 mb-1.5 text-blue-300" {...props} />,
-                            p: ({ ...props }) => <p className="mb-3 last:mb-0 leading-[1.65]" {...props} />,
-                            ul: ({ ...props }) => <ul className="list-none pl-0 mb-3 space-y-1.5" {...props} />,
-                            ol: ({ ...props }) => <ol className="list-decimal pl-4 mb-3 space-y-1.5" {...props} />,
-                            li: ({ ...props }) => (
-                              <li className="flex items-start gap-2 text-[12.5px]">
-                                <span className="mt-1.5 h-1 w-1 rounded-full bg-blue-400/50 flex-shrink-0" />
-                                <span {...props} />
-                              </li>
-                            ),
-                            strong: ({ ...props }) => <strong className="font-semibold text-slate-100" {...props} />,
-                            hr: ({ ...props }) => <hr className="my-4 border-white/[0.08]" {...props} />,
-                            code: ({ ...props }) => (
-                              <code className="bg-blue-500/10 border border-blue-500/20 rounded-md px-1.5 py-0.5 font-mono text-[11px] text-blue-200" {...props} />
-                            ),
-                          }}
-                        >
-                          {msg.content}
-                        </ReactMarkdown>
-                        {msg.isStreaming && <StreamingDots />}
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </AnimatePresence>
+                </ReactMarkdown>
+                {msg.isStreaming && (
+                  <span className="ml-1 inline-block h-3 w-0.5 animate-pulse bg-blue-400 align-middle" />
+                )}
+              </div>
+            )}
+          </div>
+        ))}
         <div ref={bottomRef} />
       </div>
 
       {/* Input */}
-      <div className="border-t border-white/[0.06] backdrop-blur-2xl px-4 py-3.5 flex-shrink-0 relative z-10">
-        {/* Top shimmer line */}
-        <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
-        <div className="flex items-end gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 py-3 focus-within:border-blue-500/40 focus-within:ring-[3px] focus-within:ring-blue-500/[0.08] focus-within:bg-white/[0.05] transition-all duration-200 shadow-[0_2px_20px_rgba(0,0,0,0.4)]">
+      <div className="border-t border-white/5 bg-white/[0.01] backdrop-blur-md p-4 flex-shrink-0">
+        <div className="mx-auto flex items-end gap-2 rounded-xl border border-white/5 bg-black/20 px-3 py-2 focus-within:border-blue-500/40 focus-within:ring-1 focus-within:ring-blue-500/10 focus-within:bg-black/40 transition-all shadow-inner">
           <textarea
             ref={textareaRef}
             value={input}
@@ -770,26 +597,15 @@ function ChatPanel({ job, token, onBack }: { job: Job; token: string; onBack?: (
             }}
             placeholder="Ask about fit, flags, positioning, outreach..."
             rows={1}
-            className="flex-1 resize-none appearance-none rounded-none border-0 bg-transparent p-0 text-[13px] text-slate-100 shadow-none outline-none placeholder-zinc-600 focus:border-0 focus:outline-none focus:ring-0 focus:shadow-none leading-relaxed max-h-32 py-1"
+            className="flex-1 resize-none bg-transparent text-xs text-slate-200 placeholder-zinc-600 outline-none leading-relaxed max-h-24"
           />
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {input && (
-              <span className="hidden sm:block text-[10px] text-zinc-700 select-none">
-                ⇧↵ newline
-              </span>
-            )}
-            <button
-              onClick={sendMessage}
-              disabled={!input.trim() || loading}
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400 text-white transition-all duration-200 shadow-[0_0_16px_rgba(59,130,246,0.35)] border border-blue-400/40 hover:shadow-[0_0_28px_rgba(59,130,246,0.55)] hover:scale-[1.04] active:scale-[0.96] disabled:opacity-25 disabled:saturate-0 disabled:shadow-none disabled:scale-100"
-            >
-              {loading ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : (
-                <Send size={13} className="mr-0.5 mt-0.5" />
-              )}
-            </button>
-          </div>
+          <button
+            onClick={sendMessage}
+            disabled={!input.trim() || loading}
+            className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-40 transition-colors"
+          >
+            {loading ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
+          </button>
         </div>
       </div>
     </div>
@@ -803,23 +619,41 @@ function ChatPanel({ job, token, onBack }: { job: Job; token: string; onBack?: (
 function ChatEmpty() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 text-center px-8">
-      {/* Pulsing ring icon */}
-      <div className="relative">
-        <div className="absolute inset-0 rounded-2xl bg-blue-500/10 blur-xl animate-pulse" />
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/10 to-indigo-500/5 border border-blue-500/20 backdrop-blur-xl shadow-[0_0_30px_rgba(59,130,246,0.12)]">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/[0.04] to-transparent pointer-events-none" />
-          <Briefcase size={22} className="text-blue-400/70 relative z-10" />
-        </div>
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-xl shadow-[0_0_30px_rgba(255,255,255,0.03)] relative">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+        <Briefcase size={22} className="text-zinc-500" />
       </div>
       <div>
-        <div className="text-sm font-semibold text-zinc-300">Select a role to begin</div>
-        <div className="mt-1.5 text-xs text-zinc-600 leading-relaxed max-w-[200px]">
-          Choose any job card to open the AI Advisor chat for that role.
+        <div className="text-sm font-semibold text-zinc-300">Job Advisor</div>
+        <div className="mt-1.5 text-xs text-zinc-600 leading-relaxed max-w-[220px]">
+          Select a job from the list to get AI-powered fit analysis, red flag breakdown, and outreach drafts.
         </div>
+      </div>
+      <div className="flex flex-col gap-1.5 w-full max-w-[240px]">
+        {['Fit reasoning', 'Red flag breakdown', 'Outreach drafts', 'Positioning advice'].map((hint) => (
+          <div key={hint} className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2">
+            <div className="w-1 h-1 rounded-full bg-blue-500/60 flex-shrink-0" />
+            <span className="text-[11px] text-zinc-500">{hint}</span>
+          </div>
+        ))}
       </div>
     </div>
   )
 }
+
+// ---------------------------------------------------------------------------
+// Filter chip types
+// ---------------------------------------------------------------------------
+
+type FilterKey = 'all' | 'pursue' | 'review' | 'bypass' | 'approved'
+
+const FILTERS: { key: FilterKey; label: string; activeColor: string }[] = [
+  { key: 'all',      label: 'All',      activeColor: 'bg-zinc-700/60 text-slate-200 border-zinc-600/60' },
+  { key: 'pursue',   label: 'Pursue',   activeColor: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' },
+  { key: 'review',   label: 'Review',   activeColor: 'bg-amber-500/10 text-amber-300 border-amber-500/30' },
+  { key: 'bypass',   label: 'Bypass',   activeColor: 'bg-zinc-800 text-zinc-400 border-zinc-600/60' },
+  { key: 'approved', label: 'Approved', activeColor: 'bg-blue-500/10 text-blue-300 border-blue-500/30' },
+]
 
 // ---------------------------------------------------------------------------
 // Main panel
@@ -831,7 +665,6 @@ export default function JobRadarPanel() {
 
   const [jobs, setJobs] = useState<Job[]>([])
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
-  const [mobileView, setMobileView] = useState<'jobs' | 'chat'>('jobs')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -839,7 +672,12 @@ export default function JobRadarPanel() {
   const [lastRun, setLastRun] = useState<PipelineRun | null>(null)
   const [pipelineMsg, setPipelineMsg] = useState('')
 
-  // Load jobs once authed
+  // Mobile: 'list' shows left panel, 'chat' shows right panel
+  const [mobileView, setMobileView] = useState<'list' | 'chat'>('list')
+
+  // Filter state
+  const [activeFilter, setActiveFilter] = useState<FilterKey>('all')
+
   useEffect(() => {
     if (authed) {
       loadJobs()
@@ -857,7 +695,6 @@ export default function JobRadarPanel() {
     return <TokenGate onSubmit={handleTokenSubmit} />
   }
 
-  // Try auto-auth with stored token
   if (!authed && token) {
     setAuthed(true)
   }
@@ -905,13 +742,12 @@ export default function JobRadarPanel() {
       const res = await fetch(`${API_BASE}/jobs/pipeline/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-task-token': token },
-        body: JSON.stringify({ yc_limit: 40, hn_limit: 40, score_limit: 40, top_n: 10 }),
+        body: JSON.stringify({ yc_limit: 20, score_limit: 30, top_n: 10 }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
-      setLastRun(data)
       setPipelineMsg(
-        `Done — ${data.total_scored} scored, ${data.shortlist_count} shortlisted (${data.scrape_summary?.total_fetched ?? 0} fetched, ${data.scrape_summary?.deduped_in_batch ?? 0} deduped)`
+        `Done — ${data.total_scored} scored, ${data.shortlist_count} shortlisted (${data.scrape_summary?.total_fetched ?? 0} fetched)`
       )
       await loadJobs()
       await loadLastRun()
@@ -924,25 +760,42 @@ export default function JobRadarPanel() {
 
   function handleJobStatusChange(jobId: string, status: string) {
     setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, status } : j)))
-    setSelectedJob((prev) => (prev?.id === jobId ? { ...prev, status } : prev))
   }
 
-  // Counts
-  const pursue = jobs.filter((j) => j.recommendation === 'pursue').length
-  const review = jobs.filter((j) => j.recommendation === 'review').length
-  const pursuing = jobs.filter((j) => j.status === 'approved').length
+  function handleSelectJob(job: Job) {
+    setSelectedJob(job)
+    setMobileView('chat')
+  }
+
+  // Counts for header pills
+  const pursue   = jobs.filter((j) => j.recommendation === 'pursue').length
+  const review   = jobs.filter((j) => j.recommendation === 'review').length
+  const approved = jobs.filter((j) => j.status === 'approved').length
+  const bypass   = jobs.filter((j) => j.recommendation === 'bypass').length
+
+  // Filtered job list
+  const filteredJobs = jobs.filter((j) => {
+    if (activeFilter === 'all')      return true
+    if (activeFilter === 'pursue')   return j.recommendation === 'pursue'
+    if (activeFilter === 'review')   return j.recommendation === 'review'
+    if (activeFilter === 'bypass')   return j.recommendation === 'bypass'
+    if (activeFilter === 'approved') return j.status === 'approved'
+    return true
+  })
+
+  const filterCounts: Record<FilterKey, number> = { all: jobs.length, pursue, review, bypass, approved }
 
   return (
     <div className="flex h-screen flex-col bg-[#060c14] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/15 via-[#060c14] to-black text-slate-100 overflow-hidden relative">
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
-      
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
+
       {/* Ambient background glow */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
       <div className="absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
 
       {/* Header */}
-      <div className="border-b border-white/5 bg-white/[0.01] backdrop-blur-2xl px-5 py-3.5 flex-shrink-0 z-10 relative shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
+      <div className="border-b border-white/5 bg-white/[0.01] backdrop-blur-2xl px-4 sm:px-5 py-3 flex-shrink-0 z-10 relative shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20">
               <Zap size={15} className="text-blue-400" />
@@ -952,35 +805,19 @@ export default function JobRadarPanel() {
               <div className="text-[10px] text-zinc-500">Magnio Job Intelligence</div>
             </div>
 
-            {/* Stats */}
-            <div className="hidden sm:flex items-center gap-1.5 ml-3">
-              {/* AI recommendation pills */}
-              <div className="flex items-center rounded-lg border border-white/[0.06] bg-white/[0.03] divide-x divide-white/[0.06] overflow-hidden">
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.8)]" />
-                  <span className="text-[11px] font-semibold text-emerald-400">{pursue}</span>
-                  <span className="text-[10px] text-zinc-600">pursue</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shadow-[0_0_4px_rgba(251,191,36,0.8)]" />
-                  <span className="text-[11px] font-semibold text-amber-400">{review}</span>
-                  <span className="text-[10px] text-zinc-600">review</span>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="h-4 w-px bg-white/[0.06] mx-0.5" />
-
-              {/* User decision pill — this is what Pursue button increments */}
-              <div className="flex items-center gap-1.5 rounded-lg border border-blue-500/20 bg-blue-500/[0.07] px-2.5 py-1.5">
-                <CheckCircle size={11} className="text-blue-400" />
-                <span className="text-[11px] font-semibold text-blue-400">{pursuing}</span>
-                <span className="text-[10px] text-zinc-500">pursuing</span>
-              </div>
+            {/* Stats pills */}
+            <div className="hidden sm:flex items-center gap-1.5 ml-2">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
+                <span className="font-bold">{pursue}</span> pursue
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 text-[11px] font-medium text-amber-300">
+                <span className="font-bold">{review}</span> review
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 text-[11px] font-medium text-blue-300">
+                <span className="font-bold">{approved}</span> approved
+              </span>
             </div>
           </div>
-
-          {sourceRunPills(lastRun)}
 
           <div className="flex items-center gap-2">
             {pipelineMsg && (
@@ -997,19 +834,15 @@ export default function JobRadarPanel() {
               className="flex items-center gap-1.5 rounded-lg border border-zinc-700/60 bg-zinc-900/60 px-3 py-1.5 text-xs text-zinc-400 hover:border-zinc-600/60 hover:text-slate-200 transition-colors disabled:opacity-40"
             >
               <RotateCcw size={11} className={loading ? 'animate-spin' : ''} />
-              Refresh
+              <span className="hidden sm:inline">Refresh</span>
             </button>
             <button
               onClick={runPipeline}
               disabled={pipelineRunning}
               className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-500 transition-colors disabled:opacity-60"
             >
-              {pipelineRunning ? (
-                <Loader2 size={11} className="animate-spin" />
-              ) : (
-                <Play size={11} />
-              )}
-              Run Pipeline
+              {pipelineRunning ? <Loader2 size={11} className="animate-spin" /> : <Play size={11} />}
+              <span className="hidden sm:inline">Run Pipeline</span>
             </button>
           </div>
         </div>
@@ -1017,15 +850,32 @@ export default function JobRadarPanel() {
 
       {/* Body: split panel */}
       <div className="flex flex-1 min-h-0 overflow-hidden relative z-10">
-        {/* Left panel: job list — hidden on mobile when chat is open */}
-        <div className={`
-          border-r border-white/5 bg-black/20 backdrop-blur-md flex flex-col min-h-0 flex-shrink-0
-          shadow-[4px_0_24px_rgba(0,0,0,0.2)]
-          w-full sm:w-[42%] lg:w-[38%]
-          ${mobileView === 'chat' ? 'hidden sm:flex' : 'flex'}
-        `}>
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 flex-shrink-0">
-            <span className="text-xs text-zinc-500">{jobs.length} jobs</span>
+
+        {/* Left panel — hidden on mobile when chat is open */}
+        <div className={`${mobileView === 'chat' ? 'hidden sm:flex' : 'flex'} w-full sm:w-[42%] lg:w-[38%] border-r border-white/5 bg-black/20 backdrop-blur-md flex-col min-h-0 flex-shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
+
+          {/* Filter chips */}
+          <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-white/5 overflow-x-auto flex-shrink-0">
+            {FILTERS.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setActiveFilter(f.key)}
+                className={`flex-shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all ${
+                  activeFilter === f.key
+                    ? f.activeColor
+                    : 'text-zinc-500 border-zinc-700/60 hover:border-zinc-600/60 hover:text-zinc-300 bg-transparent'
+                }`}
+              >
+                {f.label}
+                {f.key !== 'all' && (
+                  <span className="ml-1 opacity-60">{filterCounts[f.key]}</span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between px-4 py-2 border-b border-white/5 flex-shrink-0">
+            <span className="text-xs text-zinc-500">{filteredJobs.length} jobs</span>
             {error && <span className="text-xs text-red-400">{error}</span>}
           </div>
 
@@ -1050,16 +900,25 @@ export default function JobRadarPanel() {
               </div>
             )}
 
+            {!loading && filteredJobs.length === 0 && jobs.length > 0 && (
+              <div className="flex flex-col items-center justify-center py-16 text-center gap-2">
+                <div className="text-xs font-medium text-zinc-500">No jobs match this filter</div>
+                <button
+                  onClick={() => setActiveFilter('all')}
+                  className="text-[11px] text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Show all
+                </button>
+              </div>
+            )}
+
             <AnimatePresence mode="popLayout">
-              {jobs.map((job) => (
+              {filteredJobs.map((job) => (
                 <JobCard
                   key={job.id}
                   job={job}
                   selected={selectedJob?.id === job.id}
-                  onClick={() => {
-                    setSelectedJob(job)
-                    setMobileView('chat')
-                  }}
+                  onClick={() => handleSelectJob(job)}
                   onStatusChange={(s) => handleJobStatusChange(job.id, s)}
                   token={token}
                 />
@@ -1068,11 +927,8 @@ export default function JobRadarPanel() {
           </div>
         </div>
 
-        {/* Right panel: chat — hidden on mobile when jobs list is open */}
-        <div className={`
-          flex-1 min-w-0 flex flex-col min-h-0
-          ${mobileView === 'jobs' ? 'hidden sm:flex' : 'flex'}
-        `}>
+        {/* Right panel — hidden on mobile when list is shown */}
+        <div className={`${mobileView === 'list' ? 'hidden sm:flex' : 'flex'} flex-1 min-w-0 flex-col min-h-0`}>
           <AnimatePresence mode="wait">
             {selectedJob ? (
               <motion.div
@@ -1086,10 +942,7 @@ export default function JobRadarPanel() {
                 <ChatPanel
                   job={selectedJob}
                   token={token}
-                  onBack={() => {
-                    setMobileView('jobs')
-                    setSelectedJob(null)
-                  }}
+                  onBack={() => setMobileView('list')}
                 />
               </motion.div>
             ) : (

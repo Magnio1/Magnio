@@ -65,7 +65,7 @@ class JobChatRequest(BaseModel):
 
 class PipelineRunRequest(BaseModel):
     yc_limit: int = 40
-    hn_limit: int = 40
+    hn_limit: int = 0
     score_limit: int = 40
     top_n: int = 10
 
