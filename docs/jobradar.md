@@ -26,6 +26,8 @@ Each source has two lanes:
 - **Watchlist** — companies you explicitly track (high signal)
 - **Discovery** — a broader startup list for net-new finds
 
+The default Greenhouse discovery set is intentionally bounded. It now includes a small healthtech slice as well, so roles from companies like Komodo Health can surface without turning the run into a global Greenhouse crawl.
+
 Duplicate roles (same company + title seen before) are deduplicated before scoring so Claude never re-scores a job it already evaluated.
 
 ### Stage 2 — Score

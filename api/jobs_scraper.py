@@ -61,7 +61,10 @@ YC_SITE_BASE_URL = "https://www.ycombinator.com"
 GREENHOUSE_API_BASE = "https://boards-api.greenhouse.io/v1/boards"
 
 DEFAULT_GREENHOUSE_DISCOVERY_COMPANIES = [
+    # Core startup / AI infra discovery
     "warp", "merge", "modal", "mercor", "clay", "pylon",
+    # Small bounded healthtech lane
+    "komodohealth", "himsandhers", "includedhealth",
 ]
 
 
