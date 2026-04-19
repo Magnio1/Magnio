@@ -420,6 +420,7 @@ All JobRadar endpoints require the `x-task-token` header.
 | `JOBRADAR_LEVER_MAX_PER_COMPANY` | `25` | Cap Lever jobs per company |
 | `JOBRADAR_ASHBY_COMPANIES` | — | Comma-separated Ashby watchlist slugs |
 | `JOBRADAR_ASHBY_DISCOVERY_COMPANIES` | — | Comma-separated Ashby discovery slugs |
+| `JOBRADAR_HN_LIMIT` | `40` | Max Hacker News jobs to fetch per run |
 
 ### Frontend
 

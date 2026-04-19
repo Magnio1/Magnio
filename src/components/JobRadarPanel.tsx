@@ -142,9 +142,39 @@ function sourceBadge(source: string) {
         YC
       </span>
     )
+  if (source === 'greenhouse')
+    return (
+      <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400 border border-green-500/20">
+        GH
+      </span>
+    )
+  if (source === 'lever')
+    return (
+      <span className="rounded-full bg-cyan-500/10 px-2 py-0.5 text-[10px] font-medium text-cyan-400 border border-cyan-500/20">
+        LV
+      </span>
+    )
+  if (source === 'ashby')
+    return (
+      <span className="rounded-full bg-purple-500/10 px-2 py-0.5 text-[10px] font-medium text-purple-400 border border-purple-500/20">
+        AB
+      </span>
+    )
+  if (source === 'hackernews')
+    return (
+      <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400 border border-amber-500/20">
+        HN
+      </span>
+    )
+  if (source === 'workable')
+    return (
+      <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[10px] font-medium text-sky-400 border border-sky-500/20">
+        WK
+      </span>
+    )
   return (
     <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-700/50">
-      GH
+      {source.slice(0, 2).toUpperCase()}
     </span>
   )
 }
@@ -238,14 +268,19 @@ function JobCard({
   onClick,
   onStatusChange,
   token,
+  dimWhenBypassed = true,
+  index = 0,
 }: {
   job: Job
   selected: boolean
   onClick: () => void
   onStatusChange: (status: string) => void
   token: string
+  dimWhenBypassed?: boolean
+  index?: number
 }) {
   const [actioning, setActioning] = useState(false)
+  const [flagsExpanded, setFlagsExpanded] = useState(false)
 
   async function updateStatus(status: string) {
     setActioning(true)
@@ -265,23 +300,33 @@ function JobCard({
 
   const isPursued = job.status === 'approved'
   const isBypassed = job.status === 'bypassed'
+  const flags = job.red_flags ?? []
+  const strengths = job.strengths ?? []
+  const visibleFlagCount = flagsExpanded ? flags.length : 2
+  const isPursueTier = (job.fit_score ?? 0) >= 80 && job.recommendation === 'pursue'
 
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0, transition: { duration: 0.2, ease: 'easeOut', delay: Math.min(index * 0.035, 0.25) } }}
+      exit={{ opacity: 0, y: -4, transition: { duration: 0.1 } }}
       onClick={onClick}
       className={`relative overflow-hidden cursor-pointer rounded-xl border p-4 transition-all duration-300 ${
         selected
           ? 'border-blue-500/40 bg-blue-500/[0.08] backdrop-blur-md ring-1 ring-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.15)]'
-          : 'border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-white/10 hover:bg-white/[0.04]'
-      } ${isBypassed ? 'opacity-40' : ''}`}
+          : isPursueTier
+            ? 'border-emerald-500/20 bg-emerald-500/[0.03] backdrop-blur-sm hover:border-emerald-500/30 hover:bg-emerald-500/[0.05]'
+            : 'border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-white/10 hover:bg-white/[0.04]'
+      } ${isBypassed && dimWhenBypassed ? 'opacity-40' : ''}`}
     >
       {/* Selected accent bar */}
       {selected && (
         <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-gradient-to-b from-blue-400 to-blue-600 rounded-l-xl" />
+      )}
+      {/* Pursue-tier accent bar */}
+      {!selected && isPursueTier && (
+        <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-gradient-to-b from-emerald-400 to-emerald-600 rounded-l-xl" />
       )}
 
       {/* Header row */}
@@ -335,19 +380,34 @@ function JobCard({
         </p>
       )}
 
-      {/* Red flags */}
-      {(job.red_flags ?? []).length > 0 && (
-        <div className="mb-3 space-y-0.5">
-          {(job.red_flags ?? []).slice(0, 2).map((rf, i) => (
-            <div key={i} className="flex items-start gap-1.5 text-[11px] text-red-400/80">
-              <AlertTriangle size={10} className="mt-0.5 flex-shrink-0" />
-              <span className="line-clamp-1">{rf}</span>
+      {/* Strengths — top 1 shown as a green signal */}
+      {strengths.length > 0 && (
+        <div className="mb-2 space-y-0.5">
+          {strengths.slice(0, 1).map((s, i) => (
+            <div key={i} className="flex items-start gap-1.5 text-[11px] text-emerald-400/80">
+              <CheckCircle size={10} className="mt-0.5 flex-shrink-0" />
+              <span className="line-clamp-1">{s}</span>
             </div>
           ))}
-          {(job.red_flags ?? []).length > 2 && (
-            <div className="text-[10px] text-zinc-600">
-              +{(job.red_flags ?? []).length - 2} more flags
+        </div>
+      )}
+
+      {/* Red flags — expandable */}
+      {flags.length > 0 && (
+        <div className="mb-3 space-y-0.5">
+          {flags.slice(0, visibleFlagCount).map((rf, i) => (
+            <div key={i} className="flex items-start gap-1.5 text-[11px] text-red-400/80">
+              <AlertTriangle size={10} className="mt-0.5 flex-shrink-0" />
+              <span className={flagsExpanded ? '' : 'line-clamp-1'}>{rf}</span>
             </div>
+          ))}
+          {flags.length > 2 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setFlagsExpanded((v) => !v) }}
+              className="text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              {flagsExpanded ? '↑ Show less' : `+${flags.length - 2} more flags`}
+            </button>
           )}
         </div>
       )}
@@ -366,7 +426,7 @@ function JobCard({
           <button
             disabled={actioning}
             onClick={() => updateStatus('scored')}
-            className="flex-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 py-1.5 text-xs font-medium text-emerald-300"
+            className="flex-1 rounded-lg border border-emerald-500/40 bg-emerald-500/15 py-1.5 text-xs font-medium text-emerald-300 hover:bg-emerald-500/5 transition-colors"
           >
             ✓ Pursuing
           </button>
@@ -383,7 +443,7 @@ function JobCard({
           <button
             disabled={actioning}
             onClick={() => updateStatus('scored')}
-            className="flex-1 rounded-lg border border-zinc-700/50 bg-zinc-800/50 py-1.5 text-xs font-medium text-zinc-500"
+            className="flex-1 rounded-lg border border-zinc-700/50 bg-zinc-800/50 py-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-300 hover:bg-zinc-700/50 transition-colors"
           >
             Undo
           </button>
@@ -867,9 +927,7 @@ export default function JobRadarPanel() {
                 }`}
               >
                 {f.label}
-                {f.key !== 'all' && (
-                  <span className="ml-1 opacity-60">{filterCounts[f.key]}</span>
-                )}
+                <span className="ml-1 opacity-60">{filterCounts[f.key]}</span>
               </button>
             ))}
           </div>
@@ -879,7 +937,7 @@ export default function JobRadarPanel() {
             {error && <span className="text-xs text-red-400">{error}</span>}
           </div>
 
-          <div className="flex-1 overflow-y-auto p-3 space-y-2">
+          <div className="flex-1 overflow-y-auto p-3">
             {loading && jobs.length === 0 && (
               <div className="flex items-center justify-center py-16 text-xs text-zinc-600">
                 <Loader2 size={16} className="animate-spin mr-2" />
@@ -912,17 +970,26 @@ export default function JobRadarPanel() {
               </div>
             )}
 
-            <AnimatePresence mode="popLayout">
-              {filteredJobs.map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  selected={selectedJob?.id === job.id}
-                  onClick={() => handleSelectJob(job)}
-                  onStatusChange={(s) => handleJobStatusChange(job.id, s)}
-                  token={token}
-                />
-              ))}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeFilter}
+                initial={false}
+                exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                className="space-y-2"
+              >
+                {filteredJobs.map((job, i) => (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    index={i}
+                    selected={selectedJob?.id === job.id}
+                    onClick={() => handleSelectJob(job)}
+                    onStatusChange={(s) => handleJobStatusChange(job.id, s)}
+                    token={token}
+                    dimWhenBypassed={activeFilter !== 'bypass'}
+                  />
+                ))}
+              </motion.div>
             </AnimatePresence>
           </div>
         </div>

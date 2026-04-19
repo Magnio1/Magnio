@@ -16,6 +16,12 @@ Configuration
 -------------
 JOBRADAR_YC_PUBLIC_URL          — default: https://www.ycombinator.com/jobs
 JOBRADAR_YC_LIMIT               — max YC jobs per run (default: 40)
+JOBRADAR_YC_SECTORS             — comma-separated sector keys to pre-filter YC jobs
+                                  before fetching detail pages (saves HTTP calls).
+                                  Keys: ai_transformation, healthtech, internal_tooling
+JOBRADAR_YC_DISCOVER_SECTORS    — comma-separated YC industry tags (e.g. Healthcare,
+                                  Artificial Intelligence) to discover new company slugs
+                                  dynamically from the YC company directory
 JOBRADAR_GREENHOUSE_COMPANIES   — comma-separated Greenhouse watchlist slugs
 JOBRADAR_GREENHOUSE_DISCOVERY_COMPANIES
                                 — broader startup discovery slugs for
@@ -38,22 +44,91 @@ import json
 import logging
 import os
 import re
+import threading
 import uuid
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from api.firebase_client import get_firestore_client
 
 log = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
+# Global config
+# ---------------------------------------------------------------------------
+REQUEST_TIMEOUT_SECONDS = int(os.environ.get("JOBRADAR_REQUEST_TIMEOUT_SECONDS", "12"))
+FIRESTORE_BATCH_SIZE = 500
+
+# Sector keyword sets — used for YC pre-filter and HN tagging
+SECTOR_KEYWORDS: dict[str, list[str]] = {
+    "ai_transformation": [
+        "ai", "llm", "machine learning", "ml", "genai", "foundation model",
+        "inference", "rag", "embedding", "nlp", "large language",
+    ],
+    "healthtech": [
+        "health", "clinical", "patient", "medical", "ehr", "hipaa",
+        "biotech", "genomic", "pharma", "hospital", "care",
+    ],
+    "internal_tooling": [
+        "developer tools", "internal tools", "platform engineering",
+        "devex", "developer experience", "developer productivity",
+    ],
+}
+
+# Thread-local sessions so each worker thread gets its own connection pool + retry
+_tls = threading.local()
+
+
+def _get_session() -> requests.Session:
+    if not hasattr(_tls, "session"):
+        s = requests.Session()
+        retry = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504],
+            raise_on_status=False,
+        )
+        s.mount("https://", HTTPAdapter(max_retries=retry))
+        s.mount("http://", HTTPAdapter(max_retries=retry))
+        _tls.session = s
+    return _tls.session
+
+
+def _now_iso() -> str:
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def _matches_sectors(text: str, sectors: list[str]) -> bool:
+    """Return True if any sector keyword appears in text (case-insensitive)."""
+    lower = text.lower()
+    for sector in sectors:
+        for kw in SECTOR_KEYWORDS.get(sector, [sector]):
+            if kw in lower:
+                return True
+    return False
+
+
+def _slug_from_careers_url(url: str) -> str | None:
+    """Extract the first path segment (company slug) from an ATS careers URL."""
+    parts = [p for p in urlparse(url).path.split("/") if p]
+    return parts[0] if parts else None
+
+
+# ---------------------------------------------------------------------------
 # YC startup jobs — public pages
 # ---------------------------------------------------------------------------
 YC_PUBLIC_JOBS_URL = os.environ.get("JOBRADAR_YC_PUBLIC_URL", "https://www.ycombinator.com/jobs").strip()
 YC_SITE_BASE_URL = "https://www.ycombinator.com"
+_YC_SECTORS_ENV = os.environ.get("JOBRADAR_YC_SECTORS", "").strip()
+YC_SECTORS: list[str] = [s for s in _YC_SECTORS_ENV.split(",") if s.strip()] if _YC_SECTORS_ENV else []
+_YC_DISCOVER_SECTORS_ENV = os.environ.get("JOBRADAR_YC_DISCOVER_SECTORS", "").strip()
+YC_DISCOVER_SECTORS: list[str] = [s.strip() for s in _YC_DISCOVER_SECTORS_ENV.split(",") if s.strip()] if _YC_DISCOVER_SECTORS_ENV else []
 
 # ---------------------------------------------------------------------------
 # Greenhouse — public boards API
@@ -61,10 +136,14 @@ YC_SITE_BASE_URL = "https://www.ycombinator.com"
 GREENHOUSE_API_BASE = "https://boards-api.greenhouse.io/v1/boards"
 
 DEFAULT_GREENHOUSE_DISCOVERY_COMPANIES = [
-    # Core startup / AI infra discovery
+    # Startup / AI infra
     "warp", "merge", "modal", "mercor", "clay", "pylon",
-    # Small bounded healthtech lane
+    "anthropic", "cohere", "scaleai", "weightsbiases",
+    # Healthtech
     "komodohealth", "himsandhers", "includedhealth",
+    "modernhealth", "springhealth", "hingehealth",
+    # Internal tooling
+    "notion", "retool",
 ]
 
 
@@ -131,25 +210,25 @@ def dedupe_jobs(jobs: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
 
     deduped: list[dict[str, Any]] = []
     duplicate_count = 0
-    seen_role_keys: dict[str, dict[str, Any]] = {}
+    seen_role_keys: dict[str, int] = {}  # role_key -> index in deduped (O(1) lookup)
 
     for group_jobs in groups.values():
         best = max(group_jobs, key=_job_quality_score)
-        replaced = False
         role_key = str(best.get("role_key") or "")
+        replaced = False
+
         if role_key and role_key in seen_role_keys:
-            current = seen_role_keys[role_key]
+            idx = seen_role_keys[role_key]
+            current = deduped[idx]
             if _job_quality_score(best) > _job_quality_score(current):
-                deduped.remove(current)
-                deduped.append(best)
-                seen_role_keys[role_key] = best
+                deduped[idx] = best
             duplicate_count += len(group_jobs)
             replaced = True
 
         if not replaced:
-            deduped.append(best)
             if role_key:
-                seen_role_keys[role_key] = best
+                seen_role_keys[role_key] = len(deduped)
+            deduped.append(best)
             duplicate_count += max(0, len(group_jobs) - 1)
 
     return deduped, duplicate_count
@@ -172,6 +251,7 @@ GREENHOUSE_MAX_JOBS = int(os.environ.get("JOBRADAR_GREENHOUSE_MAX_JOBS", "80"))
 LEVER_SITE_BASE = "https://jobs.lever.co"
 DEFAULT_LEVER_DISCOVERY_COMPANIES = [
     "mistral", "palantir",
+    "anyscale", "huggingface",
 ]
 LEVER_MAX_PER_COMPANY = int(os.environ.get("JOBRADAR_LEVER_MAX_PER_COMPANY", "8"))
 _LEVER_ENV = os.environ.get("JOBRADAR_LEVER_COMPANIES", "").strip()
@@ -192,6 +272,7 @@ LEVER_MAX_JOBS = int(os.environ.get("JOBRADAR_LEVER_MAX_JOBS", "40"))
 ASHBY_API_BASE = "https://api.ashbyhq.com/posting-api/job-board"
 DEFAULT_ASHBY_DISCOVERY_COMPANIES = [
     "ramp", "perplexity", "cursor", "runway", "replit",
+    "linear", "groq",
 ]
 _ASHBY_ENV = os.environ.get("JOBRADAR_ASHBY_COMPANIES", "").strip()
 ASHBY_COMPANIES: list[str] = _parse_company_list(_ASHBY_ENV)
@@ -204,25 +285,59 @@ ASHBY_DISCOVERY_COMPANIES: list[str] = (
 ASHBY_MAX_COMPANIES = int(os.environ.get("JOBRADAR_ASHBY_MAX_COMPANIES", "6"))
 ASHBY_MAX_JOBS = int(os.environ.get("JOBRADAR_ASHBY_MAX_JOBS", "80"))
 
+# ---------------------------------------------------------------------------
+# Workable — public apply API
+# Apply page: https://apply.workable.com/{slug}/
+# ---------------------------------------------------------------------------
+WORKABLE_API_BASE = "https://apply.workable.com/api/v3/accounts"
+
+DEFAULT_WORKABLE_DISCOVERY_COMPANIES: list[str] = []
+
+_WORKABLE_ENV = os.environ.get("JOBRADAR_WORKABLE_COMPANIES", "").strip()
+WORKABLE_COMPANIES: list[str] = _parse_company_list(_WORKABLE_ENV)
+_WORKABLE_DISCOVERY_ENV = os.environ.get("JOBRADAR_WORKABLE_DISCOVERY_COMPANIES", "").strip()
+WORKABLE_DISCOVERY_COMPANIES: list[str] = (
+    _parse_company_list(_WORKABLE_DISCOVERY_ENV)
+    if _WORKABLE_DISCOVERY_ENV
+    else list(DEFAULT_WORKABLE_DISCOVERY_COMPANIES)
+)
+WORKABLE_MAX_COMPANIES = int(os.environ.get("JOBRADAR_WORKABLE_MAX_COMPANIES", "4"))
+WORKABLE_MAX_JOBS = int(os.environ.get("JOBRADAR_WORKABLE_MAX_JOBS", "40"))
+
+
+# ---------------------------------------------------------------------------
+# Shared helpers
+# ---------------------------------------------------------------------------
+
+def _cap_companies(companies: list[str], cap: int) -> list[str]:
+    if cap <= 0:
+        return []
+    return companies[:cap]
+
+
+def _cap_jobs(jobs: list[dict[str, Any]], cap: int) -> list[dict[str, Any]]:
+    if cap <= 0:
+        return []
+    return jobs[:cap]
+
 
 # ---------------------------------------------------------------------------
 # HTML stripping (no external deps)
 # ---------------------------------------------------------------------------
 
-def _strip_html(html: str) -> str:
+def _strip_html(raw: str) -> str:
     """Minimal HTML → plain text without external dependencies."""
+    text = html.unescape(raw or "")
     # Remove script/style blocks entirely
-    html = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", html, flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", text, flags=re.DOTALL | re.IGNORECASE)
     # Replace block-level tags with newlines for readability
-    html = re.sub(r"<(br|p|div|li|h[1-6]|tr)[^>]*>", "\n", html, flags=re.IGNORECASE)
+    text = re.sub(r"<(br|p|div|li|h[1-6]|tr)[^>]*>", "\n", text, flags=re.IGNORECASE)
     # Remove all remaining tags
-    html = re.sub(r"<[^>]+>", "", html)
-    # Decode common HTML entities
-    html = html.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&nbsp;", " ")
+    text = re.sub(r"<[^>]+>", "", text)
     # Collapse excessive whitespace
-    html = re.sub(r"[ \t]+", " ", html)
-    html = re.sub(r"\n{3,}", "\n\n", html)
-    return html.strip()
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 # ---------------------------------------------------------------------------
@@ -297,19 +412,21 @@ def _extract_description_from_html(page_html: str) -> str:
         match = re.search(pattern, page_html, flags=re.IGNORECASE | re.DOTALL)
         if not match:
             continue
-        text = _strip_html(html.unescape(match.group(1)))
+        text = _strip_html(match.group(1))
         if text:
             return text[:8000]
     return ""
+
 
 def _fetch_html(urls: list[str]) -> str:
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; MagnioJobRadar/1.0; +https://magnio.io)",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     }
+    session = _get_session()
     for url in urls:
         try:
-            resp = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
+            resp = session.get(url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
             resp.raise_for_status()
             if resp.text:
                 return resp.text
@@ -317,14 +434,36 @@ def _fetch_html(urls: list[str]) -> str:
             log.warning("HTML fetch failed for %s: %s", url, exc)
     return ""
 
-def _extract_yc_listing_jobs(page_html: str, limit: int) -> list[dict[str, Any]]:
+
+def _extract_yc_listing_jobs(
+    page_html: str,
+    limit: int,
+    sectors: list[str] | None = None,
+) -> list[dict[str, Any]]:
     decoded = html.unescape(page_html)
     postings = _extract_json_array_after_marker(decoded, '"jobPostings":')
     if not postings:
         return []
 
-    jobs: list[dict[str, Any]] = []
-    for posting in postings[:limit]:
+    # When sectors are active, fetch a wider pool first so filtering still
+    # yields `limit` results; without sectors, slice directly to save HTTP calls.
+    fetch_limit = limit * 3 if sectors else limit
+    postings = postings[:fetch_limit]
+
+    if sectors:
+        postings = [
+            p for p in postings
+            if _matches_sectors(
+                " ".join([
+                    str(p.get("companyOneLiner") or ""),
+                    str(p.get("prettyRole") or ""),
+                    str(p.get("roleSpecificType") or ""),
+                ]),
+                sectors,
+            )
+        ][:limit]
+
+    def _build_job(posting: dict[str, Any]) -> dict[str, Any]:
         job_id = str(posting.get("id") or uuid.uuid4().hex)
         relative_url = str(posting.get("url") or "").strip()
         absolute_url = urljoin(YC_SITE_BASE_URL, relative_url)
@@ -338,10 +477,7 @@ def _extract_yc_listing_jobs(page_html: str, limit: int) -> list[dict[str, Any]]
         summary = str(posting.get("companyOneLiner") or "").strip()
         last_active = str(posting.get("lastActive") or "").strip()
 
-        try:
-            detail_html = _fetch_html([absolute_url])
-        except Exception:
-            detail_html = ""
+        detail_html = _fetch_html([absolute_url])
         description = _extract_description_from_html(detail_html) if detail_html else ""
         if company_batch:
             summary = f"{summary} ({company_batch})".strip() if summary else company_batch
@@ -349,42 +485,55 @@ def _extract_yc_listing_jobs(page_html: str, limit: int) -> list[dict[str, Any]]
             description = f"{summary}\n\n{description}".strip()
         if role_family or role_specific or last_active:
             meta_bits = [bit for bit in [role_family, role_specific, last_active] if bit]
-            description = ("\n".join([" • ".join(meta_bits), description]) if description else " • ".join(meta_bits)).strip()
+            description = (
+                "\n".join([" • ".join(meta_bits), description])
+                if description
+                else " • ".join(meta_bits)
+            ).strip()
 
-        jobs.append(
-            {
-                "id": f"yc_{job_id}",
-                "title": title,
-                "company": company,
-                "url": absolute_url,
-                "source": "yc",
-                "source_detail": "ycombinator_jobs_page",
-                "company_slug": _normalize_job_text(company).replace(" ", "-"),
-                "collection_lane": "discovery",
-                "location": location,
-                "remote": "remote" in location.lower(),
-                "salary": salary,
-                "jd_full": description[:8000],
-                "scraped_at": datetime.datetime.utcnow().isoformat(),
-                "status": "pending",
-            }
-        )
+        return {
+            "id": f"yc_{job_id}",
+            "title": title,
+            "company": company,
+            "url": absolute_url,
+            "source": "yc",
+            "source_detail": "ycombinator_jobs_page",
+            "company_slug": _normalize_job_text(company).replace(" ", "-"),
+            "collection_lane": "discovery",
+            "location": location,
+            "remote": "remote" in location.lower(),
+            "salary": salary,
+            "jd_full": description[:8000],
+            "scraped_at": _now_iso(),
+            "status": "pending",
+        }
 
-    return jobs
+    # Fetch all detail pages in parallel
+    results: list[dict[str, Any] | None] = [None] * len(postings)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures = {pool.submit(_build_job, p): i for i, p in enumerate(postings)}
+        for future in as_completed(futures):
+            idx = futures[future]
+            try:
+                results[idx] = future.result()
+            except Exception as exc:
+                log.warning("YC: failed to build job at index %d: %s", idx, exc)
+
+    return [j for j in results if j is not None]
 
 
-def scrape_yc_jobs(limit: int = 20) -> list[dict[str, Any]]:
+def scrape_yc_jobs(limit: int = 20, sectors: list[str] | None = None) -> list[dict[str, Any]]:
     listing_html = _fetch_html([YC_PUBLIC_JOBS_URL, f"{YC_SITE_BASE_URL}/jobs"])
     if not listing_html:
         log.warning("YC public jobs page could not be loaded.")
         return []
 
-    jobs = _extract_yc_listing_jobs(listing_html, limit)
+    jobs = _extract_yc_listing_jobs(listing_html, limit, sectors=sectors)
     log.info("YC scraper: fetched %d jobs from public YC jobs page", len(jobs))
     return jobs
 
 
-def scrape_yc_jobs_with_fallback(limit: int = 20) -> dict[str, Any]:
+def scrape_yc_jobs_with_fallback(limit: int = 20, sectors: list[str] | None = None) -> dict[str, Any]:
     """
     Fetch YC jobs from the public YC jobs page. Returns jobs plus source-level
     status metadata.
@@ -398,7 +547,7 @@ def scrape_yc_jobs_with_fallback(limit: int = 20) -> dict[str, Any]:
         "fallback_used": False,
     }
     try:
-        public_jobs = scrape_yc_jobs(limit=limit)
+        public_jobs = scrape_yc_jobs(limit=limit, sectors=sectors)
     except Exception as exc:
         public_jobs = []
         public_error = str(exc)
@@ -449,12 +598,13 @@ def scrape_greenhouse_jobs(
         log.info("Greenhouse scraper (%s): no companies configured — skipping.", lane)
         return []
 
+    session = _get_session()
     all_jobs: list[dict[str, Any]] = []
 
     for slug in targets:
         url = f"{GREENHOUSE_API_BASE}/{slug}/jobs?content=true"
         try:
-            resp = requests.get(url, timeout=REQUEST_TIMEOUT_SECONDS)
+            resp = session.get(url, timeout=REQUEST_TIMEOUT_SECONDS)
             resp.raise_for_status()
         except requests.RequestException:
             log.warning("Greenhouse: could not fetch jobs for slug '%s' — skipping.", slug)
@@ -487,7 +637,7 @@ def scrape_greenhouse_jobs(
                 "remote": "remote" in title.lower() or "remote" in location.lower(),
                 "salary": "",
                 "jd_full": jd_text,
-                "scraped_at": datetime.datetime.utcnow().isoformat(),
+                "scraped_at": _now_iso(),
                 "status": "pending",
             })
 
@@ -614,7 +764,7 @@ def _extract_lever_description(page_html: str) -> str:
         match = re.search(pattern, page_html, flags=re.IGNORECASE | re.DOTALL)
         if not match:
             continue
-        text = _strip_html(html.unescape(match.group(1)))
+        text = _strip_html(match.group(1))
         if text:
             return text[:8000]
     return ""
@@ -635,12 +785,13 @@ def scrape_lever_jobs(
         "User-Agent": "Mozilla/5.0 (compatible; MagnioJobRadar/1.0; +https://magnio.io)",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     }
+    session = _get_session()
     all_jobs: list[dict[str, Any]] = []
 
     for slug in targets:
         listing_url = f"{LEVER_SITE_BASE}/{slug}"
         try:
-            resp = requests.get(listing_url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
+            resp = session.get(listing_url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
             resp.raise_for_status()
         except requests.RequestException:
             log.warning("Lever: could not fetch board for slug '%s' — skipping.", slug)
@@ -681,7 +832,7 @@ def scrape_lever_jobs(
                     "remote": "remote" in lower_text,
                     "salary": "",
                     "jd_full": description[:8000],
-                    "scraped_at": datetime.datetime.utcnow().isoformat(),
+                    "scraped_at": _now_iso(),
                     "status": "pending",
                 }
             )
@@ -780,7 +931,7 @@ def _normalize_ashby_job(
         "remote": remote,
         "salary": compensation,
         "jd_full": description_plain[:8000],
-        "scraped_at": datetime.datetime.utcnow().isoformat(),
+        "scraped_at": _now_iso(),
         "status": "pending",
     }
 
@@ -799,12 +950,13 @@ def scrape_ashby_jobs(
         "User-Agent": "Mozilla/5.0 (compatible; MagnioJobRadar/1.0; +https://magnio.io)",
         "Accept": "application/json,text/plain,*/*",
     }
+    session = _get_session()
     all_jobs: list[dict[str, Any]] = []
 
     for slug in targets:
         url = f"{ASHBY_API_BASE}/{slug}?includeCompensation=true"
         try:
-            resp = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
+            resp = session.get(url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
             resp.raise_for_status()
         except requests.RequestException:
             log.warning("Ashby: could not fetch jobs for slug '%s' — skipping.", slug)
@@ -815,13 +967,11 @@ def scrape_ashby_jobs(
         if not ashby_jobs:
             continue
 
-        company_name = slug.title()
-        sample_url = ashby_jobs[0].get("jobUrl") or ""
-        if sample_url:
-            parsed = urlparse(sample_url)
-            parts = [part for part in parsed.path.split("/") if part]
-            if parts:
-                company_name = parts[0]
+        # Prefer the API's own organization name over URL-path heuristics
+        company_name = (
+            (data.get("organization") or {}).get("name")
+            or slug.title()
+        )
 
         for job in ashby_jobs:
             if job.get("isListed") is False:
@@ -895,62 +1045,65 @@ def scrape_ashby_watchlist_and_discovery(
 # ---------------------------------------------------------------------------
 
 def scrape_hn_jobs(limit: int = 40) -> list[dict[str, Any]]:
+    session = _get_session()
     url = "https://hacker-news.firebaseio.com/v0/user/whoishiring.json"
     try:
-        resp = requests.get(url, timeout=REQUEST_TIMEOUT_SECONDS)
+        resp = session.get(url, timeout=REQUEST_TIMEOUT_SECONDS)
         data = resp.json()
     except Exception as exc:
         log.warning("HN scraper: failed to load whoishiring user - %s", exc)
         return []
-        
+
     thread_id = None
     for item_id in data.get("submitted", [])[:10]:
         try:
-            item = requests.get(
+            item = session.get(
                 f"https://hacker-news.firebaseio.com/v0/item/{item_id}.json",
                 timeout=min(REQUEST_TIMEOUT_SECONDS, 10),
             ).json()
             if item and item.get("title", "").startswith("Ask HN: Who is hiring?"):
                 thread_id = item_id
                 break
-        except:
+        except Exception:
             pass
-            
+
     if not thread_id:
         log.warning("HN scraper: couldn't find a recent Who is Hiring thread.")
         return []
-        
+
     try:
-        thread = requests.get(
+        thread = session.get(
             f"https://hacker-news.firebaseio.com/v0/item/{thread_id}.json",
             timeout=min(REQUEST_TIMEOUT_SECONDS, 10),
         ).json()
-    except:
+    except Exception:
         return []
-        
+
     kids = thread.get("kids", [])[:limit]
-    jobs: list[dict[str, Any]] = []
-    
-    for kid_id in kids:
+
+    def _fetch_comment(kid_id: int) -> dict[str, Any] | None:
         try:
-            comment = requests.get(
+            comment = _get_session().get(
                 f"https://hacker-news.firebaseio.com/v0/item/{kid_id}.json",
                 timeout=min(REQUEST_TIMEOUT_SECONDS, 10),
             ).json()
-        except:
-            continue
-            
+        except Exception:
+            return None
+
         if not comment or comment.get("deleted") or not comment.get("text"):
-            continue
-            
-        text_html = comment.get("text", "")
-        clean_text = _strip_html(text_html)
+            return None
+
+        clean_text = _strip_html(comment.get("text", ""))
         by = comment.get("by", "unknown")
-        
         lines = [line.strip() for line in clean_text.split("\n") if line.strip()]
         first_line = lines[0][:100] if lines else f"HN Opportunity from {by}"
-        
-        jobs.append({
+
+        sector_tags = [
+            tag for tag, keywords in SECTOR_KEYWORDS.items()
+            if any(kw in clean_text.lower() for kw in keywords)
+        ]
+
+        return {
             "id": f"hn_{kid_id}",
             "title": first_line,
             "company": f"HN Poster: {by}",
@@ -963,12 +1116,22 @@ def scrape_hn_jobs(limit: int = 40) -> list[dict[str, Any]]:
             "remote": "remote" in clean_text.lower(),
             "salary": "",
             "jd_full": clean_text[:8000],
-            "scraped_at": datetime.datetime.utcnow().isoformat(),
+            "sector_tags": sector_tags,
+            "scraped_at": _now_iso(),
             "status": "pending",
-        })
-        
+        }
+
+    jobs: list[dict[str, Any]] = []
+    with ThreadPoolExecutor(max_workers=10) as pool:
+        futures = {pool.submit(_fetch_comment, kid_id): kid_id for kid_id in kids}
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                jobs.append(result)
+
     log.info("HN scraper: fetched %d jobs from thread %s", len(jobs), thread_id)
     return jobs
+
 
 def scrape_hn_with_fallback(limit: int = 40) -> dict[str, Any]:
     summary: dict[str, Any] = {
@@ -1006,38 +1169,76 @@ def scrape_hn_with_fallback(limit: int = 40) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Workable — public apply API
-# Apply page: https://apply.workable.com/{slug}/
+# YC company directory — dynamic ATS slug discovery
 # ---------------------------------------------------------------------------
-WORKABLE_API_BASE = "https://apply.workable.com/api/v3/accounts"
 
-DEFAULT_WORKABLE_DISCOVERY_COMPANIES = []
+def discover_yc_companies_by_tag(
+    tags: list[str],
+    *,
+    limit_per_tag: int = 30,
+) -> dict[str, list[str]]:
+    """
+    Fetch the YC company directory filtered by industry tags and resolve ATS slugs.
 
-_WORKABLE_ENV = os.environ.get("JOBRADAR_WORKABLE_COMPANIES", "").strip()
-WORKABLE_COMPANIES: list[str] = _parse_company_list(_WORKABLE_ENV)
-_WORKABLE_DISCOVERY_ENV = os.environ.get("JOBRADAR_WORKABLE_DISCOVERY_COMPANIES", "").strip()
-WORKABLE_DISCOVERY_COMPANIES: list[str] = (
-    _parse_company_list(_WORKABLE_DISCOVERY_ENV)
-    if _WORKABLE_DISCOVERY_ENV
-    else list(DEFAULT_WORKABLE_DISCOVERY_COMPANIES)
-)
-WORKABLE_MAX_COMPANIES = int(os.environ.get("JOBRADAR_WORKABLE_MAX_COMPANIES", "4"))
-WORKABLE_MAX_JOBS = int(os.environ.get("JOBRADAR_WORKABLE_MAX_JOBS", "40"))
+    Returns {"greenhouse": [...], "ashby": [...], "lever": [...]} — each list
+    contains company slugs ready to pass into the matching ATS scraper.
+    Slugs are deduplicated across tags.
+    """
+    discovered: dict[str, list[str]] = {"greenhouse": [], "ashby": [], "lever": []}
+    seen: set[str] = set()
 
-REQUEST_TIMEOUT_SECONDS = int(os.environ.get("JOBRADAR_REQUEST_TIMEOUT_SECONDS", "12"))
+    for tag in tags:
+        url = f"https://www.ycombinator.com/companies?industry={tag.replace(' ', '+')}"
+        page_html = _fetch_html([url])
+        if not page_html:
+            log.warning("YC directory: could not fetch companies for tag '%s'", tag)
+            continue
+
+        decoded = html.unescape(page_html)
+        companies = (
+            _extract_json_array_after_marker(decoded, '"companies":')
+            or _extract_json_array_after_marker(decoded, '"startups":')
+        )
+        if not companies:
+            log.warning("YC directory: no companies array in page for tag '%s'", tag)
+            continue
+
+        log.info("YC directory: %d companies found for tag '%s'", len(companies), tag)
+        found = 0
+        for co in companies:
+            if found >= limit_per_tag:
+                break
+            jobs_url = str(co.get("jobsUrl") or co.get("jobs_url") or "")
+            if not jobs_url:
+                continue
+            netloc = urlparse(jobs_url).netloc.lower()
+            slug = _slug_from_careers_url(jobs_url)
+            if not slug:
+                continue
+            key = f"{netloc}:{slug}"
+            if key in seen:
+                continue
+            seen.add(key)
+            found += 1
+            if "greenhouse.io" in netloc:
+                discovered["greenhouse"].append(slug)
+            elif "ashbyhq.com" in netloc or "jobs.ashby" in netloc:
+                discovered["ashby"].append(slug)
+            elif "lever.co" in netloc:
+                discovered["lever"].append(slug)
+
+    log.info(
+        "YC directory discovery: greenhouse=%d ashby=%d lever=%d",
+        len(discovered["greenhouse"]),
+        len(discovered["ashby"]),
+        len(discovered["lever"]),
+    )
+    return discovered
 
 
-def _cap_companies(companies: list[str], cap: int) -> list[str]:
-    if cap <= 0:
-        return []
-    return companies[:cap]
-
-
-def _cap_jobs(jobs: list[dict[str, Any]], cap: int) -> list[dict[str, Any]]:
-    if cap <= 0:
-        return []
-    return jobs[:cap]
-
+# ---------------------------------------------------------------------------
+# Workable — public apply API
+# ---------------------------------------------------------------------------
 
 def scrape_workable_jobs(
     companies: list[str] | None = None,
@@ -1059,12 +1260,13 @@ def scrape_workable_jobs(
         "Accept": "application/json",
         "Content-Type": "application/json",
     }
+    session = _get_session()
     all_jobs: list[dict[str, Any]] = []
 
     for slug in targets:
         list_url = f"{WORKABLE_API_BASE}/{slug}/jobs"
         try:
-            resp = requests.post(
+            resp = session.post(
                 list_url,
                 json={"query": "", "location": [], "department": [], "worktype": [], "remote": []},
                 headers=headers,
@@ -1080,22 +1282,26 @@ def scrape_workable_jobs(
         except (ValueError, json.JSONDecodeError):
             log.warning("Workable: non-JSON response for slug '%s' — skipping.", slug)
             continue
+
         job_listings: list[dict[str, Any]] = data.get("results") or []
         if not job_listings:
             continue
 
-        # Derive a readable company name from the first job URL if possible
         company_name = slug.replace("-", " ").title()
 
-        for listing in job_listings:
+        # Capture loop variables for the closure
+        _slug = slug
+        _company_name = company_name
+        _headers = headers
+
+        def _fetch_detail(listing: dict[str, Any], slug: str = _slug, company_name: str = _company_name, headers: dict = _headers) -> dict[str, Any] | None:
             shortcode = str(listing.get("shortcode") or "").strip()
             if not shortcode:
-                continue
+                return None
 
-            # Fetch full job details for the complete description
             detail_url = f"{WORKABLE_API_BASE}/{slug}/jobs/{shortcode}"
             try:
-                detail_resp = requests.get(detail_url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
+                detail_resp = _get_session().get(detail_url, headers=headers, timeout=REQUEST_TIMEOUT_SECONDS)
                 detail_resp.raise_for_status()
                 detail = detail_resp.json()
             except requests.RequestException:
@@ -1113,24 +1319,19 @@ def scrape_workable_jobs(
                 location = ""
             is_remote = bool(detail.get("remote") or listing.get("remote"))
 
-            description_html = str(detail.get("description") or "")
-            requirements_html = str(detail.get("requirements") or "")
-            benefits_html = str(detail.get("benefits") or "")
             jd_parts = [
-                _strip_html(description_html),
-                _strip_html(requirements_html),
-                _strip_html(benefits_html),
+                _strip_html(str(detail.get("description") or "")),
+                _strip_html(str(detail.get("requirements") or "")),
+                _strip_html(str(detail.get("benefits") or "")),
             ]
             jd_text = "\n\n".join(p for p in jd_parts if p)[:8000]
-
-            job_url = f"https://apply.workable.com/{slug}/j/{shortcode}/"
             lower_text = f"{title} {location}".lower()
 
-            all_jobs.append({
+            return {
                 "id": f"wk_{shortcode}",
                 "title": title,
                 "company": company_name,
-                "url": job_url,
+                "url": f"https://apply.workable.com/{slug}/j/{shortcode}/",
                 "source": "workable",
                 "source_detail": "apply_api",
                 "company_slug": slug,
@@ -1139,9 +1340,16 @@ def scrape_workable_jobs(
                 "remote": is_remote or "remote" in lower_text,
                 "salary": "",
                 "jd_full": jd_text,
-                "scraped_at": datetime.datetime.utcnow().isoformat(),
+                "scraped_at": _now_iso(),
                 "status": "pending",
-            })
+            }
+
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            futures = [pool.submit(_fetch_detail, listing) for listing in job_listings]
+            for future in as_completed(futures):
+                result = future.result()
+                if result is not None:
+                    all_jobs.append(result)
 
     log.info(
         "Workable scraper (%s): fetched %d jobs from %d companies",
@@ -1257,12 +1465,14 @@ def write_jobs_to_firestore(
     else:
         jobs_to_write = deduped_jobs
 
-    batch = db.batch()
-    for job in jobs_to_write:
-        batch.set(collection.document(job["id"]), job)
-        written += 1
-    if written:
+    # Firestore batches are capped at 500 operations
+    for i in range(0, len(jobs_to_write), FIRESTORE_BATCH_SIZE):
+        batch = db.batch()
+        chunk = jobs_to_write[i:i + FIRESTORE_BATCH_SIZE]
+        for job in chunk:
+            batch.set(collection.document(job["id"]), job)
         batch.commit()
+        written += len(chunk)
 
     log.info(
         "Firestore: wrote %d new job documents to jobs_raw (%d deduped in batch, %d skipped existing)",
@@ -1283,6 +1493,8 @@ def write_jobs_to_firestore(
 
 def run_scraper(
     yc_limit: int = 40,
+    yc_sectors: list[str] | None = None,
+    yc_discover_sectors: list[str] | None = None,
     hn_limit: int = 40,
     greenhouse_companies: list[str] | None = None,
     greenhouse_discovery_companies: list[str] | None = None,
@@ -1298,8 +1510,29 @@ def run_scraper(
     """Scrape all configured sources and persist to Firestore. Returns a summary."""
     _empty: dict[str, Any] = {"jobs": [], "summary": {}}
 
+    # Dynamic YC directory discovery — merges discovered slugs into each ATS's
+    # discovery list. Falls back to the module-level env var if not passed.
+    _discover_sectors = yc_discover_sectors if yc_discover_sectors is not None else YC_DISCOVER_SECTORS
+    _discovered: dict[str, list[str]] = {"greenhouse": [], "ashby": [], "lever": []}
+    if _discover_sectors:
+        try:
+            _discovered = discover_yc_companies_by_tag(_discover_sectors)
+            if _discovered["greenhouse"]:
+                base = list(greenhouse_discovery_companies or GREENHOUSE_DISCOVERY_COMPANIES)
+                greenhouse_discovery_companies = base + [s for s in _discovered["greenhouse"] if s not in base]
+            if _discovered["ashby"]:
+                base = list(ashby_discovery_companies or ASHBY_DISCOVERY_COMPANIES)
+                ashby_discovery_companies = base + [s for s in _discovered["ashby"] if s not in base]
+            if _discovered["lever"]:
+                base = list(lever_discovery_companies or LEVER_DISCOVERY_COMPANIES)
+                lever_discovery_companies = base + [s for s in _discovered["lever"] if s not in base]
+        except Exception:
+            log.exception("YC directory discovery failed — continuing without discovered companies")
+
+    _yc_sectors = yc_sectors if yc_sectors is not None else (YC_SECTORS or None)
+
     try:
-        yc_result = scrape_yc_jobs_with_fallback(limit=yc_limit)
+        yc_result = scrape_yc_jobs_with_fallback(limit=yc_limit, sectors=_yc_sectors)
     except Exception:
         log.exception("YC scraper failed — continuing without YC jobs")
         yc_result = _empty
@@ -1378,6 +1611,11 @@ def run_scraper(
         "new_written": write_stats["written"],
         "deduped_in_batch": write_stats["deduped_in_batch"],
         "skipped_existing": write_stats["skipped_existing"],
+        "yc_discovered": {
+            "greenhouse": len(_discovered["greenhouse"]),
+            "ashby": len(_discovered["ashby"]),
+            "lever": len(_discovered["lever"]),
+        },
         "sources": {
             "yc": yc_result["summary"],
             "hackernews": hn_result["summary"],
