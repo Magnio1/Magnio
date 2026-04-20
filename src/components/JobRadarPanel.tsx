@@ -811,7 +811,7 @@ export default function JobRadarPanel() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       setPipelineMsg(
-        `Done — ${data.total_scored} scored, ${data.shortlist_count} shortlisted (${data.scrape_summary?.total_fetched ?? 0} fetched)`
+        `Done — ${data.total_scored} scored, ${data.shortlist_count} shortlisted · ${data.scrape_summary?.total_fetched ?? 0} fetched, ${data.scrape_summary?.new_written ?? '?'} new, ${data.scrape_summary?.location_filtered ?? 0} location-filtered`
       )
       await loadJobs()
       await loadLastRun()
