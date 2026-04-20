@@ -3,7 +3,7 @@
     "advisor": {
       "candidateCount": 5,
       "category": "advisor",
-      "generatedAt": "2026-04-13T11:35:14Z",
+      "generatedAt": "2026-04-20T11:36:49Z",
       "judgeModelId": "openai/gpt-5.1",
       "promotionDecision": {
         "accepted": true,
@@ -16,42 +16,42 @@
               {
                 "clarity": 9,
                 "decisiveness": 9,
-                "groundedness": 9,
+                "groundedness": 8,
                 "modelId": "anthropic/claude-sonnet-4.6",
-                "notes": "Gives a clear, concrete recommendation (AI workflow automation via process audit), explains why, contrasts with alternatives, and offers pricing and go-to-market steps. Very actionable for a solo consultant.",
-                "usefulness": 9
+                "notes": "Gives a clear, narrow recommendation: AI workflow audit & implementation for SMBs. Strong on positioning, pricing, and concrete steps. Slightly generic and overlaps heavily with workflow automation but still actionable. Could better distinguish from other similar offers.",
+                "usefulness": 8
+              },
+              {
+                "clarity": 8,
+                "decisiveness": 8,
+                "groundedness": 8,
+                "modelId": "minimax/minimax-m2.7",
+                "notes": "Recommends AI workflow automation/integration, with specific sub-services, pricing ranges, and positioning tips. Helpful but somewhat broad; less of a single \u2018wedge offer\u2019 and more a menu of possibilities, which may be harder for a solo consultant to productize as a first offer.",
+                "usefulness": 7
+              },
+              {
+                "clarity": 8,
+                "decisiveness": 8,
+                "groundedness": 8,
+                "modelId": "xiaomi/mimo-v2-pro",
+                "notes": "Recommends AI workflow automation for a specific function and compares it against other service types. Good reasoning on why it\u2019s a strong starting point and gives practical examples. Still a bit high-level; lacks concrete offer packaging and pricing detail versus the top answer.",
+                "usefulness": 7
               },
               {
                 "clarity": 9,
                 "decisiveness": 9,
                 "groundedness": 8,
                 "modelId": "google/gemini-3-flash-preview",
-                "notes": "Strong, specific recommendation (internal knowledge/RAG chatbot) with good rationale, positioning, and pricing. Slightly narrower and more tool-centric; less generally applicable than workflow automation but still solid.",
+                "notes": "Very decisive: advocates internal knowledge bases/RAG systems as the first offer. Strong on framing, stack, delivery, and pricing. Uses no-code tools and positions the service well. Slight downside: assumes RAG is universally the \u2018best\u2019 without tailoring to consultant background, and may underestimate implementation complexity in some environments.",
                 "usefulness": 8
               },
               {
-                "clarity": 8,
-                "decisiveness": 8,
-                "groundedness": 7,
-                "modelId": "minimax/minimax-m2.7",
-                "notes": "Recommends prompt engineering and AI integration; clear and simple, but prompt engineering as a standalone service is more commoditized, with weaker business framing and less concrete, high-ROI offer design than others.",
-                "usefulness": 6
-              },
-              {
                 "clarity": 9,
-                "decisiveness": 10,
+                "decisiveness": 9,
                 "groundedness": 9,
                 "modelId": "openai/gpt-5.4",
-                "notes": "Most comprehensive and practical. Recommends specific, ROI-tied AI workflow automation, with a standout niche (lead management & follow-up), concrete examples, offer structure, pricing approach, and alternatives. Very aligned with a solo consultant\u2019s needs.",
-                "usefulness": 10
-              },
-              {
-                "clarity": 4,
-                "decisiveness": 5,
-                "groundedness": 4,
-                "modelId": "moonshotai/kimi-k2.5",
-                "notes": "Answer is truncated and incomplete; starts to recommend AI workflow automation but does not fully elaborate, so it cannot compete with the other candidates in usefulness or clarity.",
-                "usefulness": 3
+                "notes": "Recommends an AI knowledge base + support copilot as a concrete, productized \u2018wedge\u2019 offer. Explains business pain, sales narrative, implementation characteristics, and natural upsell paths. Compares against other common first offers and justifies the choice. Very aligned with what a solo consultant can actually sell and deliver while staying focused on one clear service.",
+                "usefulness": 9
               }
             ],
             "winnerModelId": "openai/gpt-5.4"
@@ -59,47 +59,47 @@
           "prompt": "What is the best first AI service I should offer as a solo consultant?",
           "responses": [
             {
-              "answer": "## Best First AI Service for a Solo Consultant\n\n**The short answer: AI workflow automation for small/mid-size businesses.**\n\nHere's why this works well and how to think about it:\n\n---\n\n## Why This Is the Right Starting Point\n\n- **High demand, low competition** at the SMB level\n- **Tangible ROI** you can measure and show clients\n- **Doesn't require deep ML expertise** - you're connecting tools, not building models\n- **Repeatable** - same solution sells to multiple clients\n\n---\n\n## Specific Service to Offer\n\n**\"AI Process Audit + Automation Implementation\"**\n\n1. Audit a client's repetitive workflows (email, data entry, reporting, customer responses)\n2. Identify 2-3 processes where AI tools can save 5+ hours/week\n3. Implement using tools like Zapier, Make, Claude/GPT APIs, or n8n\n4. Train their team\n\n---\n\n## Why Not Other Options\n\n| Service | Problem |\n|---------|---------|\n| AI strategy consulting | Hard to prove value early |\n| Custom model building | Requires deep technical skills |\n| AI content creation | Commoditized, low margins |\n| Chatbot development | Narrow market |\n\n---\n\n## Practical First Steps\n\n- **Pick one industry** (legal, real estate, healthcare admin)\n- **Do one project cheap or free** to build a case study\n- **Charge $2,000-$8,000** per engagement once proven\n\n**The key is specificity** - \"I help dental offices automate patient follow-up using AI\" beats \"I do AI consulting.\"\n\nWhat industry or background do you have? That would sharpen the recommendation significantly.",
-              "estimatedCost": 0.005955,
+              "answer": "## Best First AI Service for a Solo Consultant\n\n**The short answer: AI implementation consulting for small/mid-size businesses**\n\nHere's why this works well and how to think about it:\n\n---\n\n## Why This Is the Right Starting Point\n\n- Low barrier to entry - you don't need to build anything\n- High demand right now\n- Businesses have real budget pain points AI can solve\n- You learn fast by working across clients\n\n---\n\n## Specific Service to Start With\n\n**\"AI Workflow Audit & Implementation\"**\n\nWhat you actually do:\n- Identify 3-5 repetitive tasks in a client's business\n- Set up tools like ChatGPT, Claude, Zapier, Make.com, or n8n\n- Train their team\n- Charge $2,000-$8,000 per engagement\n\n---\n\n## Why Not Other Options First\n\n| Service | Problem |\n|---------|---------|\n| Building custom AI apps | Requires dev skills, long sales cycles |\n| AI content creation | Commoditized, low margins |\n| AI strategy reports | Hard to prove value |\n| Training courses | Slow to monetize |\n\n---\n\n## Practical First Steps\n\n1. **Pick one industry** you already know (law, real estate, marketing agencies)\n2. **Solve one specific problem** rather than \"all things AI\"\n3. **Get one paying client** before building anything fancy\n4. **Document your process** so you can repeat it\n\n---\n\n## The Real Key\n\nNiche specificity beats broad AI expertise. \"I help dental practices automate patient follow-up using AI\" beats \"I do AI consulting.\"\n\nWhat industry do you have background in? That should drive your answer.",
+              "estimatedCost": 0.005895,
               "inputTokens": 40,
-              "latencyMs": 10012,
+              "latencyMs": 10622,
               "modelId": "anthropic/claude-sonnet-4.6",
-              "outputTokens": 389,
+              "outputTokens": 385,
               "status": "ok"
             },
             {
-              "answer": "The best first service to offer as a solo consultant is **Custom AI Chatbots trained on proprietary company data.**\n\nSpecifically, you should build \"Knowledge Retrieval\" bots (RAG - Retrieval-Augmented Generation) that allow employees to chat with their internal documents, SOPs, and project histories.\n\nHere is why this is the superior entry point, along with the practical steps to execute it.\n\n### 1. The Reasoning: Why this service?\n*   **High Perceived Value:** Most companies have \"data silos\"\u2014thousands of PDFs, emails, and spreadsheets that no one reads. Solving the \"where is that information?\" problem saves hundreds of hours of employee time.\n*   **Low Technical Barrier:** You do not need to be a machine learning engineer. Tools like **Stack AI, Relevance AI, or Poe** allow you to build these visually.\n*   **Low Risk, High Trust:** Unlike \"AI agents\" that take actions (like sending emails), a retrieval bot is passive. It just provides information, making it a safer \"yes\" for a first-time client.\n*   **The \"Foot in the Door\":** Once you have indexed their data, you become the person who understands their internal operations better than anyone else, leading to high-ticket automation work later.\n\n### 2. The Practical Offer\nDon't sell \"AI.\" Sell a **\"Company Brain.\"**\n\n*   **The Pitch:** \"I will build a private, secure interface where your team can ask any question about your company\u2019s past projects, safety protocols, or HR policies and get an instant answer with citations to the source document.\"\n*   **The Target:** Small to mid-sized professional service firms (Law, Engineering, Architecture, or specialized Agencies) with 10\u201350 employees.\n\n### 3. How to Deliver It (Step-by-Step)\n1.  **Audit:** Identify one department with a \"knowledge bottleneck\" (e.g., the Sales team constantly asking the Product team for specs).\n2.  **Ingest:** Use a no-code platform (like **MindStudio** or **Chatbase**) to upload their PDFs, Docx, and URLs.\n3.  **Prompt:** Set the \"System Instructions\" to dictate the tone (e.g., \"You are a senior project manager at [Company]. Answer only based on the provided files.\")\n4.  **Deploy:** Embed the bot in their Slack, Microsoft Teams, or a private URL.\n\n### 4. Pricing Strategy\nAs a solo consultant, avoid hourly billing. Use a **\"Sprint\" model**:\n*   **Setup Fee:** $2,500 \u2013 $5,000 for the initial data ingestion and bot configuration (takes you 1\u20132 days).\n*   **Maintenance/License Fee:** $300 \u2013 $500/month to keep the bot updated with new data and cover API costs.\n\n### 5. The \"Quick Win\" Alternative\nIf the \"Company Brain\" feels too complex for your first client, offer **AI Content Repurposing Pipelines.**\n*   **The Service:** Take one long-form asset (a webinar or a 2,000-word article) and use an automated workflow (Make.com + OpenAI) to turn it into 10 LinkedIn posts, 5 tweets, and a newsletter.\n*   **Why:** It has an immediate, visible ROI for marketing teams.\n\n**The Verdict:** Start with the **Internal Knowledge Bot**. It solves a universal pain point, requires no custom coding, and positions you as a strategic partner rather than just a tool provider.",
-              "estimatedCost": 0.002311,
-              "inputTokens": 32,
-              "latencyMs": 5915,
-              "modelId": "google/gemini-3-flash-preview",
-              "outputTokens": 765,
-              "status": "ok"
-            },
-            {
-              "answer": "# Best First AI Service for Solo Consultants\n\n**Prompt Engineering & AI Integration** is typically the strongest starting point. Here's why:\n\n## Why Prompt Engineering First\n\n| Factor | Benefit |\n|--------|---------|\n| Low overhead | No infrastructure needed |\n| Quick turnaround | Fast deliverables = fast payment |\n| High demand | Everyone using AI wants better outputs |\n| Portfolio building | Results are tangible and shareable |\n| Cross-industry | Works for any client using AI tools |\n\n## How to Structure It\n\n1. **Offer AI workflow audits** - Review their current AI usage, identify gaps\n2. **Create custom prompt libraries** - Tailored to their specific tools/needs\n3. **Train their team** - Short workshops compound value\n\n## Natural Evolution Path\n\n```\nPrompt Services \u2192 Training \u2192 Strategy \u2192 Implementation \u2192 Retainers\n```\n\n## Practical Tips\n\n- **Start narrow**: Pick one industry you understand well (legal, marketing, ops, etc.)\n- **Package it simply**: \"AI Workflow Optimization\" - audit + 10 custom prompts + 1 training session\n- **Price it right**: $500-1,500 for initial packages is reasonable; scale up as you prove results\n\n## Avoid Starting With\n\n- Custom model development (too technical, long sales cycles)\n- Full AI strategies (requires credibility you haven't built yet)\n\nThe key is delivering something with immediate, measurable impact so you get referrals and repeat business.",
-              "estimatedCost": 0.0009276,
+              "answer": "**Start with AI workflow automation or integration services.**\n\nHere's why this works well as a first offering:\n\n**Practical advantages:**\n- Solves real pain points (businesses waste hours on manual tasks)\n- Clear ROI to demonstrate\n- Repeatable deliverable you can refine\n- You can start with no-code tools (Zapier, Make, etc.) before moving to custom solutions\n- You can price it based on time saved or tasks automated\n\n**Specific services to consider:**\n1. **Document processing automation** - summaries, extraction, classification\n2. **AI-assisted customer service workflows** - routing, drafting responses\n3. **Meeting intelligence** - transcription, action items, follow-ups\n4. **Research and data synthesis** - pulling insights from multiple sources\n\n**How to position it:**\n- Lead with your domain expertise + AI skills combined\n- Example: \"I help [your industry] companies automate their [specific pain point] using AI\"\n- Show before/after examples even if they're from personal projects\n\n**Start small:**\n- Offer a \"AI audit\" or pilot project first ($500-1,500) to get testimonials\n- Then move to implementation projects ($2,000-10,000+)\n\nThe key is choosing something adjacent to skills you already have. If you're coming from operations, automate operations. From marketing, automate marketing workflows. This makes you credible faster.\n\nWhat industry or function are you coming from? I can give more specific recommendations.",
+              "estimatedCost": 0.0009492,
               "inputTokens": 44,
-              "latencyMs": 20269,
+              "latencyMs": 18703,
               "modelId": "minimax/minimax-m2.7",
-              "outputTokens": 762,
+              "outputTokens": 780,
               "status": "ok"
             },
             {
-              "answer": "The best first AI service for a solo consultant is usually:\n\n## **AI workflow automation for one specific business process**\n\nExamples:\n- Lead follow-up automation for small businesses\n- Customer support email drafting and triage\n- Meeting notes \u2192 CRM updates \u2192 follow-up emails\n- Internal knowledge base chatbot for a team\n- Proposal/report/document generation for service businesses\n\n## Why this is the best first offer\n\n### 1. It solves a clear business problem\nClients do not really want \u201cAI.\u201d They want:\n- faster response times\n- less admin work\n- more leads converted\n- reduced support workload\n- fewer repetitive tasks\n\nA workflow automation offer ties AI directly to ROI.\n\n### 2. It\u2019s easier to sell than broad \u201cAI consulting\u201d\n\u201cAI consulting\u201d is vague.\n\nBut:\n- \u201cI automate lead follow-up for home service companies\u201d\n- \u201cI build AI systems that turn client calls into action items and draft follow-ups\u201d\n- \u201cI reduce support inbox workload by 40% with AI triage\u201d\n\nThese are easier for a buyer to understand.\n\n### 3. It\u2019s feasible for a solo consultant\nYou can build these with:\n- LLM APIs\n- no-code/low-code tools\n- CRM/email/helpdesk integrations\n- simple prompt workflows\n- human-in-the-loop review\n\nYou do not need a full product team or deep ML research.\n\n### 4. It can be packaged and repeated\nThe best first service is one you can deliver multiple times with minor customization.\n\nThat means:\n- faster delivery\n- clearer pricing\n- better margins\n- easier referrals\n\n---\n\n# Best niche to start with\n\nIf you want the strongest practical starting point:\n\n## **Offer AI lead management and follow-up automation for service businesses**\n\nExamples:\n- law firms\n- agencies\n- med spas\n- contractors\n- real estate teams\n- consultants\n\n### What you do\n- capture inbound leads from forms, email, chat, or calls\n- summarize the inquiry\n- qualify the lead\n- draft or send follow-up replies\n- book meetings\n- update the CRM\n- alert staff when human intervention is needed\n\n### Why this works\n- leads are valuable\n- response speed matters\n- missed follow-up is common\n- ROI is easy to explain\n- clients already spend money on lead generation, so improving conversion is valuable\n\nThis is often easier to sell than \u201cAI chatbot\u201d or \u201ccustom AI app.\u201d\n\n---\n\n# A simple first offer structure\n\n## Offer:\n**\u201cI help [niche] respond to and qualify inbound leads automatically using AI, so they book more appointments without adding admin work.\u201d**\n\n## Deliverables:\n- audit of current lead flow\n- AI qualification logic\n- email/SMS follow-up automation\n- CRM integration\n- dashboard or reporting\n- handoff rules for staff\n- 2\u20134 week implementation\n\n## Pricing model:\n- setup fee\n- monthly retainer for monitoring, prompt updates, and optimization\n\n---\n\n# Alternative strong first offers\n\nIf lead automation is not your preference, these are also good:\n\n### 1. **AI email inbox assistant**\nFor founders, sales teams, or support teams:\n- classify emails\n- draft replies\n- route messages\n- extract tasks\n\nVery practical, high-frequency pain point.\n\n### 2. **Meeting-to-action automation**\n- transcribe calls\n- summarize decisions\n- create tasks\n- update CRM/project management tools\n- draft follow-up emails\n\nSimple to demonstrate and valuable for many teams.\n\n### 3. **Internal knowledge chatbot**\n- answer employee questions from SOPs, docs, and internal files\n- useful for onboarding, operations, support teams\n\nGood if you\u2019re comfortable with retrieval/document systems.\n\n### 4. **AI content repurposing for B2B service firms**\n- turn calls, webinars, or notes into LinkedIn posts, newsletters, proposals, case studies\n\nWorks well, but often less urgent than operational automation.\n\n---\n\n# What to avoid as your first service\n\nAvoid starting with:\n- \u201ccustom AI app development\u201d for everyone\n- fully autonomous agents with high-risk actions\n- highly regulated medical/legal decision systems\n- generic chatbot offers with no clear ROI\n- deep technical builds requiring months before value is visible\n\nAs a solo consultant, your first service should be:\n- narrow\n- outcome-driven\n- quick to implement\n- easy to explain\n- easy to",
+              "answer": "# Best First AI Service for a Solo Consultant\n\n## Short answer: **AI Workflow Automation for a specific business function**\n\nThis means taking a repetitive, time-consuming process a business already does and building an AI-assisted workflow around it.\n\n## Why this beats other options:\n\n**Compared to \"AI Strategy\" consulting:**\n- Clients pay more readily for something tangible they can see working\n- You build a portfolio of real results, not slide decks\n- Easier to scope and price\n\n**Compared to building custom chatbots:**\n- Less scope creep\n- Clearer before/after metrics (hours saved, errors reduced)\n- Lower ongoing maintenance burden on you\n\n**Compared to training/education:**\n- Higher price point\n- More defensible (harder to replace with a YouTube video)\n\n## What this looks like practically:\n\n- Document processing and extraction\n- Email/ticket triage and drafting\n- Report generation from data\n- Content repurposing pipelines\n- Internal knowledge search (RAG)\n\n## How to pick your niche:\n\nAsk yourself three things:\n1. **What industries do you already understand?** (domain knowledge is your moat)\n2. **What pain have you personally seen?** (you'll sell better when it's genuine)\n3. **Who has budget but not a big IT team?** (mid-market companies, 50-500 employees)\n\n## Concrete starting move:\n\nPick **one industry**, **one workflow**, and offer a fixed-price pilot project (~$3-8K) with clear success metrics. Then systematize and repeat.\n\nWhat's your background? I can get more specific.",
+              "estimatedCost": 0.002028,
+              "inputTokens": 42,
+              "latencyMs": 18541,
+              "modelId": "xiaomi/mimo-v2-pro",
+              "outputTokens": 662,
+              "status": "ok"
+            },
+            {
+              "answer": "The best first service to offer as a solo consultant is **Custom AI Internal Knowledge Bases (RAG Systems).**\n\nThis involves taking a company\u2019s messy internal data\u2014PDFs, employee handbooks, SOPs, and past project notes\u2014and turning them into a private, searchable \"company brain\" using a chat interface.\n\nHere is why this is the superior entry point, along with the practical steps to deliver it.\n\n---\n\n### 1. Why this service?\n*   **High Perceived Value:** Every business owner feels the pain of \"information silos.\" They waste hours looking for documents or answering the same questions for staff.\n*   **Low Technical Barrier:** You do not need to train models from scratch. Tools like **Stack AI**, **Voiceflow**, or **Chatbase** allow you to build these systems using \"No-Code\" or \"Low-Code\" workflows.\n*   **Data Security:** By using enterprise-grade APIs (like OpenAI\u2019s API or Anthropic), you can guarantee that their data isn't used to train public models\u2014a major selling point for businesses.\n*   **Sticky Revenue:** Once a company relies on a custom bot for their daily operations, they are unlikely to cancel. You can charge a setup fee ($2k\u2013$5k) plus a monthly maintenance/hosting fee ($200\u2013$500).\n\n### 2. The Practical Offer\nDon't sell \"AI.\" Sell **\"The Instant Onboarding Assistant\"** or **\"The 24/7 Internal Support Bot.\"**\n\n**The Deliverable:**\n*   A private URL or a Slack/Microsoft Teams integration.\n*   The bot is trained specifically on the client's provided documents.\n*   The bot provides citations (links to the specific PDF or page) so the user can verify the answer.\n\n### 3. How to Deliver It (The Stack)\nYou don't need to be a software engineer. Use this stack:\n1.  **Data Source:** Google Drive or Notion (where the client keeps their files).\n2.  **The Engine:** **Voiceflow** or **Stack AI**. These platforms handle the \"RAG\" (Retrieval-Augmented Generation) logic for you.\n3.  **The Model:** Connect an OpenAI API key (GPT-4o) to the platform.\n4.  **The Interface:** Embed the chat widget on their internal company portal or connect it to their Slack workspace.\n\n### 4. How to Sell It\nTarget small-to-mid-sized agencies (Marketing, Law, or Engineering) with 10\u201350 employees. These firms have enough documentation to be messy, but not enough IT infrastructure to build this themselves.\n\n**The Pitch:**\n> \"I build a private AI for your firm that knows every project you\u2019ve ever done and every SOP you\u2019ve ever written. Instead of your senior staff spending 5 hours a week answering 'how do we do X' for juniors, the juniors ask the bot. If it saves your team 20 hours a month, the system pays for itself in the first week.\"\n\n### 5. Why avoid other services first?\n*   **Content Generation:** Too commoditized. Clients think they can just do it themselves with a $20 ChatGPT Plus sub.\n*   **Custom Coding/API Dev:** Too much \"scope creep\" and technical debt for a solo consultant starting out.\n*   **AI Strategy/Consulting:** Hard to sell without a proven track record of implementation.\n\n**Summary:** Start with **Internal Knowledge Bases**. It solves a universal pain point, has a high ROI, and can be built quickly using existing no-code tools.",
+              "estimatedCost": 0.002359,
+              "inputTokens": 32,
+              "latencyMs": 5460,
+              "modelId": "google/gemini-3-flash-preview",
+              "outputTokens": 781,
+              "status": "ok"
+            },
+            {
+              "answer": "**Best first AI service:**  \n**An AI Knowledge Base + Support Copilot for small businesses**\n\nIn plain terms: you help a business turn its existing docs, FAQs, SOPs, emails, and website content into:\n\n1. a **customer-facing chatbot** for common questions, and/or  \n2. an **internal assistant** that helps staff answer questions faster\n\n## Why this is the best first offer\n\n### 1. It solves an obvious business problem\nMost businesses already have:\n- repetitive customer questions\n- repetitive employee questions\n- scattered information\n- slow response times\n\nThat means the value is easy to understand:\n- fewer support tickets\n- faster replies\n- less time wasted searching for answers\n- more consistent customer experience\n\n### 2. It\u2019s easy to explain and sell\nYou can say:\n> \u201cI\u2019ll turn your existing business information into an AI assistant that answers common questions for customers or staff.\u201d\n\nThat\u2019s much easier to sell than vague offers like:\n- \u201cAI transformation\u201d\n- \u201ccustom AI strategy\u201d\n- \u201cLLM automation consulting\u201d\n\n### 3. It doesn\u2019t require deep custom engineering\nAs a solo consultant, you want something you can deliver with:\n- low technical risk\n- repeatable setup\n- fast implementation\n- minimal maintenance\n\nA knowledge-base assistant can often be built using existing tools, with light customization.\n\n### 4. You can get results quickly\nA business can often see value in days or weeks, not months.\n\nThat makes it easier to:\n- close the sale\n- get testimonials\n- create case studies\n- refine your process\n\n### 5. It naturally leads to upsells\nOnce you\u2019re inside the business, you can often expand into:\n- AI email drafting\n- lead qualification bots\n- sales copilot tools\n- SOP assistants\n- internal search\n- workflow automation\n\nSo it\u2019s a great \u201cwedge offer.\u201d\n\n---\n\n# What the service looks like\n\n## Offer\n**\u201cI build AI assistants trained on your business information to answer customer or employee questions accurately and instantly.\u201d**\n\n## Deliverables\nA simple version could include:\n- discovery call\n- document/content collection\n- knowledge-base cleanup\n- chatbot or internal Q&A assistant setup\n- guardrails and prompt tuning\n- testing on common questions\n- basic analytics/reporting\n- team handoff/training\n\n## Ideal clients\nBest early targets:\n- law firms\n- clinics/private healthcare practices\n- accounting firms\n- real estate teams\n- agencies\n- local service businesses\n- e-commerce brands\n- SaaS companies with lots of support questions\n- franchises\n- HR/recruiting firms\n\nEspecially good if they already have:\n- lots of FAQs\n- a help center\n- many inbound questions\n- multiple staff answering the same things repeatedly\n\n---\n\n# Why not other common first AI offers?\n\n## 1. \u201cAI strategy\u201d\nBad first offer for most solo consultants because:\n- too vague\n- hard to price\n- clients may see it as \u201cjust advice\u201d\n- harder to prove ROI quickly\n\n## 2. Fully custom AI app development\nUsually too complex for a first offer:\n- longer sales cycle\n- more technical unknowns\n- more support burden\n- harder to standardize\n\n## 3. General AI automation\nThis can work, but as a first offer it\u2019s often too broad.\nIf you say \u201cI automate businesses with AI,\u201d buyers may not know what that means.\n\nNarrow beats broad at the start.\n\n## 4. AI content generation services\nToo crowded, often lower-value, and clients may think:\n> \u201cCan\u2019t we just use ChatGPT ourselves?\u201d\n\nYou want an offer tied to a business system, not just prompting.\n\n---\n\n# How to package it simply\n\n## Entry-level offer\n**AI FAQ Assistant Setup**\n- customer support bot or internal team bot\n- trained on their docs and website\n- delivered in 1\u20132 weeks\n\nThis is a good first productized service.\n\n## Pricing structure\nA practical starting model:\n- **setup fee**: fixed price\n- **monthly retainer**: for updates, monitoring, and improvements\n\nExample structure:\n- Setup: one-time implementation\n- Monthly: content updates, testing, analytics, prompt improvements\n\nThat gives you recurring revenue without making the initial sale too complex.\n\n---\n\n# How to validate it fast\n\nAsk prospects:\n- How many repetitive questions",
               "estimatedCost": 0.0136,
               "inputTokens": 40,
-              "latencyMs": 17735,
+              "latencyMs": 16379,
               "modelId": "openai/gpt-5.4",
-              "outputTokens": 900,
-              "status": "ok"
-            },
-            {
-              "answer": "**AI Workflow Automation**\u2014specifically, building no-code AI systems that eliminate repetitive tasks for small-to-mid-sized businesses.\n\nHere is why this is the optimal entry point and how to execute it:\n\n## Why This Service Wins for Solo Operators\n\n**1. Immediate, measurable ROI**\nClients pay for hours saved, not \"innovation.\" If you automate invoice processing that used to take 10 hours/week, you\u2019ve saved them $15k+ annually. The business case sells itself.\n\n**2. Solo-scalable**\nYou don\u2019t need a dev team. Modern no-code stacks (Make/Zapier + OpenAI API +",
-              "estimatedCost": 0.0015640734000000002,
-              "inputTokens": 42,
-              "latencyMs": 4928,
-              "modelId": "moonshotai/kimi-k2.5",
               "outputTokens": 900,
               "status": "ok"
             }
@@ -115,7 +115,23 @@
                 "decisiveness": 8,
                 "groundedness": 9,
                 "modelId": "anthropic/claude-sonnet-4.6",
-                "notes": "Strong emphasis on starting from real problems, low-risk use cases, and a clear parallel-run rollout. Actionable but a bit high-level; less explicit on governance (owner, policies) than the winner.",
+                "notes": "Provides a clear phased approach, focuses on real problems, warns about common pitfalls, and includes governance guardrails. Missing some operational specifics like standardizing tools or a concrete owner role, but overall very solid and low\u2011chaos oriented.",
+                "usefulness": 8
+              },
+              {
+                "clarity": 8,
+                "decisiveness": 8,
+                "groundedness": 8,
+                "modelId": "minimax/minimax-m2.7",
+                "notes": "Good pragmatic phased plan with budget cap, a point person, and clear cautions. Slightly less detailed on process design and policy than the top answer, but still actionable and grounded for a small business.",
+                "usefulness": 7
+              },
+              {
+                "clarity": 9,
+                "decisiveness": 8,
+                "groundedness": 9,
+                "modelId": "xiaomi/mimo-v2-pro",
+                "notes": "Strong emphasis on starting from real problems, skepticism of hype, narrow low\u2011stakes use cases, and specific chaos\u2011prevention measures (one champion, documentation, data boundaries, learning-curve expectation). Very aligned with avoiding operational chaos; slightly less structured than the winning answer but highly practical.",
                 "usefulness": 8
               },
               {
@@ -123,32 +139,16 @@
                 "decisiveness": 9,
                 "groundedness": 9,
                 "modelId": "google/gemini-3-flash-preview",
-                "notes": "Very practical, with concrete safeguards (human-in-the-loop, centralized knowledge base, standardized tools). Excellent for avoiding chaos; narrowly edged out by GPT-5.4 due to slightly less explicit operational governance structure.",
+                "notes": "Offers a concrete framework tightly focused on avoiding chaos: centralizing tools, human\u2011in\u2011the\u2011loop, using embedded AI first, prompt libraries, and a 30\u2011day pilot. Very actionable and directly addresses operational risk; narrowly loses to the winner because it\u2019s slightly lighter on governance/policy and ownership structure.",
                 "usefulness": 9
               },
               {
-                "clarity": 8,
-                "decisiveness": 7,
-                "groundedness": 8,
-                "modelId": "minimax/minimax-m2.7",
-                "notes": "Covers phased adoption and low-risk entry points, but stays somewhat generic. Less detail on policies, data protection, and role ownership that are critical for avoiding operational chaos.",
-                "usefulness": 7
-              },
-              {
-                "clarity": 10,
+                "clarity": 9,
                 "decisiveness": 10,
                 "groundedness": 9,
                 "modelId": "openai/gpt-5.4",
-                "notes": "Best addresses \u201cwithout creating operational chaos.\u201d Provides a concrete governance model (one owner, one-page policy), clear rules around data sensitivity, human review, standardized prompts, phased rollout, and measurement. Highly actionable and structured for small-business operations.",
+                "notes": "Most complete operational answer: ties AI to business problems, insists on narrow use cases, assigns an explicit owner, defines a short and clear policy, standardizes tools, bakes human review into workflows, emphasizes process redesign and staff training, and begins to address measurement. Deeply aligned with minimizing chaos while being highly actionable for a small business.",
                 "usefulness": 10
-              },
-              {
-                "clarity": 5,
-                "decisiveness": 4,
-                "groundedness": 6,
-                "modelId": "moonshotai/kimi-k2.5",
-                "notes": "Answer is truncated and incomplete. Introduces good ideas (augmentation vs. automation, shadow mode) but lacks full structure, specifics, and closing guidance, reducing overall usefulness.",
-                "usefulness": 5
               }
             ],
             "winnerModelId": "openai/gpt-5.4"
@@ -156,47 +156,47 @@
           "prompt": "How should a small business approach AI without creating operational chaos?",
           "responses": [
             {
-              "answer": "# Approaching AI Practically for Small Businesses\n\nHere's honest, direct advice rather than hype:\n\n## Start With Real Problems, Not Technology\n\n**Ask first:**\n- What tasks consume disproportionate time with low value?\n- Where do errors repeatedly occur?\n- What decisions require information you struggle to compile?\n\nDon't adopt AI because competitors mention it. Solve actual problems.\n\n## Practical Starting Points That Actually Work\n\n**Low-risk, high-value entry points:**\n- Customer email drafting and responses\n- Meeting summaries and notes\n- First drafts of routine documents\n- Data organization and basic analysis\n- FAQ/knowledge base creation\n\nThese have limited downside if the AI makes mistakes.\n\n## What Creates Chaos (Avoid These)\n\n- Replacing critical processes before testing thoroughly\n- Letting AI make customer-facing decisions autonomously\n- Adopting multiple tools simultaneously\n- Skipping staff involvement in selection\n- No clear ownership of AI outputs\n\n## A Sensible Rollout\n\n1. **Pick one workflow** with a willing employee\n2. **Run parallel** - old method and AI simultaneously for 2-4 weeks\n3. **Measure honestly** - time saved, errors introduced, quality\n4. **Decide based on evidence**, not enthusiasm\n5. **Document what works** before expanding\n\n## Honest Cautions\n\n- AI tools require ongoing supervision, not set-and-forget\n- Staff resistance is often legitimate, not just fear\n- Hidden costs include time spent correcting AI mistakes\n- Vendor lock-in is a real risk\n\n**The core principle:** AI should make your existing people more effective, not create new management burdens.\n\nWhat specific operational area are you considering?",
-              "estimatedCost": 0.0057810000000000005,
+              "answer": "# Approaching AI Practically as a Small Business\n\nHere's honest, grounded advice rather than hype:\n\n## Start With Real Problems, Not Technology\n\n**Ask first:**\n- What tasks consume disproportionate time with low strategic value?\n- Where do errors cost you money or customers?\n- What information do you struggle to access quickly?\n\nDon't adopt AI because competitors mention it. Adopt it when it solves something specific.\n\n## A Sensible Sequence\n\n**Phase 1: Low-risk experimentation (weeks 1-4)**\n- Use AI tools personally before deploying them operationally\n- Start with writing assistance, summarization, research - things you can verify easily\n- Keep humans reviewing all outputs\n\n**Phase 2: Targeted deployment (months 2-3)**\n- Pick one workflow with clear success criteria\n- Document what \"good\" looks like before you start\n- Measure actual time/cost impact honestly\n\n**Phase 3: Expand deliberately**\n- Only after Phase 2 works reliably\n\n## Common Mistakes to Avoid\n\n- **Automating broken processes** - AI amplifies dysfunction\n- **Trusting outputs blindly** - especially for customer-facing content, financial data, legal matters\n- **Overwhelming staff** - change management matters more than the technology\n- **Chasing every new tool** - tool-switching creates its own chaos\n\n## Practical Guardrails\n\n- Establish clear policies about what data employees can share with AI tools\n- Maintain human accountability for all decisions\n- Keep records of where AI is being used\n\n## Realistic Expectations\n\nMost small businesses benefit most from **incremental efficiency gains** - saving 5-10 hours weekly across tasks - rather than dramatic transformation.\n\nWhat specific area of your business are you considering? The advice gets much more useful with context.",
+              "estimatedCost": 0.006171,
               "inputTokens": 37,
-              "latencyMs": 10111,
+              "latencyMs": 10254,
               "modelId": "anthropic/claude-sonnet-4.6",
-              "outputTokens": 378,
+              "outputTokens": 404,
               "status": "ok"
             },
             {
-              "answer": "To avoid operational chaos, a small business must treat AI as a **utility** (like electricity or software) rather than a **strategy** in itself. The goal is to solve existing problems, not to find problems for a new tool.\n\nHere is a practical, step-by-step framework for a stable rollout.\n\n### 1. The \"Low-Stakes\" Entry Point\nDo not start by automating customer-facing processes or core financial systems. Start with **internal administrative friction.**\n*   **The Rule:** If the AI makes a mistake, will a customer notice? If the answer is yes, don't start there.\n*   **Practical Examples:** Using AI to summarize long meeting transcripts, draft internal emails, or categorize messy spreadsheets. These tasks have high \"correction safety\"\u2014a human sees the output before it goes anywhere.\n\n### 2. Audit Your Data Before Your Tools\nAI is only as good as the information it can access. If your company files are scattered across personal desktops, random Google Drive folders, and Slack threads, an AI assistant will provide hallucinated or conflicting information.\n*   **Action:** Centralize your \"Source of Truth.\" Create a single, clean folder of your current SOPs, pricing sheets, and brand guidelines. This becomes the \"knowledge base\" for any AI tool you implement.\n\n### 3. Adopt \"Human-in-the-Loop\" Workflows\nOperational chaos usually happens when a business gives an AI tool \"autonomy\" (e.g., an unmonitored chatbot).\n*   **The Workflow:** AI generates $\\rightarrow$ Human reviews/edits $\\rightarrow$ Human hits \"Send.\"\n*   **Reasoning:** This maintains quality control while still capturing 70% of the time-savings. You only remove the human once a process has a 0% error rate over 30 days.\n\n### 4. Standardize the Toolset (Avoid \"Shadow AI\")\nChaos often stems from every employee using a different, unapproved AI tool. This creates security risks and fragmented data.\n*   **Action:** Pick one \"Platform\" (e.g., ChatGPT Team, Microsoft 365 Copilot, or Google Gemini) and provide company licenses. \n*   **Policy:** Explicitly forbid employees from putting sensitive client data or proprietary code into free, public AI versions.\n\n### 5. Focus on \"Augmentation,\" Not \"Replacement\"\nSmall businesses thrive on relationships. If you use AI to replace the human touch, you lose your competitive advantage against big corporations.\n*   **The Right Approach:** Use AI to handle the \"drudge work\" (data entry, scheduling, drafting) so your staff has more time for high-value tasks (client calls, creative problem solving, strategy).\n*   **Reasoning:** Employees are less likely to resist (or sabotage) AI if they see it as a tool that removes the parts of their job they hate.\n\n### 6. The \"One-at-a-Time\" Rule\nDo not attempt to overhaul marketing, sales, and HR simultaneously. \n*   **Action:** Choose **one** department. Run a 30-day pilot. Document the prompts that worked and the errors that occurred. \n*   **Reasoning:** This allows you to build an internal \"Playbook\" so the next department has a roadmap to follow, preventing a company-wide collapse in productivity.\n\n### Summary Checklist for Implementation:\n1.  **Identify:** Find a task that takes 2+ hours a week and is purely internal.\n2.  **Clean:** Organize the data needed for that task.\n3.  **Tool:** Select one secure, paid platform for the team.\n4.  **Review:** Mandate that every AI output is verified by a human.\n5.  **Scale:** Only move to the next task once the first is boring and routine.",
-              "estimatedCost": 0.0024685,
-              "inputTokens": 29,
-              "latencyMs": 6049,
-              "modelId": "google/gemini-3-flash-preview",
-              "outputTokens": 818,
-              "status": "ok"
-            },
-            {
-              "answer": "# Practical AI Adoption for Small Businesses\n\n## Start with Problems, Not Technology\n\n**Identify one specific pain point** before looking at any AI tools. Common high-impact areas for small businesses:\n- Customer response time\n- Appointment scheduling\n- Basic bookkeeping/reconciliation\n- Inventory tracking\n- Email categorization\n\n## The Low-Risk Approach\n\n**Phase 1: Manual first**\n- Document the current process step-by-step\n- Many \"problems\" are actually workflow issues, not AI problems\n\n**Phase 2: AI assist, not AI replace**\n- Use AI to draft, suggest, or flag\u2014not to make final decisions\n- Keep humans in the loop initially\n\n**Phase 3: Expand only after measuring**\n- Define success metrics *before* implementing\n- If no measurable improvement in 4-6 weeks, reassess\n\n## Practical Starting Points\n\n| Function | Low-risk AI use |\n|----------|----------------|\n| Customer service | Draft responses, not live chat replacement |\n| Marketing | Content drafts, not full campaigns |\n| Finance | Categorization suggestions, not reconciliation |\n| Operations | Scheduling optimization, not restructure |\n\n## What to Avoid\n\n- **Don't buy AI for problems you haven't clearly defined**\n- **Don't replace entire workflows at once**\n- **Don't expect immediate ROI**\u2014plan for 6-12 months before scaling\n\n## Quick Wins to Build Momentum\n\n1. AI drafting routine emails or responses\n2. Basic scheduling tools with AI suggestions\n3. Inventory forecasting for seasonal products\n\nThe goal is incremental improvement, not transformation. Most small businesses see real value within 2-3 months by automating small, repetitive tasks first.\n\nWhat specific function are you considering first?",
-              "estimatedCost": 0.0005859,
-              "inputTokens": 41,
-              "latencyMs": 14363,
+              "answer": "# Practical AI Adoption for Small Businesses\n\n## Start with One High-Value Problem\n\nDon't try to transform everything at once. Identify one or two specific pain points where AI can deliver clear value:\n\n- Customer service bottlenecks\n- Repetitive administrative tasks\n- Inventory or scheduling inefficiencies\n- Content creation for marketing\n\n## A Phased Approach\n\n**Phase 1: Experiment (1-2 months)**\n- Use existing AI tools (ChatGPT, Claude, etc.) with a small team\n- Test on low-stakes tasks first\n- Document what works and what doesn't\n\n**Phase 2: Validate (2-3 months)**\n- Pick one process to pilot formally\n- Set measurable success criteria before starting\n- Keep the rest of operations unchanged\n\n**Phase 3: Expand (only after Phase 2 proves value)**\n- Replicate successful use cases to other areas\n- Consider dedicated tools if usage justifies the cost\n- Train staff incrementally\n\n## Practical Guardrails\n\n- **Never automate what you don't understand** \u2014 maintain human oversight initially\n- **Backup your data** \u2014 verify vendor contracts and data handling\n- **Set a budget ceiling** \u2014 decide max spend before evaluating options\n- **Assign one point person** \u2014 someone who coordinates AI initiatives without it being their entire job\n\n## What to Avoid\n\n- Buying enterprise AI platforms before you've proven the use case internally\n- Expecting AI to replace judgment on complex decisions\n- Rolling out company-wide without testing first\n- Ignoring staff concerns about job impact\n\n## Key Question to Ask Before Any AI Project\n\n*\"If this fails or causes problems, what's the worst that happens?\"*\n\nIf the answer is manageable, proceed. If it could harm customers, damage reputation, or create legal exposure, slow down and add safeguards.\n\nSmall businesses succeed with AI by being pragmatic and incremental, not by chasing trends.",
+              "estimatedCost": 0.0006513000000000001,
+              "inputTokens": 43,
+              "latencyMs": 10557,
               "modelId": "minimax/minimax-m2.7",
-              "outputTokens": 478,
+              "outputTokens": 532,
               "status": "ok"
             },
             {
-              "answer": "Start small, make one person accountable, and treat AI like any other operational change\u2014not a magic tool everyone can use however they want.\n\nA practical approach for a small business:\n\n1. Pick 1\u20133 narrow use cases\nChoose tasks that are:\n- repetitive\n- low-risk\n- time-consuming\n- easy to review\n\nGood examples:\n- drafting customer email replies\n- summarizing meeting notes\n- creating first drafts of marketing copy\n- organizing internal documentation\n- extracting data from invoices or forms\n\nAvoid starting with:\n- financial decisions\n- legal advice\n- HR decisions\n- anything customer-facing without review\n- anything involving sensitive data unless controls are clear\n\n2. Name an owner\nIf \u201ceveryone\u201d is experimenting, chaos follows.\nAssign one person to:\n- approve tools\n- define acceptable use\n- track costs\n- collect feedback\n- decide what gets rolled out\n\nThis does not need to be a full-time AI lead. It just needs to be someone clearly responsible.\n\n3. Set simple rules before rollout\nCreate a one-page AI policy covering:\n- which tools are approved\n- what data can and cannot be entered\n- when human review is required\n- which use cases are allowed\n- how outputs should be checked\n- who to ask when unsure\n\nKeep it short and usable.\n\n4. Protect sensitive information\nMany businesses create problems by pasting confidential data into random tools.\nAt minimum, define rules for:\n- customer personal information\n- employee records\n- contracts\n- pricing/margin data\n- financials\n- proprietary documents\n\nIf staff are unsure whether data is sensitive, the default should be: don\u2019t paste it in.\n\n5. Build human review into the workflow\nAI should usually produce a draft, summary, suggestion, or extraction\u2014not the final decision.\nUse a simple standard:\n- AI prepares\n- human verifies\n- human approves\n\nThis is especially important for external communication, reporting, and regulated work.\n\n6. Standardize prompts and workflows\nDon\u2019t rely on each employee inventing their own method.\nCreate shared:\n- prompt templates\n- examples of good outputs\n- review checklists\n- approved workflows\n\nThis makes quality more consistent and training easier.\n\n7. Measure a few outcomes\nTrack practical metrics like:\n- time saved\n- error rate\n- rework required\n- employee adoption\n- customer impact\n\nIf a use case saves little time or creates too much correction work, stop using it.\n\n8. Train people on limits, not just features\nMost failures come from overtrust.\nTeach staff:\n- AI can sound confident and still be wrong\n- outputs need verification\n- not all tools handle data safely\n- consistency matters more than clever prompting\n- they are still accountable for the final result\n\n9. Introduce AI in phases\nA simple rollout:\n- Phase 1: internal drafting and summarization\n- Phase 2: structured back-office tasks\n- Phase 3: selected customer-facing uses with review\n- Phase 4: deeper integration into systems if proven useful\n\nThis avoids disruption and lets you learn before scaling.\n\n10. Keep the tech stack tight\nToo many tools create confusion, duplicated spend, and security problems.\nPrefer:\n- one or two approved tools\n- one repository for templates and guidance\n- clear login and access control\n- periodic review of tool usage\n\nA good rule of thumb:\nFor every AI use case, be able to answer:\n- What problem does this solve?\n- Who owns it?\n- What data is involved?\n- What are the failure risks?\n- Who reviews the output?\n- How do we know it is helping?\n\nIf you want, I can turn this into a simple \u201csmall business AI adoption plan\u201d you could actually use with your team in 30 days.",
-              "estimatedCost": 0.0116725,
-              "inputTokens": 37,
-              "latencyMs": 17028,
-              "modelId": "openai/gpt-5.4",
-              "outputTokens": 772,
-              "status": "ok"
-            },
-            {
-              "answer": "Start with **augmentation, not automation**. Use AI to make existing workflows faster while keeping humans in control, then gradually hand off specific steps only after they prove reliable.\n\n**Phase 1: Internal-only pilots (Months 1-3)**\n- **Shadow mode first**: Run AI outputs alongside your current process without acting on them. Compare AI-generated email drafts to what your team actually sends. Check AI inventory forecasts against your gut estimates.\n- **Pick one pain point**: Choose a single high-volume, low-stakes task\u2014like formatting spreadsheets, drafting social posts, or summarizing meeting notes. Master this before expanding.\n- **Use",
-              "estimatedCost": 0.0015629253,
+              "answer": "# A Practical Approach to AI for Small Businesses\n\n## Start with a real problem, not the technology\n\nThe biggest source of chaos is adopting AI because it feels urgent rather than because it solves something specific. Before anything else, identify **one or two concrete pain points** \u2014 repetitive tasks that eat staff time, customer service bottlenecks, or processes where errors are costly.\n\n## Honest principles that actually help\n\n**Be skeptical of the hype cycle.** Much of what's marketed as \"AI\" is automation that's existed for years with a new label. Evaluate whether the tool genuinely does something you couldn't accomplish with simpler solutions.\n\n**Start narrow and boring.** The least chaotic path is using AI for well-defined, low-stakes tasks first:\n- Drafting routine emails or responses\n- Summarizing meeting notes\n- Basic data entry or categorization\n- Simple scheduling or inventory alerts\n\n**Keep humans in the loop initially.** Treat AI output as a draft, not a final product. This catches errors and builds your team's understanding of what the tools can and can't do.\n\n## What actually prevents chaos\n\n- **Designate one person** to evaluate and champion tools, rather than everyone adopting different ones independently\n- **Set clear boundaries** about what data goes into AI systems (customer information, financial data, etc.)\n- **Budget for the learning curve** \u2014 productivity often dips before it improves\n- **Document what you're using and why** so you're not dependent on one person's knowledge\n- **Have a \"what if it's wrong\" plan** for every use case\n\n## What I'd be cautious about\n\n- Replacing human judgment in customer-facing roles too quickly\n- Locking into expensive contracts before you understand value\n- Assuming AI will fix underlying process problems (it usually amplifies them)\n- Letting staff feel threatened rather than supported\n\n## A reasonable starting timeline\n\n**Week 1-2:** Identify one specific workflow that's tedious and well-defined\n**Week 3-4:** Test a tool with a small group, document what works and what doesn't\n**Month 2:** Decide whether to expand, adjust, or abandon based on actual results\n**Month 3+:** Only then consider broader adoption\n\nThe businesses that struggle most with AI are those that try to transform everything at once. The ones that succeed usually describe their experience as \"underwhelming at first, then gradually indispensable.\"\n\nWhat specific area of your business are you considering? I can give more targeted thoughts.",
+              "estimatedCost": 0.0019140000000000001,
               "inputTokens": 39,
-              "latencyMs": 6828,
-              "modelId": "moonshotai/kimi-k2.5",
+              "latencyMs": 13279,
+              "modelId": "xiaomi/mimo-v2-pro",
+              "outputTokens": 625,
+              "status": "ok"
+            },
+            {
+              "answer": "To adopt AI without creating operational chaos, a small business must treat it as a **staffing augmentation** rather than a **technology overhaul**. Chaos usually stems from trying to do too much at once or implementing tools that don't talk to each other.\n\nHere is a practical, step-by-step framework for a stable rollout:\n\n### 1. The \"Pain Point\" Audit\nDo not start by looking at what AI can do; start by looking at what your team hates doing.\n*   **The Rule:** Identify tasks that are high-frequency, low-complexity, and manual (e.g., summarizing meeting notes, categorizing customer support tickets, or drafting initial social media posts).\n*   **Reasoning:** Automating a \"hated\" task creates immediate buy-in from staff rather than fear of replacement.\n\n### 2. Start with \"Shadow AI\" Control\nOperational chaos often starts when employees use personal ChatGPT accounts to process sensitive company data.\n*   **The Action:** Provide a centralized, company-sanctioned tool (like a Team/Enterprise version of ChatGPT, Claude, or Microsoft Copilot). \n*   **Reasoning:** This ensures data privacy (your data isn't used to train their models) and allows you to manage seats and permissions in one place.\n\n### 3. The \"Human-in-the-Loop\" Policy\nNever allow AI to be customer-facing or \"final\" without human oversight in the beginning.\n*   **The Action:** Establish a rule that every AI output must be reviewed by a human before it leaves the building. \n*   **Reasoning:** AI \"hallucinates\" (makes things up). If an AI sends an incorrect invoice or a rude email to a client, the reputational damage creates chaos that takes weeks to fix.\n\n### 4. Use \"Embedded AI\" First\nBefore buying new, standalone AI software, look at the tools you already pay for.\n*   **The Action:** Check the AI features inside your existing stack (e.g., Zoom\u2019s AI Companion, Canva\u2019s Magic Studio, or Shopify\u2019s Sidekick).\n*   **Reasoning:** Your team already knows these interfaces. Adding a feature to a known tool is much less disruptive than training everyone on a brand-new platform.\n\n### 5. Build a \"Prompt Library\"\nChaos occurs when three different employees get three different results for the same task.\n*   **The Action:** Create a shared document or Notion page with \"Golden Prompts\"\u2014pre-written instructions for specific tasks (e.g., \"How we write product descriptions\" or \"How we summarize weekly sales reports\").\n*   **Reasoning:** This ensures brand consistency and prevents \"prompt fatigue\" where employees give up because they can't get the AI to work correctly.\n\n### 6. The 30-Day Pilot Program\nDon't roll a tool out to the whole company on day one.\n*   **The Action:** Pick one department (e.g., Marketing or Admin) and one specific use case. Run it for 30 days.\n*   **Reasoning:** You will discover \"bugs\" in your workflow\u2014like how the AI handles your specific file types\u2014in a controlled environment before they affect the entire business.\n\n### Summary Checklist for Leadership:\n1.  **Is it safe?** (Are we using a private, paid version?)\n2.  **Is it useful?** (Does it solve a specific bottleneck?)\n3.  **Is it verified?** (Who is responsible for checking the AI's work?)\n4.  **Is it documented?** (Is the process written down so it's repeatable?)\n\n**The Goal:** AI should feel like a \"silent intern\" that handles the grunt work, leaving your core team to focus on high-value strategy and customer relationships.",
+              "estimatedCost": 0.0024565000000000003,
+              "inputTokens": 29,
+              "latencyMs": 5741,
+              "modelId": "google/gemini-3-flash-preview",
+              "outputTokens": 814,
+              "status": "ok"
+            },
+            {
+              "answer": "Treat AI like any other business tool rollout: start small, tie it to a real problem, and put rules around how it\u2019s used.\n\n## A good approach for a small business\n\n### 1. Start with business problems, not AI features\nDon\u2019t ask, \u201cWhere can we use AI?\u201d\nAsk:\n- What tasks are repetitive?\n- Where are we losing time?\n- What slows staff down?\n- Where do errors happen often?\n\nGood early candidates:\n- Drafting emails and proposals\n- Summarizing meetings or customer notes\n- Creating first drafts of marketing content\n- FAQ/customer support assistance\n- Data entry cleanup or document classification\n- Internal knowledge search\n\nAvoid starting with:\n- Core financial decisions\n- Hiring decisions\n- Legal approvals\n- Anything customer-facing with no human review\n\n## 2. Pick 1\u20132 narrow use cases first\nOperational chaos usually comes from too many tools and unclear expectations.\n\nChoose use cases that are:\n- Low risk\n- Easy to measure\n- Time-consuming today\n- Still reviewable by a human\n\nExample:\n- \u201cUse AI to draft follow-up emails after sales calls\u201d\n- \u201cUse AI to summarize inbound customer messages before an agent responds\u201d\n\nThat\u2019s much safer than \u201ceveryone can use AI however they want.\u201d\n\n## 3. Assign one owner\nIf no one owns it, every team will do something different.\n\nHave one person responsible for:\n- Tool selection\n- Basic policy\n- Training\n- Access control\n- Reviewing results\n- Deciding what expands and what stops\n\nThis does not need to be a full-time AI lead in a small business. It can be an operations manager, IT lead, or digitally capable department head.\n\n## 4. Set a simple AI usage policy early\nYou do not need a 20-page policy. You do need a clear one.\n\nCover:\n- What tools are approved\n- What data can and cannot be entered\n- Whether customer/client confidential data is allowed\n- When human review is mandatory\n- Who can publish AI-generated content\n- How outputs should be checked\n- What should never be automated\n\nA practical rule:\n- No sensitive financial, legal, HR, medical, or customer-confidential data in public AI tools unless approved.\n\n## 5. Standardize tools\nChaos grows when each employee signs up for different AI apps.\n\nKeep the stack small:\n- 1 primary general-purpose AI assistant\n- 1\u20132 role-specific tools if needed\n- Existing software features before buying new platforms\n\nAsk before adopting a tool:\n- Does it solve a defined use case?\n- Does it fit our security requirements?\n- Who will use it?\n- What process will it replace or improve?\n- How will we measure success?\n\n## 6. Build human review into the workflow\nAI should usually produce a draft, recommendation, or summary, not the final answer.\n\nUse it for:\n- First drafts\n- Triage\n- Classification\n- Summaries\n- Suggested responses\n\nRequire people to review:\n- Anything going to customers\n- Financial outputs\n- Compliance-sensitive content\n- Policy decisions\n- Important operational changes\n\n## 7. Redesign the process, not just the task\nIf you simply add AI on top of an already messy process, you\u2019ll get faster messes.\n\nExample:\nBad:\n- Employee writes notes\n- Then pastes them into AI\n- Then copies output into another system\n- Then manager rechecks everything manually\n\nBetter:\n- Define one standard prompt/template\n- Define where the output goes\n- Define who reviews it\n- Define what \u201cgood enough\u201d looks like\n\n## 8. Train staff on how to use it well\nMost failure comes from poor use, not just poor tools.\n\nTrain people on:\n- What AI is good at\n- What it is bad at\n- How to give context and clear instructions\n- How to verify facts\n- How to spot made-up answers\n- When not to use it\n\nGive them templates, not just access.\n\nFor example:\n- Email drafting template\n- Meeting summary template\n- Customer response template\n- Content brief template\n\n## 9. Measure outcomes, not excitement\nYou want proof it helps operations.\n\nTrack simple metrics like:\n- Time saved per task\n- Turnaround time\n- Error rate\n- Rework rate\n- Employee adoption\n- Customer satisfaction impact\n\nIf a use case saves little time",
+              "estimatedCost": 0.0135925,
+              "inputTokens": 37,
+              "latencyMs": 19240,
+              "modelId": "openai/gpt-5.4",
               "outputTokens": 900,
               "status": "ok"
             }
@@ -207,8 +207,8 @@
       ],
       "rankedModels": [
         {
-          "avgEstimatedCost": 0.01263625,
-          "avgLatencyMs": 17381.5,
+          "avgEstimatedCost": 0.01359625,
+          "avgLatencyMs": 17809.5,
           "contextLength": 1050000,
           "errors": 0,
           "id": "openai/gpt-5.4",
@@ -217,13 +217,13 @@
           "outputCostPerToken": 1.5e-05,
           "promptCount": 2,
           "provider": "openai",
-          "score": 38.5,
+          "score": 37.0,
           "winRate": 1.0,
           "wins": 2
         },
         {
-          "avgEstimatedCost": 0.00238975,
-          "avgLatencyMs": 5982.0,
+          "avgEstimatedCost": 0.00240775,
+          "avgLatencyMs": 5600.5,
           "contextLength": 1048576,
           "errors": 0,
           "id": "google/gemini-3-flash-preview",
@@ -237,8 +237,8 @@
           "wins": 0
         },
         {
-          "avgEstimatedCost": 0.005868,
-          "avgLatencyMs": 10061.5,
+          "avgEstimatedCost": 0.006033,
+          "avgLatencyMs": 10438.0,
           "contextLength": 1000000,
           "errors": 0,
           "id": "anthropic/claude-sonnet-4.6",
@@ -247,13 +247,28 @@
           "outputCostPerToken": 1.5e-05,
           "promptCount": 2,
           "provider": "anthropic",
-          "score": 35.0,
+          "score": 34.0,
           "winRate": 0.0,
           "wins": 0
         },
         {
-          "avgEstimatedCost": 0.00075675,
-          "avgLatencyMs": 17316.0,
+          "avgEstimatedCost": 0.001971,
+          "avgLatencyMs": 15910.0,
+          "contextLength": 1048576,
+          "errors": 0,
+          "id": "xiaomi/mimo-v2-pro",
+          "inputCostPerToken": 1e-06,
+          "name": "Xiaomi: MiMo-V2-Pro",
+          "outputCostPerToken": 3e-06,
+          "promptCount": 2,
+          "provider": "xiaomi",
+          "score": 32.5,
+          "winRate": 0.0,
+          "wins": 0
+        },
+        {
+          "avgEstimatedCost": 0.00080025,
+          "avgLatencyMs": 14630.0,
           "contextLength": 196608,
           "errors": 0,
           "id": "minimax/minimax-m2.7",
@@ -262,22 +277,7 @@
           "outputCostPerToken": 1.2e-06,
           "promptCount": 2,
           "provider": "minimax",
-          "score": 29.5,
-          "winRate": 0.0,
-          "wins": 0
-        },
-        {
-          "avgEstimatedCost": 0.0015635,
-          "avgLatencyMs": 5878.0,
-          "contextLength": 262144,
-          "errors": 0,
-          "id": "moonshotai/kimi-k2.5",
-          "inputCostPerToken": 3.827e-07,
-          "name": "MoonshotAI: Kimi K2.5",
-          "outputCostPerToken": 1.72e-06,
-          "promptCount": 2,
-          "provider": "moonshotai",
-          "score": 18.0,
+          "score": 31.0,
           "winRate": 0.0,
           "wins": 0
         }
@@ -836,7 +836,7 @@
     "technical": {
       "candidateCount": 5,
       "category": "technical",
-      "generatedAt": "2026-04-13T11:24:02Z",
+      "generatedAt": "2026-04-20T11:26:15Z",
       "judgeModelId": "openai/gpt-5.1",
       "promotionDecision": {
         "accepted": true,
@@ -847,44 +847,36 @@
           "judge": {
             "scores": [
               {
-                "clarity": 6,
-                "decisiveness": 3,
-                "groundedness": 6,
-                "modelId": "anthropic/claude-sonnet-4.6",
-                "notes": "Starts a solid modular design with task definitions and simple scorers, but the response is truncated before completing core pieces (e.g., ModelResult, runner). Missing the actual benchmark loop and config writing, so it does not fully satisfy the prompt.",
-                "usefulness": 4
-              },
-              {
-                "clarity": 8,
-                "decisiveness": 8,
+                "clarity": 7,
+                "decisiveness": 6,
                 "groundedness": 7,
-                "modelId": "google/gemini-3-flash-preview",
-                "notes": "Provides a complete, runnable example: rotates through models from YAML, scores them, updates ranks, and writes results back to config.yaml. Simple and practical, though limited to a single test prompt and a very basic scoring heuristic.",
-                "usefulness": 7
-              },
-              {
-                "clarity": 6,
-                "decisiveness": 4,
-                "groundedness": 6,
-                "modelId": "minimax/minimax-m2.7",
-                "notes": "Well-structured project layout and configuration design, but the answer is cut off mid-file and never delivers a full, working runner. More of a blueprint than an implementation; incomplete for the requested simple benchmark runner.",
+                "modelId": "anthropic/claude-sonnet-4.6",
+                "notes": "Good modular design and data structures, but the answer is incomplete (truncated mid-file), and never actually shows the benchmark runner or config file writing logic.",
                 "usefulness": 5
               },
               {
-                "clarity": 9,
-                "decisiveness": 8,
-                "groundedness": 8,
-                "modelId": "openai/gpt-5.4",
-                "notes": "Gives a concrete, self-contained Python script with rotation over candidate models, a small task set, scoring, aggregation, ranking, and writing to ranked_models.json. Code is easy to adapt and aligns closely with the 'simple benchmark runner' requirement, though the snippet appears truncated near the end and would need the closing lines for a fully runnable file.",
-                "usefulness": 8
+                "clarity": 4,
+                "decisiveness": 3,
+                "groundedness": 5,
+                "modelId": "xiaomi/mimo-v2-pro",
+                "notes": "Starts defining a reasonable structure and config types, but is clearly cut off before finishing tasks, runner, or ranking/output. Too incomplete to be directly usable.",
+                "usefulness": 3
               },
               {
-                "clarity": 4,
-                "decisiveness": 2,
-                "groundedness": 5,
-                "modelId": "moonshotai/kimi-k2.5",
-                "notes": "Starts to define data classes for models and test cases, but the code is truncated very early and never shows how to run benchmarks, score, or write rankings. Too incomplete to be directly useful.",
-                "usefulness": 3
+                "clarity": 8,
+                "decisiveness": 7,
+                "groundedness": 6,
+                "modelId": "google/gemini-3-flash-preview",
+                "notes": "Implements a very simple YAML-based benchmark loop that rotates models, scores, ranks, and writes back to the same config. Technically satisfies the prompt but with a toy scoring function and only a single test prompt; limited extensibility compared to the best answer.",
+                "usefulness": 6
+              },
+              {
+                "clarity": 9,
+                "decisiveness": 9,
+                "groundedness": 8,
+                "modelId": "openai/gpt-5.4",
+                "notes": "Provides a nearly complete, coherent Python design: candidate/task/result types, a runner that rotates models over multiple tasks, deterministic scoring, ranking by score and latency, and a function to write ranked results to a config file. Minor truncation at the very end of the file-write call, but the intended implementation is clear and easy to fix.",
+                "usefulness": 8
               }
             ],
             "winnerModelId": "openai/gpt-5.4"
@@ -892,47 +884,47 @@
           "prompt": "Design a simple benchmark runner that rotates candidate LLMs, scores them, and writes ranked results to a config file.",
           "responses": [
             {
-              "answer": "# LLM Benchmark Runner\n\n## Overview\n\nThis design covers:\n- Rotating through candidate LLMs\n- Scoring them on configurable tasks\n- Writing ranked results to a config file\n\n---\n\n## Project Structure\n\n```\nllm_benchmark/\n\u251c\u2500\u2500 benchmark_runner.py      # Main runner\n\u251c\u2500\u2500 tasks.py                 # Task definitions\n\u251c\u2500\u2500 scorers.py               # Scoring logic\n\u251c\u2500\u2500 config.py                # Config read/write\n\u2514\u2500\u2500 results/\n    \u2514\u2500\u2500 rankings.toml        # Output file\n```\n\n---\n\n## `tasks.py` \u2014 Task Definitions\n\n```python\nfrom dataclasses import dataclass, field\nfrom typing import Callable\n\n@dataclass\nclass Task:\n    \"\"\"A single evaluation task.\"\"\"\n    name: str\n    prompt: str\n    weight: float = 1.0                          # Relative importance\n    scorer: Callable[[str], float] = None        # Returns 0.0\u20131.0\n    max_tokens: int = 256\n    timeout_seconds: int = 30\n\n# \u2500\u2500 Built-in tasks \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\ndef _score_math(response: str) -> float:\n    \"\"\"Check if the model correctly answered 2+2=4.\"\"\"\n    return 1.0 if \"4\" in response else 0.0\n\ndef _score_json(response: str) -> float:\n    \"\"\"Check if the response is valid JSON.\"\"\"\n    import json\n    try:\n        json.loads(response.strip())\n        return 1.0\n    except json.JSONDecodeError:\n        # Partial credit: at least starts/ends with braces\n        stripped = response.strip()\n        return 0.3 if stripped.startswith(\"{\") and stripped.endswith(\"}\") else 0.0\n\ndef _score_haiku(response: str) -> float:\n    \"\"\"Rough haiku check: 3 lines, syllable counts 5-7-5 (simplified).\"\"\"\n    lines = [l.strip() for l in response.strip().splitlines() if l.strip()]\n    if len(lines) != 3:\n        return 0.0\n    # Simplified syllable proxy: word count per line\n    word_counts = [len(l.split()) for l in lines]\n    # Accept if middle line is longest (proxy for 7-syllable line)\n    if word_counts[1] >= word_counts[0] and word_counts[1] >= word_counts[2]:\n        return 1.0\n    return 0.5\n\nDEFAULT_TASKS = [\n    Task(\n        name=\"basic_math\",\n        prompt=\"What is 2 + 2? Reply with only the number.\",\n        weight=1.0,\n        scorer=_score_math,\n        max_tokens=10,\n    ),\n    Task(\n        name=\"json_output\",\n        prompt='Return a JSON object with keys \"name\" and \"age\". Use name=\"Alice\" and age=30.',\n        weight=1.5,\n        scorer=_score_json,\n        max_tokens=64,\n    ),\n    Task(\n        name=\"creative_haiku\",\n        prompt=\"Write a haiku about the ocean. Three lines only.\",\n        weight=0.8,\n        scorer=_score_haiku,\n        max_tokens=64,\n    ),\n]\n```\n\n---\n\n## `scorers.py` \u2014 Aggregation Logic\n\n```python\nfrom dataclasses import dataclass, field\nfrom typing import Dict, List\n\n@dataclass\nclass TaskResult:\n    task_name: str\n    raw_response: str\n    score: float          # 0.0\u20131.0\n    weight: float\n    latency_ms: float\n    error: str = \"\"\n\n@dataclass\nclass ModelResult:",
+              "answer": "# Simple LLM Benchmark Runner\n\n## Overview\n\nThis design covers:\n1. A benchmark runner that rotates through candidate LLMs\n2. A scoring engine with pluggable metrics\n3. A results writer that outputs ranked configs\n\n---\n\n## Project Structure\n\n```\nllm_benchmark/\n\u251c\u2500\u2500 benchmark_runner.py      # Main orchestrator\n\u251c\u2500\u2500 models.py                # Data models\n\u251c\u2500\u2500 scorers.py               # Scoring metrics\n\u251c\u2500\u2500 llm_client.py            # LLM API abstraction\n\u251c\u2500\u2500 results_writer.py        # Config file output\n\u251c\u2500\u2500 tasks.py                 # Benchmark task definitions\n\u2514\u2500\u2500 config/\n    \u2514\u2500\u2500 candidates.yaml      # Input candidate config\n```\n\n---\n\n## models.py \u2014 Core Data Structures\n\n```python\nfrom dataclasses import dataclass, field\nfrom typing import Any\nfrom enum import Enum\n\n\nclass ScoringMetric(Enum):\n    LATENCY = \"latency\"\n    ACCURACY = \"accuracy\"\n    COST = \"cost\"\n    COHERENCE = \"coherence\"\n\n\n@dataclass\nclass BenchmarkTask:\n    \"\"\"A single evaluation task.\"\"\"\n    task_id: str\n    prompt: str\n    expected_output: str | None = None   # None = open-ended tasks\n    max_tokens: int = 512\n    temperature: float = 0.0             # Deterministic by default\n    weight: float = 1.0                  # Task importance weight\n\n\n@dataclass\nclass TaskResult:\n    \"\"\"Raw result from one LLM on one task.\"\"\"\n    model_id: str\n    task_id: str\n    response: str\n    latency_ms: float\n    input_tokens: int\n    output_tokens: int\n    cost_usd: float\n    error: str | None = None\n\n\n@dataclass\nclass ModelScore:\n    \"\"\"Aggregated scores for one model.\"\"\"\n    model_id: str\n    provider: str\n    scores: dict[ScoringMetric, float] = field(default_factory=dict)\n    composite_score: float = 0.0\n    task_results: list[TaskResult] = field(default_factory=list)\n    total_cost_usd: float = 0.0\n    avg_latency_ms: float = 0.0\n    tasks_completed: int = 0\n    tasks_failed: int = 0\n\n    def success_rate(self) -> float:\n        total = self.tasks_completed + self.tasks_failed\n        return self.tasks_completed / total if total > 0 else 0.0\n```\n\n---\n\n## tasks.py \u2014 Benchmark Task Definitions\n\n```python\nfrom models import BenchmarkTask\n\n\ndef load_tasks() -> list[BenchmarkTask]:\n    \"\"\"\n    Define benchmark tasks across different capability dimensions.\n    Extend this with tasks loaded from YAML/JSON for production use.\n    \"\"\"\n    return [\n        # --- Factual accuracy ---\n        BenchmarkTask(\n            task_id=\"fact_001\",\n            prompt=\"What is the capital of France?\",\n            expected_output=\"Paris\",\n            weight=1.0,\n        ),\n        BenchmarkTask(\n            task_id=\"fact_002\",\n            prompt=\"What is 17 multiplied by 13?\",\n            expected_output=\"221\",\n            weight=1.0,\n        ),\n\n        # --- Reasoning ---\n        BenchmarkTask(\n            task_id=\"reason_001\",\n            prompt=(\n                \"If all Bloops are Razzles and all Razzles are Lazzles, \"\n                \"are all Bloops definitely Lazzles? Answer yes or no and explain.\"\n            ),\n            expected_output=\"yes\",   # Checked as substring match\n            weight=1.5,\n        ),\n\n        # --- Code generation",
               "estimatedCost": 0.01365,
               "inputTokens": 50,
-              "latencyMs": 13012,
+              "latencyMs": 12545,
               "modelId": "anthropic/claude-sonnet-4.6",
               "outputTokens": 900,
               "status": "ok"
             },
             {
-              "answer": "To build a practical benchmark runner, you need three components: a **Provider Wrapper** to standardize API calls, a **Scoring Logic** (using an LLM-as-a-judge or exact match), and a **State Manager** to update the config.\n\nThe following Python implementation uses a \"Judge\" pattern to score outputs and updates a YAML configuration file with the results.\n\n### 1. The Project Structure\n*   `config.yaml`: Stores model names and their current scores.\n*   `runner.py`: The execution logic.\n\n### 2. The Configuration (`config.yaml`)\nInitialize your file with the models you want to test.\n```yaml\nmodels:\n  - name: \"gpt-4o\"\n    score: 0\n    rank: 1\n  - name: \"claude-3-5-sonnet\"\n    score: 0\n    rank: 2\n  - name: \"gemini-1.5-pro\"\n    score: 0\n    rank: 3\n```\n\n### 3. The Runner Implementation (`runner.py`)\nThis script iterates through models, prompts them, scores the response, and re-ranks the YAML file.\n\n```python\nimport yaml\nimport time\n\n# Mock API Call - Replace with actual SDK calls (OpenAI, Anthropic, etc.)\ndef get_model_response(model_name, prompt):\n    # Simulate latency and response\n    return f\"Response from {model_name} to: {prompt}\"\n\n# Scoring Logic - Can be regex, exact match, or an LLM-as-a-judge\ndef calculate_score(response, expected_answer):\n    # Simple heuristic: 100 if keyword exists, else 0\n    return 100 if expected_answer.lower() in response.lower() else 0\n\ndef update_config(results):\n    # Sort by score descending\n    sorted_results = sorted(results, key=lambda x: x['score'], reverse=True)\n    \n    # Assign ranks\n    for i, item in enumerate(sorted_results):\n        item['rank'] = i + 1\n        \n    with open('config.yaml', 'w') as f:\n        yaml.dump({'models': sorted_results}, f)\n\ndef run_benchmark(test_prompt, expected_answer):\n    with open('config.yaml', 'r') as f:\n        config = yaml.safe_load(f)\n    \n    results = config['models']\n\n    for model in results:\n        print(f\"Testing {model['name']}...\")\n        \n        # 1. Get Response\n        response = get_model_response(model['name'], test_prompt)\n        \n        # 2. Score Response\n        new_score = calculate_score(response, expected_answer)\n        \n        # 3. Update running average (or replace)\n        # Here we use a simple moving average: (old_score + new_score) / 2\n        model['score'] = (model['score'] + new_score) / 2 if model['score'] > 0 else new_score\n\n    # 4. Rank and Save\n    update_config(results)\n    print(\"Benchmark complete. config.yaml updated.\")\n\nif __name__ == \"__main__\":\n    # Example Test Case\n    run_benchmark(\n        test_prompt=\"What is the capital of France?\", \n        expected_answer=\"Paris\"\n    )\n```\n\n### How it works\n\n1.  **Rotation:** The script reads the `config.yaml` into a list. It iterates through every model entry, ensuring no model is skipped.\n2.  **Scoring:** The `calculate_score` function is decoupled. You can swap the simple keyword check for a \"Judge Model\" (e.g., asking GPT-4 to score a Llama-3 response from 1-10).\n3.  **Ranking Logic:** After all models are processed, the list is sorted using Python\u2019s `sorted()` function with `reverse=True`.",
-              "estimatedCost": 0.0027080000000000003,
-              "inputTokens": 40,
-              "latencyMs": 5385,
-              "modelId": "google/gemini-3-flash-preview",
-              "outputTokens": 896,
-              "status": "ok"
-            },
-            {
-              "answer": "# LLM Benchmark Runner\n\nA practical benchmark system for evaluating and ranking candidate LLMs.\n\n## Project Structure\n\n```\nbenchmark_runner/\n\u251c\u2500\u2500 config/\n\u2502   \u251c\u2500\u2500 llms.yaml           # LLM endpoints and credentials\n\u2502   \u2514\u2500\u2500 benchmarks.yaml     # Benchmark definitions\n\u251c\u2500\u2500 src/\n\u2502   \u251c\u2500\u2500 __init__.py\n\u2502   \u251c\u2500\u2500 models.py           # Data classes\n\u2502   \u251c\u2500\u2500 llm_client.py       # LLM interface\n\u2502   \u251c\u2500\u2500 scorer.py           # Scoring logic\n\u2502   \u251c\u2500\u2500 runner.py           # Main benchmark orchestrator\n\u2502   \u2514\u2500\u2500 output.py           # Results writer\n\u251c\u2500\u2500 results/\n\u2502   \u2514\u2500\u2500 rankings.yaml       # Output: ranked results\n\u251c\u2500\u2500 main.py\n\u2514\u2500\u2500 requirements.txt\n```\n\n## Implementation\n\n### `requirements.txt`\n```txt\npyyaml>=6.0\nopenai>=1.0\nanthropic>=0.7.0\naiohttp>=3.9.0\n```\n\n### `config/llms.yaml`\n```yaml\ncandidates:\n  - name: \"gpt-4-turbo\"\n    provider: openai\n    model: \"gpt-4-turbo\"\n    api_key_env: \"OPENAI_API_KEY\"\n    \n  - name: \"claude-3-opus\"\n    provider: anthropic\n    model: \"claude-3-opus-20240229\"\n    api_key_env: \"ANTHROPIC_API_KEY\"\n    \n  - name: \"llama-3-70b\"\n    provider: openai\n    model: \"meta-llama/Llama-3-70b-chat-hf\"\n    api_base: \"http://localhost:8000/v1\"  # Local inference\n```\n\n### `config/benchmarks.yaml`\n```yaml\nbenchmarks:\n  truthfulness:\n    weight: 0.3\n    tests:\n      - prompt: \"What is the capital of France?\"\n        expected: \"Paris\"\n        type: exact_match\n        \n      - prompt: \"Is the Earth flat?\"\n        expected: \"No\"\n        type: contains\n        \n  reasoning:\n    weight: 0.4\n    tests:\n      - prompt: \"If all roses are flowers and some flowers fade quickly, then:\"\n        expected: \"Some roses may fade quickly\"\n        type: contains\n        \n  helpfulness:\n    weight: 0.3\n    tests:\n      - prompt: \"Help me write a Python function to sort a list.\"\n        expected_keywords: [\"def\", \"sort\", \"list\"]\n        type: contains_all\n```\n\n### `src/models.py`\n```python\n\"\"\"Data models for benchmark system.\"\"\"\nfrom dataclasses import dataclass, field\nfrom typing import Optional\nfrom enum import Enum\n\n\nclass BenchmarkType(Enum):\n    EXACT_MATCH = \"exact_match\"\n    CONTAINS = \"contains\"\n    CONTAINS_ALL = \"contains_all\"\n    SIMILARITY = \"similarity\"\n\n\n@dataclass\nclass LLMConfig:\n    name: str\n    provider: str\n    model: str\n    api_key_env: Optional[str] = None\n    api_base: Optional[str] = None\n    extra_params:",
+              "answer": "",
               "estimatedCost": 0.0010956,
               "inputTokens": 52,
-              "latencyMs": 14515,
+              "latencyMs": 16554,
               "modelId": "minimax/minimax-m2.7",
               "outputTokens": 900,
               "status": "ok"
             },
             {
-              "answer": "Below is a simple, practical Python benchmark runner that:\n\n- rotates through candidate LLMs\n- scores them on a small test set\n- ranks them\n- writes the ranked results to a config file\n\nIt\u2019s intentionally lightweight and easy to extend.\n\n---\n\n## What it does\n\n- Takes a list of candidate models\n- Runs each model on the same prompts\n- Compares model output to expected answers with a simple scoring function\n- Aggregates scores\n- Sorts models by score\n- Writes results to `ranked_models.json`\n\n---\n\n## Simple design\n\nWe\u2019ll keep it modular:\n\n- `candidates`: list of models to test\n- `tasks`: prompts + expected answers\n- `run_model()`: stub for calling an LLM\n- `score_output()`: simple exact/contains match scoring\n- `evaluate_model()`: averages scores across tasks\n- `rank_models()`: evaluates all candidates\n- `write_results()`: saves output as config JSON\n\n---\n\n## Example Python implementation\n\n```python\nimport json\nfrom dataclasses import dataclass, asdict\nfrom typing import List, Dict, Any\n\n\n@dataclass\nclass Task:\n    name: str\n    prompt: str\n    expected: str\n    weight: float = 1.0\n\n\n@dataclass\nclass ModelResult:\n    model: str\n    total_score: float\n    normalized_score: float\n    task_scores: List[Dict[str, Any]]\n\n\n# Candidate LLMs to rotate through\nCANDIDATE_MODELS = [\n    \"model-a\",\n    \"model-b\",\n    \"model-c\",\n]\n\n# Small evaluation set\nTASKS = [\n    Task(\n        name=\"capital_of_france\",\n        prompt=\"What is the capital of France?\",\n        expected=\"Paris\",\n        weight=1.0,\n    ),\n    Task(\n        name=\"basic_math\",\n        prompt=\"What is 12 + 15?\",\n        expected=\"27\",\n        weight=1.0,\n    ),\n    Task(\n        name=\"color_mix\",\n        prompt=\"What color do you get when you mix blue and yellow?\",\n        expected=\"green\",\n        weight=1.0,\n    ),\n]\n\n\ndef run_model(model_name: str, prompt: str) -> str:\n    \"\"\"\n    Replace this stub with your actual LLM API call.\n\n    Example:\n      - OpenAI\n      - Anthropic\n      - local inference server\n      - any custom router\n\n    For demo purposes, returns mocked responses.\n    \"\"\"\n    mock_outputs = {\n        \"model-a\": {\n            \"What is the capital of France?\": \"Paris\",\n            \"What is 12 + 15?\": \"27\",\n            \"What color do you get when you mix blue and yellow?\": \"Green\",\n        },\n        \"model-b\": {\n            \"What is the capital of France?\": \"The capital of France is Paris.\",\n            \"What is 12 + 15?\": \"28\",\n            \"What color do you get when you mix blue and yellow?\": \"green\",\n        },\n        \"model-c\": {\n            \"What is the capital of France?\": \"Lyon\",\n            \"What is 12 + 15?\": \"27\",\n            \"What color do you get when you mix blue and yellow?\": \"yellow\",\n        },\n    }\n    return mock_outputs.get(model_name, {}).get(prompt, \"\")\n\n\ndef normalize_text(text: str) -> str:\n    return text.strip().lower()\n\n\ndef score_output(actual: str, expected: str) -> float:\n    \"\"\"\n    Very simple scoring:\n    - 1.0 if exact normalized match\n    - 0.8 if expected is contained in actual\n    - 0.0 otherwise\n    \"\"\"\n    actual_n = normalize_text(actual)\n    expected_n = normalize_text(expected)\n\n    if actual_n == expected_n:\n        return 1.0\n    if expected_n in actual_n:\n        return 0.8\n    return 0.0\n\n\ndef evaluate_model(model_name: str, tasks: List[Task]) -> ModelResult:\n    task_scores = []\n    total_weighted_score = 0.0\n    total_weight = 0.0\n\n    for task in tasks:\n        output = run_model(model_name, task.prompt)\n        raw_score = score_output(output, task.expected)\n        weighted",
-              "estimatedCost": 0.0136225,
-              "inputTokens": 49,
-              "latencyMs": 12969,
-              "modelId": "openai/gpt-5.4",
+              "answer": "# Simple LLM Benchmark Runner\n\n## Project Structure\n\n```\nllm_benchmark/\n\u251c\u2500\u2500 benchmark_runner.py    # Core runner logic\n\u251c\u2500\u2500 llm_clients.py         # LLM adapter layer\n\u251c\u2500\u2500 scorer.py              # Scoring strategies\n\u251c\u2500\u2500 config.py              # Config I/O and types\n\u251c\u2500\u2500 tasks.py               # Benchmark task definitions\n\u251c\u2500\u2500 main.py                # CLI entrypoint\n\u2514\u2500\u2500 results.json           # Output config file (generated)\n```\n\n## 1. Config & Data Types (`config.py`)\n\n```python\n\"\"\"Configuration types and I/O for benchmark results.\"\"\"\n\nfrom __future__ import annotations\nimport json\nfrom dataclasses import dataclass, field, asdict\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom typing import Optional\n\n\n@dataclass\nclass LLMConfig:\n    \"\"\"Describes one candidate model.\"\"\"\n    name: str                          # e.g. \"gpt-4o\"\n    provider: str                      # e.g. \"openai\"\n    api_key_env: str = \"OPENAI_API_KEY\"\n    model_id: str = \"\"                 # actual model string sent to API\n    max_tokens: int = 1024\n    temperature: float = 0.0\n    extra_params: dict = field(default_factory=dict)\n\n    def __post_init__(self):\n        if not self.model_id:\n            self.model_id = self.name\n\n\n@dataclass\nclass TaskResult:\n    \"\"\"Score for a single task run against one model.\"\"\"\n    task_id: str\n    score: float          # 0.0 \u2013 1.0\n    latency_s: float\n    raw_response: str\n    expected: str\n    error: Optional[str] = None\n\n\n@dataclass\nclass ModelResult:\n    \"\"\"Aggregated results for one model across all tasks.\"\"\"\n    model_name: str\n    provider: str\n    scores: list[TaskResult] = field(default_factory=list)\n\n    @property\n    def mean_score(self) -> float:\n        if not self.scores:\n            return 0.0\n        return sum(t.score for t in self.scores) / len(self.scores)\n\n    @property\n    def mean_latency(self) -> float:\n        if not self.scores:\n            return 0.0\n        return sum(t.latency_s for t in self.scores) / len(self.scores)\n\n    @property\n    def error_count(self) -> int:\n        return sum(1 for t in self.scores if t.error)\n\n\n@dataclass\nclass BenchmarkReport:\n    \"\"\"Final ranked report written to disk.\"\"\"\n    timestamp: str\n    tasks_run: int\n    models_tested: int\n    rankings: list[dict] = field(default_factory=list)\n    raw_results: list[dict] = field(default_factory=list)\n\n    def save(self, path: str | Path) -> Path:\n        path = Path(path)\n        path.parent.mkdir(parents=True, exist_ok=True)\n        with open(path, \"w\") as f:\n            json.dump(asdict(self), f, indent=2)\n        return path\n\n    @classmethod\n    def load(cls, path: str | Path) -> \"BenchmarkReport\":\n        with open(path) as f:\n            data = json.load(f)\n        return cls(**data)\n```\n\n## 2. Benchmark Tasks (`tasks.py`)\n\n```python\n\"\"\"Define benchmark tasks \u2014 swap in your own domain-specific suite.\"\"\"\n\nfrom __future__ import annotations\nfrom dataclasses import dataclass\n\n\n@dataclass\nclass Task:\n    id: str\n    prompt: str\n    expected: str                        # ground-truth answer\n    scorer: str = \"exact_match\"          # which scorer to use\n    tags: list[str] = None\n\n    def __post_init__(self):\n        if",
+              "estimatedCost": 0.002751,
+              "inputTokens": 51,
+              "latencyMs": 13318,
+              "modelId": "xiaomi/mimo-v2-pro",
               "outputTokens": 900,
               "status": "ok"
             },
             {
-              "answer": "Here's a practical Python implementation using a config-driven approach with JSON for portability:\n\n```python\nimport json\nimport time\nimport statistics\nfrom typing import List, Dict, Any, Optional\nfrom dataclasses import dataclass, asdict\nfrom concurrent.futures import ThreadPoolExecutor, as_completed\nimport requests\n\n\n@dataclass\nclass ModelCandidate:\n    name: str\n    api_url: str\n    model_id: str\n    api_key: Optional[str] = None\n    headers: Optional[Dict] = None\n\n\n@dataclass\nclass TestCase:\n    id: str\n    prompt: str\n    expected_contains",
-              "estimatedCost": 0.001567135,
-              "inputTokens": 50,
-              "latencyMs": 4941,
-              "modelId": "moonshotai/kimi-k2.5",
+              "answer": "To build a practical benchmark runner, you need three components: a **Provider Wrapper** to handle different APIs, a **Scoring Logic** (using an \"LLM-as-a-judge\" or exact match), and a **State Manager** to update the config.\n\nThis design uses Python and a YAML configuration file.\n\n### 1. The Configuration File (`config.yaml`)\nThis file stores your candidate models and serves as the final output for the rankings.\n\n```yaml\ncandidates:\n  - name: \"gpt-4o\"\n    provider: \"openai\"\n    score: 0\n  - name: \"claude-3-5-sonnet\"\n    provider: \"anthropic\"\n    score: 0\n  - name: \"llama-3-70b\"\n    provider: \"groq\"\n    score: 0\n\ntest_prompt: \"Explain quantum entanglement in one sentence.\"\nreference_answer: \"A physical phenomenon where pairs of particles remain connected such that the state of one instantly influences the other regardless of distance.\"\n```\n\n### 2. The Runner Script\nThis script iterates through the models, fetches responses, scores them, and overwrites the config with updated rankings.\n\n```python\nimport yaml\nimport time\n\n# Mock API Call - Replace with actual SDK calls (openai, anthropic, etc.)\ndef get_llm_response(model_name, provider, prompt):\n    print(f\"-> Querying {model_name}...\")\n    # Simulate API latency and response\n    time.sleep(1)\n    return f\"Response from {model_name} about {prompt[:10]}...\"\n\n# Simple Scoring Logic (Example: Semantic similarity or keyword check)\n# In production, use a 'Judge' LLM to score 1-10\ndef calculate_score(response, reference):\n    # Placeholder: +10 points if response is long, +50 if it contains keywords\n    score = len(response) % 100 \n    return score\n\ndef run_benchmark():\n    # 1. Load Config\n    with open('config.yaml', 'r') as f:\n        config = yaml.safe_load(f)\n\n    results = []\n\n    # 2. Rotate through Candidates\n    for model in config['candidates']:\n        response = get_llm_response(\n            model['name'], \n            model['provider'], \n            config['test_prompt']\n        )\n        \n        score = calculate_score(response, config['reference_answer'])\n        model['score'] = score\n        results.append(model)\n\n    # 3. Rank results by score (Descending)\n    ranked_results = sorted(results, key=lambda x: x['score'], reverse=True)\n\n    # 4. Write back to Config\n    config['candidates'] = ranked_results\n    with open('config.yaml', 'w') as f:\n        yaml.dump(config, f, default_flow_style=False)\n    \n    print(\"\\nRanking complete. config.yaml updated.\")\n\nif __name__ == \"__main__\":\n    run_benchmark()\n```\n\n### Reasoning for this Design\n\n1.  **YAML as State:** Using YAML for both input and output makes the system \"human-readable.\" You can manually add a new model to the list, run the script, and see it move up or down the leaderboard immediately.\n2.  **Decoupled Scoring:** The `calculate_score` function is isolated. You can swap the \"Mock\" logic for a **Judge Model** (e.g., asking GPT-4 to grade Llama's output) without changing the rotation logic.\n3.  **Provider Agnostic:** The `get_llm_response` function acts as a router. By passing the `provider` string, you can use a single `if/else` block or a dictionary to handle different API schemas (OpenAI vs. Anthropic).\n4.  **In-place Updates:** Sorting the list before saving ensures that the top-performing model is always at the top of your config file",
+              "estimatedCost": 0.0027080000000000003,
+              "inputTokens": 40,
+              "latencyMs": 5808,
+              "modelId": "google/gemini-3-flash-preview",
+              "outputTokens": 896,
+              "status": "ok"
+            },
+            {
+              "answer": "Here\u2019s a simple, practical design in Python.\n\nIt does 4 things:\n\n1. Rotates through candidate LLMs\n2. Runs each on a small task set\n3. Scores them\n4. Writes ranked results to a config file\n\n## Approach\n\n- Define candidate models in a config\n- Define test prompts with expected signals\n- For each model:\n  - call the model\n  - score output\n  - compute average score\n- Sort descending\n- write results back to a JSON config file\n\nThis keeps things easy to extend.\n\n---\n\n## Example implementation\n\n```python\nimport json\nimport time\nfrom dataclasses import dataclass, asdict\nfrom typing import List, Dict, Any\n\n\n@dataclass\nclass CandidateModel:\n    name: str\n    provider: str\n    enabled: bool = True\n\n\n@dataclass\nclass Task:\n    name: str\n    prompt: str\n    must_contain: List[str]\n    weight: float = 1.0\n\n\n@dataclass\nclass ModelResult:\n    name: str\n    provider: str\n    avg_score: float\n    task_scores: Dict[str, float]\n    latency_ms: float\n\n\nclass FakeLLMClient:\n    \"\"\"\n    Replace this with real provider calls.\n    \"\"\"\n\n    def generate(self, provider: str, model: str, prompt: str) -> str:\n        # Simulated responses for demo purposes\n        time.sleep(0.05)\n\n        canned = {\n            \"model-a\": \"Python is a programming language. It is widely used.\",\n            \"model-b\": \"Python is a snake and also a programming language.\",\n            \"model-c\": \"I am not sure.\",\n        }\n        return canned.get(model, \"No response.\")\n\n\nclass BenchmarkRunner:\n    def __init__(self, client: FakeLLMClient, tasks: List[Task]):\n        self.client = client\n        self.tasks = tasks\n\n    def score_output(self, output: str, task: Task) -> float:\n        output_lower = output.lower()\n        matched = sum(1 for token in task.must_contain if token.lower() in output_lower)\n        if not task.must_contain:\n            return 1.0\n        return matched / len(task.must_contain)\n\n    def evaluate_model(self, candidate: CandidateModel) -> ModelResult:\n        task_scores = {}\n        total_weighted_score = 0.0\n        total_weight = 0.0\n        total_latency = 0.0\n\n        for task in self.tasks:\n            start = time.time()\n            output = self.client.generate(\n                provider=candidate.provider,\n                model=candidate.name,\n                prompt=task.prompt,\n            )\n            latency_ms = (time.time() - start) * 1000.0\n            total_latency += latency_ms\n\n            score = self.score_output(output, task)\n            task_scores[task.name] = round(score, 4)\n\n            total_weighted_score += score * task.weight\n            total_weight += task.weight\n\n        avg_score = total_weighted_score / total_weight if total_weight else 0.0\n        avg_latency = total_latency / len(self.tasks) if self.tasks else 0.0\n\n        return ModelResult(\n            name=candidate.name,\n            provider=candidate.provider,\n            avg_score=round(avg_score, 4),\n            task_scores=task_scores,\n            latency_ms=round(avg_latency, 2),\n        )\n\n    def run(self, candidates: List[CandidateModel]) -> List[ModelResult]:\n        results = []\n        for candidate in candidates:\n            if not candidate.enabled:\n                continue\n            result = self.evaluate_model(candidate)\n            results.append(result)\n\n        results.sort(key=lambda r: (-r.avg_score, r.latency_ms))\n        return results\n\n\ndef write_ranked_results(config_path: str, candidates: List[CandidateModel], results: List[ModelResult]) -> None:\n    output = {\n        \"candidates\": [asdict(c) for c in candidates],\n        \"ranked_results\": [asdict(r) for r in results],\n        \"winner\": asdict(results[0]) if results else None,\n        \"updated_at\": time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime()),\n    }\n\n    with open(config_path, \"w\", encoding=\"utf-8",
+              "estimatedCost": 0.0136225,
+              "inputTokens": 49,
+              "latencyMs": 13384,
+              "modelId": "openai/gpt-5.4",
               "outputTokens": 900,
               "status": "ok"
             }
@@ -944,11 +936,27 @@
           "judge": {
             "scores": [
               {
-                "clarity": 7,
-                "decisiveness": 8,
-                "groundedness": 7,
+                "clarity": 9,
+                "decisiveness": 9,
+                "groundedness": 9,
                 "modelId": "anthropic/claude-sonnet-4.6",
-                "notes": "Correct core diagnosis (component defined in parent causes remount and focus loss) and multiple fixes. However, it incorrectly states that React 'sees different component type' just from a new function reference; in practice React uses element.type identity, but in this example the identity does change because the component is redeclared, not because of function reference churn alone. The `useCallback` explanation is a bit hand\u2011wavy/confusing. Answer is slightly overlong and ends abruptly (truncated real\u2011world example).",
+                "notes": "Directly explains the exact scenario in the prompt (nested component recreated each render) with a precise mental model of component identity. Shows minimal+good fixes, including proper pattern (move component out) and suggests diagnostics. One minor downside: suggests a `useMemo` + `React.memo` workaround that\u2019s more complex/risky than needed, but it\u2019s clearly labeled as less preferable.",
+                "usefulness": 9
+              },
+              {
+                "clarity": 6,
+                "decisiveness": 5,
+                "groundedness": 6,
+                "modelId": "minimax/minimax-m2.7",
+                "notes": "Drifts into a general list of React re-render/focus pitfalls (keys, inline objects, handlers) rather than focusing on the specific bug: nested component recreation. Some examples are partially duplicated/incorrectly contrasted (List/ListItem examples). Only partially answers the given scenario and doesn\u2019t clearly tie the behavior to component identity and remounting.",
+                "usefulness": 5
+              },
+              {
+                "clarity": 8,
+                "decisiveness": 8,
+                "groundedness": 8,
+                "modelId": "xiaomi/mimo-v2-pro",
+                "notes": "Accurately identifies the nested-component-in-parent pattern as the root cause and explains remounting and focus loss. Provides good concrete before/after code and mentions variations (inline map, wrapper component). Starts to show a `useMemo` + `React.memo` workaround but the answer is truncated mid-example, so it feels unfinished.",
                 "usefulness": 8
               },
               {
@@ -956,24 +964,16 @@
                 "decisiveness": 7,
                 "groundedness": 8,
                 "modelId": "google/gemini-3-flash-preview",
-                "notes": "Explains that the input is being unmounted/remounted and covers three plausible causes: nested component definitions, unstable keys, and dynamic wrapper types. Technically solid and clear, with a nice DevTools debugging tip, but less tightly focused on the specific scenario \"nested component recreated on render\"; spends proportionally more time on other causes rather than deeply explaining the nested-component remounting mechanism.",
+                "notes": "Explains that focus loss is due to unmount/mount cycles and outlines several common causes (nested components, unstable keys, changing wrapper type). However, the focus is more spread across multiple generic causes instead of tightly centering on the nested component recreation described in the prompt, and it doesn\u2019t show as targeted a before/after for that specific anti-pattern.",
                 "usefulness": 7
               },
               {
-                "clarity": 9,
-                "decisiveness": 9,
-                "groundedness": 9,
+                "clarity": 10,
+                "decisiveness": 10,
+                "groundedness": 10,
                 "modelId": "openai/gpt-5.4",
-                "notes": "Directly targets the described issue: nested component defined inside parent causes a new component identity each render, leading to unmount/remount and focus loss. Provides a minimal repro, step\u2011by\u2011step explanation, and concrete fixes (move component out, inline JSX). Also calls out other realistic pitfalls (keys, conditional rendering, parent remount) and shows how to confirm via mount/unmount logs. Concise, technically accurate, and highly actionable.",
-                "usefulness": 9
-              },
-              {
-                "clarity": 3,
-                "decisiveness": 4,
-                "groundedness": 5,
-                "modelId": "moonshotai/kimi-k2.5",
-                "notes": "Starts with the correct intuition (unmount/remount due to nested component definition) but the response is truncated and incomplete. Lacks full explanation, fixes, or additional debugging guidance, so it\u2019s not very useful in its current form despite being directionally correct.",
-                "usefulness": 3
+                "notes": "Pinpoints the exact cause: nested component defined inside the parent so its identity changes each render, causing unmount/mount and focus loss. Gives a minimal, correct reproduction, a clear explanation of the render cycle, and a straightforward fix (move child component out). Adds a simple diagnostic (mount/unmount logs) and briefly but accurately covers related pitfalls (keys, factory components) without diluting the main answer. Very on-target for debugging the described issue.",
+                "usefulness": 10
               }
             ],
             "winnerModelId": "openai/gpt-5.4"
@@ -981,48 +981,48 @@
           "prompt": "Debug why a React input loses focus after every keystroke when a nested component is recreated on render.",
           "responses": [
             {
-              "answer": "## The Problem\n\nWhen you define a component **inside another component's render**, React sees it as a **new component type** on every render, unmounts the old one, and mounts a fresh one \u2014 destroying focus.\n\n```jsx\n// \u274c BROKEN - InputComponent is redefined on every render\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  // This creates a NEW component type every render cycle\n  const InputComponent = () => (\n    <input\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n\n  return <InputComponent />; // Unmounts/remounts every keystroke\n}\n```\n\n### Why This Happens\n\n```\nKeystroke \u2192 setValue() \u2192 Parent re-renders\n\u2192 New InputComponent function reference created\n\u2192 React sees different component type at same position\n\u2192 Unmount old tree \u2192 Mount new tree \u2192 Focus lost\n```\n\n---\n\n## The Fixes\n\n### Fix 1: Move the component definition outside (Best Solution)\n\n```jsx\n// \u2705 CORRECT - Defined once, stable component type\nconst InputComponent = ({ value, onChange }) => (\n  <input value={value} onChange={onChange} />\n);\n\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  return (\n    <InputComponent\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n### Fix 2: Render JSX directly instead of a nested component\n\n```jsx\n// \u2705 CORRECT - No nested component, just inline JSX\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  return (\n    <input\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n### Fix 3: If you need dynamic components, use `useMemo` on the element (not the component)\n\n```jsx\n// \u2705 Memoize the element, not the component definition\nfunction Parent() {\n  const [value, setValue] = useState('');\n  const [otherState, setOtherState] = useState(false);\n\n  // Stable component defined outside (still required)\n  return (\n    <div>\n      {otherState && <HeavyComponent />}\n      <StableInput value={value} onChange={(e) => setValue(e.target.value)} />\n    </div>\n  );\n}\n```\n\n### Fix 4: When you genuinely need a factory pattern, use `useCallback` \u2014 but note this still breaks\n\n```jsx\n// \u26a0\ufe0f useCallback does NOT fix this \u2014 component type is still unstable\n// React compares component constructors, not just references in this context\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  // Still broken - component defined inside, even if memoized\n  const InputComponent = useCallback(\n    () => <input value={value} onChange={(e) => setValue(e.target.value)} />,\n    [value]\n  );\n\n  return <InputComponent />; // Still remounts when value changes\n}\n```\n\n---\n\n## Diagnostic Checklist\n\n```\nFocus lost on every keystroke?\n\u2502\n\u251c\u2500\u2500 Is a component defined inside another component's body?  \u2192 Move it outside\n\u251c\u2500\u2500 Is a component defined inside a render prop or callback? \u2192 Extract it\n\u251c\u2500\u2500 Is a key prop changing on the input?                     \u2192 Fix the key\n\u2514\u2500\u2500 Is a parent conditionally wrapping the input?           \u2192 Check render tree stability\n```\n\n---\n\n## Real-World Example with Context\n\n```jsx\n// \u274c Common mistake in forms\nfunction Form() {\n  const [fields, setFields] = useState({ name: '', email: '' });\n\n  // Broken: new component every render\n  const Field = ({",
+              "answer": "## The Problem\n\nWhen you define a component **inside another component's render**, React sees it as a new component type on every render, unmounts the old one, and mounts a fresh one \u2014 destroying focus.\n\n```jsx\n// \u274c BROKEN - InputComponent is redefined on every render\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  // This creates a NEW component type every render\n  const InputComponent = () => (\n    <input\n      value={value}\n      onChange={e => setValue(e.target.value)}\n    />\n  );\n\n  return <InputComponent />; // Unmounts/remounts every keystroke\n}\n```\n\n---\n\n## Why This Happens\n\n```\nKeystroke \u2192 setValue() \u2192 Parent re-renders\n\u2192 New InputComponent function created (different reference)\n\u2192 React sees different component type at same position\n\u2192 Unmount old tree, mount new tree\n\u2192 Focus lost\n```\n\nReact uses **component identity** (the function/class reference) to decide whether to reuse or replace a subtree. A new reference = full replacement.\n\n---\n\n## Fix 1: Move the component outside (Best Solution)\n\n```jsx\n// \u2705 CORRECT - Defined once, stable reference\nconst InputComponent = ({ value, onChange }) => (\n  <input value={value} onChange={onChange} />\n);\n\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  return (\n    <InputComponent\n      value={value}\n      onChange={e => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n---\n\n## Fix 2: Render JSX directly instead of a nested component\n\n```jsx\n// \u2705 CORRECT - No nested component at all\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  return (\n    <input\n      value={value}\n      onChange={e => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n---\n\n## Fix 3: If you must define it inside, use `useCallback` + `useMemo`\n\n```jsx\n// \u26a0\ufe0f Works but fragile \u2014 prefer Fix 1 or Fix 2\nfunction Parent() {\n  const [value, setValue] = useState('');\n\n  // Stable component reference across renders\n  // eslint-disable-next-line react/display-name\n  const InputComponent = useMemo(\n    () =>\n      React.memo(({ value, onChange }) => (\n        <input value={value} onChange={onChange} />\n      )),\n    [] // Empty deps = created once\n  );\n\n  return (\n    <InputComponent\n      value={value}\n      onChange={e => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n> **Warning:** This is still risky. If `[]` deps ever need to change, you'll reintroduce the bug. Prefer Fix 1.\n\n---\n\n## Diagnosing This in Your Own Code\n\n```jsx\n// Add this to spot unstable component references\nuseEffect(() => {\n  console.log('Component mounted'); // Fires every keystroke? You have this bug.\n  return () => console.log('Component unmounted');\n}, []);\n```\n\n```jsx\n// React DevTools: enable \"Highlight updates when components render\"\n// If you see a full blue flash (not green) on every keystroke \u2192 remounting\n```\n\n---\n\n## Key Rules to Remember\n\n| Pattern | Result |\n|---|---|\n| Component defined outside parent | \u2705 Stable reference, no remount |\n| Component defined inside render | \u274c New reference every render |\n| Inline JSX (`<div>`) | \u2705 Not a component, safe |\n| `useMemo` component inside render | \u26a0\ufe0f Works but avoid |\n| `key` prop changed on same component |",
               "estimatedCost": 0.013637999999999999,
               "inputTokens": 46,
-              "latencyMs": 16783,
+              "latencyMs": 16323,
               "modelId": "anthropic/claude-sonnet-4.6",
               "outputTokens": 900,
               "status": "ok"
             },
             {
-              "answer": "The reason your input loses focus is that **React is unmounting the old input and mounting a brand new one** on every render. When a component is unmounted, the browser focus associated with that DOM element is destroyed.\n\nHere are the three most common causes and how to fix them.\n\n---\n\n### 1. Defining a component inside another component (Most Common)\nIf you declare a component function *inside* the body of a parent component, the function is re-created on every render. To React, this looks like a completely different component type, forcing a full teardown and rebuild of the DOM tree.\n\n**The Bug:**\n```javascript\nfunction Parent() {\n  const [text, setText] = useState(\"\");\n\n  // BAD: This function is re-created every time Parent renders\n  function MyInput() {\n    return <input value={text} onChange={(e) => setText(e.target.value)} />;\n  }\n\n  return (\n    <div>\n      <MyInput />\n    </div>\n  );\n}\n```\n\n**The Fix:**\nMove the nested component **outside** the parent component. Pass data and callbacks via props.\n```javascript\n// GOOD: Defined outside, identity remains stable\nfunction MyInput({ value, onChange }) {\n  return <input value={value} onChange={onChange} />;\n}\n\nfunction Parent() {\n  const [text, setText] = useState(\"\");\n  return <MyInput value={text} onChange={(e) => setText(e.target.value)} />;\n}\n```\n\n---\n\n### 2. Using unstable `key` values\nReact uses the `key` prop to track identity. If you use a dynamic key (like `Math.random()` or a timestamp) on the input or its wrapper, React thinks the element has been replaced rather than updated.\n\n**The Bug:**\n```javascript\n// BAD: Key changes every render\n<input key={Math.random()} value={text} onChange={e => setText(e.target.value)} />\n```\n\n**The Fix:**\nUse a stable ID or omit the `key` if the input is not part of a dynamic list.\n```javascript\n// GOOD: Stable key or no key\n<input key=\"email-field\" value={text} onChange={e => setText(e.target.value)} />\n```\n\n---\n\n### 3. Changing the Component Type dynamically\nIf you wrap your input in a conditional container that changes its tag type (e.g., switching from a `div` to a `section`), React will unmount everything inside that container.\n\n**The Bug:**\n```javascript\nreturn (\n  <WrapperType> {/* If WrapperType changes from 'div' to 'span', focus is lost */}\n    <input ... />\n  </WrapperType>\n);\n```\n\n---\n\n### How to verify the cause\n1.  Open **Chrome DevTools**.\n2.  Right-click the input and select **Inspect**.\n3.  Type a character.\n4.  If the element in the \"Elements\" panel **flashes/blinks** or the \"== $0\" highlight disappears and reappears, the DOM node is being destroyed and recreated. This confirms the issue is a **re-mount**, not just a re-render.",
-              "estimatedCost": 0.0021275,
-              "inputTokens": 37,
-              "latencyMs": 4417,
-              "modelId": "google/gemini-3-flash-preview",
-              "outputTokens": 703,
-              "status": "ok"
-            },
-            {
-              "answer": "",
+              "answer": "# Debugging React Input Focus Loss\n\nThis happens because **React recreates the nested component on each render**, causing the input to unmount/remount (destroying focus).\n\n## Root Causes\n\n| Cause | Why It Breaks Focus |\n|-------|---------------------|\n| Creating component inline with unstable key | New reference = unmount old, mount new |\n| Inline object/function as prop | Reference changes, triggers re-render |\n| Missing `key` on list items | React can't track identity |\n| Creating new components in render | Full subtree re-creation |\n\n## Common Patterns That Cause This\n\n### 1. Unstable Key (most common)\n\n```jsx\n// \u274c BROKEN - new key every render\nfunction Parent() {\n  return <Child key={Date.now()} />;\n}\n\n// \u2705 FIXED - stable key\nfunction Parent() {\n  const id = useId(); // React 18+\n  return <Child key={id} />;\n}\n```\n\n### 2. Creating New Component References Inline\n\n```jsx\n// \u274c BROKEN - new component instance every render\nfunction Parent() {\n  return (\n    <div>\n      <div onClick={() => {}}><Input /></div>\n      {/*    ^ new function reference */}\n    </div>\n  );\n}\n\n// \u2705 FIXED - memoize or move outside\nconst FixedDiv = React.memo(({ children }) => <div>{children}</div>);\n\nfunction Parent() {\n  const handleClick = useCallback(() => {}, []);\n  return (\n    <FixedDiv onClick={handleClick}>\n      <Input />\n    </FixedDiv>\n  );\n}\n```\n\n### 3. Inline Object Props\n\n```jsx\n// \u274c BROKEN - new object every render\nfunction Parent() {\n  return <Child style={{ color: 'red' }} />;\n}\n\n// \u2705 FIXED - define outside or memoize\nconst RED_STYLE = { color: 'red' };\nfunction Parent() {\n  return <Child style={RED_STYLE} />;\n}\n```\n\n### 4. Inline List Item Components\n\n```jsx\n// \u274c BROKEN - component recreated for each item\nfunction List({ items }) {\n  return items.map(item => (\n    <ListItem key={item.id} item={item} />\n  ));\n}\n\n// \u2705 FIXED - define outside render\nfunction List({ items }) {\n  return items.map(item => (\n    <ListItem key={item.id} item={item} />\n  ));\n}\n\nconst ListItem = React.memo(({ item }) => { /* ... */ });\n```\n\n## Quick Debugging Steps\n\n```jsx\n// Add this to confirm the component is remounting\nuseEffect(() => {\n  console.log('Child mounted');\n  return () => console.log('Child unmounted');\n}, []);\n```\n\nIf you see mount",
               "estimatedCost": 0.0010947,
               "inputTokens": 49,
-              "latencyMs": 20141,
+              "latencyMs": 16950,
               "modelId": "minimax/minimax-m2.7",
               "outputTokens": 900,
               "status": "ok"
             },
             {
-              "answer": "This usually happens because React thinks the input is a different component on every keystroke, so it unmounts the old one and mounts a new one. A remounted input loses focus.\n\n## Common cause\n\nYou define a child component inside the parent component\u2019s render/body, like this:\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = React.useState(\"\");\n\n  function NestedInput() {\n    return (\n      <input\n        value={value}\n        onChange={(e) => setValue(e.target.value)}\n      />\n    );\n  }\n\n  return <NestedInput />;\n}\n```\n\n### Why this breaks focus\n- Every keystroke calls `setValue`\n- `Parent` re-renders\n- `NestedInput` is redefined as a brand new function\n- React treats it as a new component type\n- Old input is unmounted, new input is mounted\n- Focus is lost\n\n---\n\n## How to fix it\n\n### Fix 1: Move the nested component outside\nThis is the usual fix.\n\n```jsx\nfunction NestedInput({ value, onChange }) {\n  return <input value={value} onChange={onChange} />;\n}\n\nfunction Parent() {\n  const [value, setValue] = React.useState(\"\");\n\n  return (\n    <NestedInput\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n}\n```\n\nNow `NestedInput` has a stable identity across renders, so the DOM input stays mounted and keeps focus.\n\n---\n\n### Fix 2: Don\u2019t make it a component at all\nIf it\u2019s only used once, just inline the JSX.\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = React.useState(\"\");\n\n  return (\n    <input\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n---\n\n## Other things to check\n\nIf moving the component doesn\u2019t solve it, these can also cause focus loss:\n\n### 1. Changing `key`\nIf the input or one of its parents gets a new `key` on every render, React remounts it.\n\nBad:\n```jsx\n<input key={value} value={value} onChange={...} />\n```\n\nor\n\n```jsx\n<Wrapper key={Math.random()}>\n  <input ... />\n</Wrapper>\n```\n\nFix: use a stable key, or no key unless needed.\n\n---\n\n### 2. Conditional rendering that swaps components\nIf typing changes some condition that replaces the input subtree, focus can disappear.\n\nExample:\n```jsx\n{isEditing ? <input ... /> : <span>{value}</span>}\n```\n\nIf `isEditing` flips accidentally during typing, the input gets replaced.\n\n---\n\n### 3. Parent component remounting\nIf the whole parent is being recreated due to a changed key higher up, the input also remounts.\n\n---\n\n## How to confirm the issue\n\nAdd mount/unmount logs:\n\n```jsx\nfunction NestedInput({ value, onChange }) {\n  React.useEffect(() => {\n    console.log(\"mounted\");\n    return () => console.log(\"unmounted\");\n  }, []);\n\n  return <input value={value} onChange={onChange} />;\n}\n```\n\nIf you see `unmounted` and `mounted` after every keystroke, the component is being remounted, not just re-rendered.\n\n---\n\n## Rule of thumb\n\nDo not define React component functions inside another component if you expect React to preserve that child\u2019s state or DOM node identity between renders.\n\nUse:\n- top-level component definitions\n- stable keys\n- normal re-renders, not remounts\n\nIf you want, I can also show:\n1. the exact reconciliation reason this happens, or  \n2. a before/after example using `memo`, `useCallback`, and stable props.",
-              "estimatedCost": 0.012145000000000001,
-              "inputTokens": 46,
-              "latencyMs": 14349,
-              "modelId": "openai/gpt-5.4",
-              "outputTokens": 802,
+              "answer": "# Debugging React Input Losing Focus on Keystroke\n\n## The Root Cause\n\nWhen a nested component is **recreated on every render**, React treats it as a **new element** (different identity), causing it to **unmount \u2192 remount** the DOM node. The input loses focus because the old DOM node is destroyed.\n\n---\n\n## Step 1: Identify the Anti-Pattern\n\n### \u274c The Bug \u2014 Component Defined Inside Another Component\n\n```jsx\nfunction ParentComponent() {\n  const [value, setValue] = useState(\"\");\n\n  // \ud83d\udd34 NEW function reference every render \u2192 React sees a NEW component type\n  const SearchInput = () => (\n    <input\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n      placeholder=\"Type here...\"\n    />\n  );\n\n  return (\n    <div>\n      <SearchInput />  {/* Unmounts & remounts on every render */}\n    </div>\n  );\n}\n```\n\n**Why this breaks:** React uses **referential identity** to track component types. A new function on each render = a new component type = destroy old tree, build new tree.\n\n---\n\n### \u274c Other Common Variations\n\n```jsx\n// Bug 2: Inline component in .map()\nfunction List({ items }) {\n  const [filter, setFilter] = useState(\"\");\n\n  return (\n    <div>\n      <input value={filter} onChange={(e) => setFilter(e.target.value)} />\n      {items.map((item) => {\n        // \ud83d\udd34 New component identity on every render\n        const ItemRow = () => <li>{item.name}</li>;\n        return <ItemRow key={item.id} />;\n      })}\n    </div>\n  );\n}\n```\n\n```jsx\n// Bug 3: Conditional inline component\nfunction App() {\n  const [query, setQuery] = useState(\"\");\n\n  // \ud83d\udd34 New component created conditionally\n  const Wrapper = ({ children }) => <div className=\"special\">{children}</div>;\n\n  return (\n    <Wrapper>\n      <input value={query} onChange={(e) => setQuery(e.target.value)} />\n    </Wrapper>\n  );\n}\n```\n\n---\n\n## Step 2: Verify With React DevTools\n\n1. Open **React DevTools \u2192 Components**\n2. Type in the input\n3. Watch the component **flash/disappear** on each keystroke\n4. Check the **component tree** \u2014 the key/id changes or the component vanishes\n\nYou can also add a lifecycle log to confirm:\n\n```jsx\nuseEffect(() => {\n  console.log(\"\ud83d\udfe2 MOUNTED\");\n  return () => console.log(\"\ud83d\udd34 UNMOUNTED\");\n}, []);\n```\n\nIf you see `\ud83d\udd34 UNMOUNTED \u2192 \ud83d\udfe2 MOUNTED` on every keystroke, you've confirmed the issue.\n\n---\n\n## Step 3: Fix \u2014 Move Components Outside or Memoize\n\n### \u2705 Fix 1: Define Components Outside the Parent\n\n```jsx\n// \u2705 Stable reference \u2014 defined once at module scope\nconst SearchInput = ({ value, onChange }) => (\n  <input value={value} onChange={onChange} placeholder=\"Type here...\" />\n);\n\nfunction ParentComponent() {\n  const [value, setValue] = useState(\"\");\n\n  return (\n    <div>\n      <SearchInput\n        value={value}\n        onChange={(e) => setValue(e.target.value)}\n      />\n    </div>\n  );\n}\n```\n\n### \u2705 Fix 2: Use `React.memo` for Inline-ish Components\n\n```jsx\nfunction ParentComponent() {\n  const [value, setValue] = useState(\"\");\n\n  // \u2705 Memoized \u2014 stable reference across renders\n  const SearchInput = useMemo(\n    () => React.memo(({ value, onChange }) => (\n      <input value={value} onChange={onChange} />\n    )),\n    []\n  );\n\n  return <SearchInput value={value} onChange={(e) => setValue(e.target.value)} />;\n}\n```\n\n### \u2705 Fix 3: Render JSX Directly Instead of Creating a Component\n\n```jsx\nfunction List({ items",
+              "estimatedCost": 0.0027470000000000003,
+              "inputTokens": 47,
+              "latencyMs": 14876,
+              "modelId": "xiaomi/mimo-v2-pro",
+              "outputTokens": 900,
               "status": "ok"
             },
             {
-              "answer": "The input loses focus because **React unmounts and remounts the input on every keystroke** due to component identity changing.\n\n## The Problem\n\nWhen you define a component *inside* another component, it creates a new function reference on every render. React sees this as an entirely different component type, destroys the old DOM element (losing focus), and creates a fresh one.\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = useState('');\n  \n  // \u274c BAD: This creates a new component type on every render\n  function NestedInput() {\n    return (\n      <input \n        value",
-              "estimatedCost": 0.0012873469,
-              "inputTokens": 47,
-              "latencyMs": 2682,
-              "modelId": "moonshotai/kimi-k2.5",
-              "outputTokens": 738,
+              "answer": "The reason your input loses focus after every keystroke is that **React is unmounting the old DOM element and mounting a brand-new one.**\n\nWhen a component is \"recreated\" on render, React sees it as a different type or a new instance. Since the DOM element is destroyed and replaced, the browser focus (which was attached to the old element) is lost.\n\nHere are the three most common causes and how to fix them:\n\n### 1. Defining a Component inside a Component (Most Common)\nIf you define a component function inside the body of another component, the inner component is redeclared on every render. To React, this looks like a brand-new component type every time.\n\n**The Bug:**\n```javascript\nfunction Parent() {\n  // BAD: This function is re-created every time Parent renders\n  function MyInput({ value, onChange }) {\n    return <input value={value} onChange={onChange} />;\n  }\n\n  const [text, setText] = useState(\"\");\n\n  return (\n    <div>\n      <MyInput value={text} onChange={(e) => setText(e.target.value)} />\n    </div>\n  );\n}\n```\n\n**The Fix:**\nMove the component definition **outside** of the parent component.\n```javascript\n// GOOD: Defined once outside\nfunction MyInput({ value, onChange }) {\n  return <input value={value} onChange={onChange} />;\n}\n\nfunction Parent() {\n  const [text, setText] = useState(\"\");\n  return <MyInput value={text} onChange={(e) => setText(e.target.value)} />;\n}\n```\n\n---\n\n### 2. Using unstable `key` props\nReact uses the `key` prop to track identity. If you use a dynamic key (like `Math.random()` or a timestamp) on the input or its wrapper, React assumes the element has been replaced by a \"new\" one.\n\n**The Bug:**\n```javascript\n// BAD: Key changes every render\n<input key={Math.random()} value={text} onChange={e => setText(e.target.value)} />\n```\n\n**The Fix:**\nUse a stable ID or the array index (if the list order is static).\n```javascript\n// GOOD: Key is stable\n<input key=\"email-field\" value={text} onChange={e => setText(e.target.value)} />\n```\n\n---\n\n### 3. Changing the Component Type Dynamically\nIf you wrap your input in a conditional container that changes its tag name or component type based on state, the entire tree inside that container is destroyed.\n\n**The Bug:**\n```javascript\nfunction Parent() {\n  const [text, setText] = useState(\"\");\n  \n  // BAD: Changing the wrapper type from 'div' to 'section' \n  // will unmount everything inside it.\n  const Wrapper = text.length > 5 ? 'section' : 'div';\n\n  return (\n    <Wrapper>\n      <input value={text} onChange={e => setText(e.target.value)} />\n    </Wrapper>\n  );\n}\n```\n\n**The Fix:**\nKeep the component structure stable. Use CSS classes for styling changes rather than changing the HTML tag or component type.\n\n---\n\n### How to verify this is the issue:\n1. Open **Chrome DevTools**.\n2. Right-click the input and select **Inspect**.\n3. Type a character.\n4. If the element in the \"Elements\" panel flashes or the \"== $0\" indicator moves/disappears, the DOM node is being deleted and recreated.",
+              "estimatedCost": 0.0023615,
+              "inputTokens": 37,
+              "latencyMs": 5733,
+              "modelId": "google/gemini-3-flash-preview",
+              "outputTokens": 781,
+              "status": "ok"
+            },
+            {
+              "answer": "This usually happens because React thinks the input is a *different component* after each keystroke, so it unmounts the old one and mounts a new one. A newly mounted input won\u2019t keep the previous DOM focus reliably.\n\n## Common cause\n\nYou define a nested component **inside** the parent component\u2019s render/function body:\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = useState(\"\");\n\n  function Field() {\n    return (\n      <input\n        value={value}\n        onChange={(e) => setValue(e.target.value)}\n      />\n    );\n  }\n\n  return <Field />;\n}\n```\n\n### Why this breaks focus\nEvery time `value` changes:\n\n- `Parent` re-renders\n- `Field` is redefined as a new function\n- React treats it as a new component type\n- old `Field` unmounts\n- new `Field` mounts\n- input loses focus\n\n## How to confirm\nAdd mount/unmount logs:\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = useState(\"\");\n\n  function Field() {\n    useEffect(() => {\n      console.log(\"Field mounted\");\n      return () => console.log(\"Field unmounted\");\n    }, []);\n\n    return (\n      <input\n        value={value}\n        onChange={(e) => setValue(e.target.value)}\n      />\n    );\n  }\n\n  return <Field />;\n}\n```\n\nIf you see mount/unmount on every keystroke, that\u2019s the issue.\n\n---\n\n## Fix\n\nMove the nested component **outside** the parent so its identity is stable:\n\n```jsx\nfunction Field({ value, onChange }) {\n  return <input value={value} onChange={onChange} />;\n}\n\nfunction Parent() {\n  const [value, setValue] = useState(\"\");\n\n  return (\n    <Field\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n}\n```\n\n---\n\n## If you need it \u201cinline\u201d\nIf you were using the nested component just for organization, don\u2019t make it a component. Use a plain helper function or inline JSX:\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = useState(\"\");\n\n  const field = (\n    <input\n      value={value}\n      onChange={(e) => setValue(e.target.value)}\n    />\n  );\n\n  return <div>{field}</div>;\n}\n```\n\nor:\n\n```jsx\nfunction Parent() {\n  const [value, setValue] = useState(\"\");\n\n  return (\n    <div>\n      <input\n        value={value}\n        onChange={(e) => setValue(e.target.value)}\n      />\n    </div>\n  );\n}\n```\n\n---\n\n## Also check these related causes\n\nEven if the nested component issue is fixed, focus can still be lost if:\n\n### 1. You change the `key`\n```jsx\n<input key={value} ... />\n```\n\nThis forces remount on every change. Don\u2019t key an input by its current value.\n\n### 2. Parent subtree is being remounted\nExample:\n\n```jsx\n{show && <Form />}\n```\n\nIf `show` flips or some wrapper gets a changing `key`, the input remounts.\n\n### 3. Styled/component factories are created during render\nExample:\n\n```jsx\nfunction Parent() {\n  const FancyInput = styled.input`...`; // bad here\n  return <FancyInput />;\n}\n```\n\nThis also creates a new component each render. Move it outside.\n\n---\n\n## Rule of thumb\n\nIf a component is declared inside another component, and that parent re-renders often, React may remount the nested component because its identity changes. For stateful DOM like inputs, that often shows up as losing focus.\n\n## Best practice\n\n- Define components at module scope\n- Keep keys stable\n- Don\u2019t create component types during render\n\nIf you want, I can also show a before/after example with `React.memo`, `styled-components`, or a real form library case.",
+              "estimatedCost": 0.012700000000000001,
+              "inputTokens": 46,
+              "latencyMs": 15739,
+              "modelId": "openai/gpt-5.4",
+              "outputTokens": 839,
               "status": "ok"
             }
           ],
@@ -1032,8 +1032,8 @@
       ],
       "rankedModels": [
         {
-          "avgEstimatedCost": 0.01288375,
-          "avgLatencyMs": 13659.0,
+          "avgEstimatedCost": 0.01316125,
+          "avgLatencyMs": 14561.5,
           "contextLength": 1050000,
           "errors": 0,
           "id": "openai/gpt-5.4",
@@ -1042,28 +1042,13 @@
           "outputCostPerToken": 1.5e-05,
           "promptCount": 2,
           "provider": "openai",
-          "score": 34.5,
+          "score": 37.0,
           "winRate": 1.0,
           "wins": 2
         },
         {
-          "avgEstimatedCost": 0.00241775,
-          "avgLatencyMs": 4901.0,
-          "contextLength": 1048576,
-          "errors": 0,
-          "id": "google/gemini-3-flash-preview",
-          "inputCostPerToken": 5e-07,
-          "name": "Google: Gemini 3 Flash Preview",
-          "outputCostPerToken": 3e-06,
-          "promptCount": 2,
-          "provider": "google",
-          "score": 30.0,
-          "winRate": 0.0,
-          "wins": 0
-        },
-        {
           "avgEstimatedCost": 0.013644,
-          "avgLatencyMs": 14897.5,
+          "avgLatencyMs": 14434.0,
           "contextLength": 1000000,
           "errors": 0,
           "id": "anthropic/claude-sonnet-4.6",
@@ -1072,13 +1057,43 @@
           "outputCostPerToken": 1.5e-05,
           "promptCount": 2,
           "provider": "anthropic",
-          "score": 24.5,
+          "score": 30.5,
+          "winRate": 0.0,
+          "wins": 0
+        },
+        {
+          "avgEstimatedCost": 0.00253475,
+          "avgLatencyMs": 5770.5,
+          "contextLength": 1048576,
+          "errors": 0,
+          "id": "google/gemini-3-flash-preview",
+          "inputCostPerToken": 5e-07,
+          "name": "Google: Gemini 3 Flash Preview",
+          "outputCostPerToken": 3e-06,
+          "promptCount": 2,
+          "provider": "google",
+          "score": 28.5,
+          "winRate": 0.0,
+          "wins": 0
+        },
+        {
+          "avgEstimatedCost": 0.002749,
+          "avgLatencyMs": 14097.0,
+          "contextLength": 1048576,
+          "errors": 0,
+          "id": "xiaomi/mimo-v2-pro",
+          "inputCostPerToken": 1e-06,
+          "name": "Xiaomi: MiMo-V2-Pro",
+          "outputCostPerToken": 3e-06,
+          "promptCount": 2,
+          "provider": "xiaomi",
+          "score": 23.5,
           "winRate": 0.0,
           "wins": 0
         },
         {
           "avgEstimatedCost": 0.00109515,
-          "avgLatencyMs": 17328.0,
+          "avgLatencyMs": 16752.0,
           "contextLength": 196608,
           "errors": 0,
           "id": "minimax/minimax-m2.7",
@@ -1087,22 +1102,7 @@
           "outputCostPerToken": 1.2e-06,
           "promptCount": 2,
           "provider": "minimax",
-          "score": 21.0,
-          "winRate": 0.0,
-          "wins": 0
-        },
-        {
-          "avgEstimatedCost": 0.00142724,
-          "avgLatencyMs": 3811.5,
-          "contextLength": 262144,
-          "errors": 0,
-          "id": "moonshotai/kimi-k2.5",
-          "inputCostPerToken": 3.827e-07,
-          "name": "MoonshotAI: Kimi K2.5",
-          "outputCostPerToken": 1.72e-06,
-          "promptCount": 2,
-          "provider": "moonshotai",
-          "score": 14.5,
+          "score": 22.0,
           "winRate": 0.0,
           "wins": 0
         }
@@ -1392,7 +1392,7 @@
       ]
     }
   },
-  "generatedAt": "2026-04-13T11:21:53Z",
+  "generatedAt": "2026-04-20T11:23:48Z",
   "judgeModelId": "openai/gpt-5.1",
   "version": 2
 }
