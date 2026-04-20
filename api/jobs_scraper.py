@@ -155,13 +155,14 @@ YC_DISCOVER_SECTORS: list[str] = [s.strip() for s in _YC_DISCOVER_SECTORS_ENV.sp
 GREENHOUSE_API_BASE = "https://boards-api.greenhouse.io/v1/boards"
 
 DEFAULT_GREENHOUSE_DISCOVERY_COMPANIES = [
-    # Startup / AI infra (stage-appropriate; large corps excluded to avoid monopoly)
-    "warp", "merge", "modal", "mercor", "clay", "pylon", "weightsbiases",
-    # Healthtech
+    # AI/ML infra — Series A-C, NYC presence or remote-first
+    "warp", "merge", "modal", "mercor", "clay", "pylon",
+    "huggingface", "vanta", "brex", "navan", "weightsbiases",
+    # Healthtech — NYC presence or distributed
     "komodohealth", "himsandhers", "includedhealth",
-    "modernhealth", "springhealth", "hingehealth",
+    "modernhealth", "springhealth",
     # Internal tooling
-    "notion", "retool",
+    "notion",
 ]
 
 
@@ -269,8 +270,8 @@ GREENHOUSE_MAX_PER_COMPANY = int(os.environ.get("JOBRADAR_GREENHOUSE_MAX_PER_COM
 # ---------------------------------------------------------------------------
 LEVER_SITE_BASE = "https://jobs.lever.co"
 DEFAULT_LEVER_DISCOVERY_COMPANIES = [
-    "mistral", "palantir",
-    "anyscale", "huggingface",
+    # AI — remote-friendly, right stage
+    "mistral", "huggingface",
 ]
 LEVER_MAX_PER_COMPANY = int(os.environ.get("JOBRADAR_LEVER_MAX_PER_COMPANY", "8"))
 _LEVER_ENV = os.environ.get("JOBRADAR_LEVER_COMPANIES", "").strip()
@@ -290,8 +291,9 @@ LEVER_MAX_JOBS = int(os.environ.get("JOBRADAR_LEVER_MAX_JOBS", "40"))
 # ---------------------------------------------------------------------------
 ASHBY_API_BASE = "https://api.ashbyhq.com/posting-api/job-board"
 DEFAULT_ASHBY_DISCOVERY_COMPANIES = [
+    # NYC-based or remote-first AI/infra
     "ramp", "perplexity", "cursor", "runway", "replit",
-    "linear", "groq",
+    "linear", "groq", "harvey", "retool",
 ]
 _ASHBY_ENV = os.environ.get("JOBRADAR_ASHBY_COMPANIES", "").strip()
 ASHBY_COMPANIES: list[str] = _parse_company_list(_ASHBY_ENV)
@@ -1202,6 +1204,7 @@ def discover_yc_companies_by_tag(
     tags: list[str],
     *,
     limit_per_tag: int = 30,
+    location_keywords: list[str] | None = None,
 ) -> dict[str, list[str]]:
     """
     Fetch the YC company directory filtered by industry tags and resolve ATS slugs.
@@ -1209,6 +1212,10 @@ def discover_yc_companies_by_tag(
     Returns {"greenhouse": [...], "ashby": [...], "lever": [...]} — each list
     contains company slugs ready to pass into the matching ATS scraper.
     Slugs are deduplicated across tags.
+
+    location_keywords: if provided, skip companies whose known location doesn't
+    match any keyword (e.g. drop SF-only companies when targeting NYC/remote).
+    Companies with no location field are always kept.
     """
     discovered: dict[str, list[str]] = {"greenhouse": [], "ashby": [], "lever": []}
     seen: set[str] = set()
@@ -1234,6 +1241,13 @@ def discover_yc_companies_by_tag(
         for co in companies:
             if found >= limit_per_tag:
                 break
+            # Location filter — skip companies clearly outside target geography
+            if location_keywords:
+                co_location = str(
+                    co.get("location") or co.get("city") or co.get("hq") or ""
+                ).lower()
+                if co_location and not any(kw in co_location for kw in location_keywords):
+                    continue
             jobs_url = str(co.get("jobsUrl") or co.get("jobs_url") or "")
             if not jobs_url:
                 continue
@@ -1542,7 +1556,10 @@ def run_scraper(
     _discovered: dict[str, list[str]] = {"greenhouse": [], "ashby": [], "lever": []}
     if _discover_sectors:
         try:
-            _discovered = discover_yc_companies_by_tag(_discover_sectors)
+            _discovered = discover_yc_companies_by_tag(
+                _discover_sectors,
+                location_keywords=LOCATION_ALLOW_KEYWORDS or None,
+            )
             if _discovered["greenhouse"]:
                 base = list(greenhouse_discovery_companies or GREENHOUSE_DISCOVERY_COMPANIES)
                 greenhouse_discovery_companies = base + [s for s in _discovered["greenhouse"] if s not in base]
