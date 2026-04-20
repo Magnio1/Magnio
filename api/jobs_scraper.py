@@ -81,6 +81,25 @@ SECTOR_KEYWORDS: dict[str, list[str]] = {
     ],
 }
 
+# Location keywords — jobs whose location matches any of these (or is blank/remote) are
+# kept; everything else is dropped before scoring.  Override via env var.
+_LOCATION_KW_ENV = os.environ.get(
+    "JOBRADAR_LOCATION_KEYWORDS",
+    "new york,nyc, ny ,remote,anywhere,worldwide,distributed,united states,usa,u.s.,north america",
+).strip()
+LOCATION_ALLOW_KEYWORDS: list[str] = [kw.strip().lower() for kw in _LOCATION_KW_ENV.split(",") if kw.strip()]
+
+
+def _location_allowed(job: dict[str, Any]) -> bool:
+    """Return True if the job is in an allowed location (NYC, remote, or unknown)."""
+    if job.get("remote"):
+        return True
+    location = str(job.get("location") or "").lower()
+    if not location:
+        return True  # unknown — let scoring decide
+    return any(kw in location for kw in LOCATION_ALLOW_KEYWORDS)
+
+
 # Thread-local sessions so each worker thread gets its own connection pool + retry
 _tls = threading.local()
 
@@ -136,9 +155,8 @@ YC_DISCOVER_SECTORS: list[str] = [s.strip() for s in _YC_DISCOVER_SECTORS_ENV.sp
 GREENHOUSE_API_BASE = "https://boards-api.greenhouse.io/v1/boards"
 
 DEFAULT_GREENHOUSE_DISCOVERY_COMPANIES = [
-    # Startup / AI infra
-    "warp", "merge", "modal", "mercor", "clay", "pylon",
-    "anthropic", "cohere", "scaleai", "weightsbiases",
+    # Startup / AI infra (stage-appropriate; large corps excluded to avoid monopoly)
+    "warp", "merge", "modal", "mercor", "clay", "pylon", "weightsbiases",
     # Healthtech
     "komodohealth", "himsandhers", "includedhealth",
     "modernhealth", "springhealth", "hingehealth",
@@ -244,6 +262,7 @@ GREENHOUSE_DISCOVERY_COMPANIES: list[str] = (
 )
 GREENHOUSE_MAX_COMPANIES = int(os.environ.get("JOBRADAR_GREENHOUSE_MAX_COMPANIES", "8"))
 GREENHOUSE_MAX_JOBS = int(os.environ.get("JOBRADAR_GREENHOUSE_MAX_JOBS", "80"))
+GREENHOUSE_MAX_PER_COMPANY = int(os.environ.get("JOBRADAR_GREENHOUSE_MAX_PER_COMPANY", "6"))
 
 # ---------------------------------------------------------------------------
 # Lever — public job boards
@@ -284,6 +303,7 @@ ASHBY_DISCOVERY_COMPANIES: list[str] = (
 )
 ASHBY_MAX_COMPANIES = int(os.environ.get("JOBRADAR_ASHBY_MAX_COMPANIES", "6"))
 ASHBY_MAX_JOBS = int(os.environ.get("JOBRADAR_ASHBY_MAX_JOBS", "80"))
+ASHBY_MAX_PER_COMPANY = int(os.environ.get("JOBRADAR_ASHBY_MAX_PER_COMPANY", "6"))
 
 # ---------------------------------------------------------------------------
 # Workable — public apply API
@@ -612,6 +632,8 @@ def scrape_greenhouse_jobs(
 
         data = resp.json()
         gh_jobs: list[dict[str, Any]] = data.get("jobs") or []
+        if GREENHOUSE_MAX_PER_COMPANY > 0:
+            gh_jobs = gh_jobs[:GREENHOUSE_MAX_PER_COMPANY]
         company_name: str = (data.get("meta") or {}).get("name") or slug.title()
 
         for gj in gh_jobs:
@@ -973,9 +995,12 @@ def scrape_ashby_jobs(
             or slug.title()
         )
 
+        company_job_count = 0
         for job in ashby_jobs:
             if job.get("isListed") is False:
                 continue
+            if ASHBY_MAX_PER_COMPANY > 0 and company_job_count >= ASHBY_MAX_PER_COMPANY:
+                break
             all_jobs.append(
                 _normalize_ashby_job(
                     slug=slug,
@@ -984,6 +1009,7 @@ def scrape_ashby_jobs(
                     job=job,
                 )
             )
+            company_job_count += 1
 
     log.info(
         "Ashby scraper (%s): fetched %d jobs from %d companies",
@@ -1598,6 +1624,15 @@ def run_scraper(
         workable_result = _empty
     workable_jobs = workable_result["jobs"]
     all_jobs = yc_jobs + hn_jobs + gh_jobs + lever_jobs + ashby_jobs + workable_jobs
+
+    # Drop jobs whose location is outside the allowed set (e.g., SF-only roles)
+    total_before_location_filter = len(all_jobs)
+    if LOCATION_ALLOW_KEYWORDS:
+        all_jobs = [j for j in all_jobs if _location_allowed(j)]
+    location_filtered = total_before_location_filter - len(all_jobs)
+    if location_filtered:
+        log.info("Location filter: dropped %d jobs, %d remain", location_filtered, len(all_jobs))
+
     write_stats = write_jobs_to_firestore(all_jobs, overwrite_existing=overwrite)
 
     return {
@@ -1607,7 +1642,9 @@ def run_scraper(
         "lever_fetched": len(lever_jobs),
         "ashby_fetched": len(ashby_jobs),
         "workable_fetched": len(workable_jobs),
-        "total_fetched": len(all_jobs),
+        "total_fetched": total_before_location_filter,
+        "location_filtered": location_filtered,
+        "total_after_filter": len(all_jobs),
         "new_written": write_stats["written"],
         "deduped_in_batch": write_stats["deduped_in_batch"],
         "skipped_existing": write_stats["skipped_existing"],
