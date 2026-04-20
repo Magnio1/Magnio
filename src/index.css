@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "./assets/magnio-brand.css";
 
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

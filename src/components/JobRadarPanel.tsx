@@ -305,14 +305,18 @@ function JobCard({
   const visibleFlagCount = flagsExpanded ? flags.length : 2
   const isPursueTier = (job.fit_score ?? 0) >= 80 && job.recommendation === 'pursue'
 
+  const animStyle = isBypassed && dimWhenBypassed
+    ? {}
+    : {
+        animation: 'cardFadeIn 0.18s ease-out backwards',
+        animationDelay: `${Math.min(index * 0.03, 0.2)}s`,
+      }
+
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0, transition: { duration: 0.2, ease: 'easeOut', delay: Math.min(index * 0.035, 0.25) } }}
-      exit={{ opacity: 0, y: -4, transition: { duration: 0.1 } }}
+    <div
+      style={animStyle}
       onClick={onClick}
-      className={`relative overflow-hidden cursor-pointer rounded-xl border p-4 transition-all duration-300 ${
+      className={`relative w-full overflow-hidden cursor-pointer rounded-xl border p-4 transition-[border-color,background-color,box-shadow,opacity] duration-200 ${
         selected
           ? 'border-blue-500/40 bg-blue-500/[0.08] backdrop-blur-md ring-1 ring-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.15)]'
           : isPursueTier
@@ -457,7 +461,7 @@ function JobCard({
           <ArrowUpRight size={13} className="text-zinc-400" />
         </a>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -970,27 +974,20 @@ export default function JobRadarPanel() {
               </div>
             )}
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeFilter}
-                initial={false}
-                exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                className="space-y-2"
-              >
-                {filteredJobs.map((job, i) => (
-                  <JobCard
-                    key={job.id}
-                    job={job}
-                    index={i}
-                    selected={selectedJob?.id === job.id}
-                    onClick={() => handleSelectJob(job)}
-                    onStatusChange={(s) => handleJobStatusChange(job.id, s)}
-                    token={token}
-                    dimWhenBypassed={activeFilter !== 'bypass'}
-                  />
-                ))}
-              </motion.div>
-            </AnimatePresence>
+            <div className="space-y-2">
+              {filteredJobs.map((job, i) => (
+                <JobCard
+                  key={`${activeFilter}-${job.id}`}
+                  job={job}
+                  index={i}
+                  selected={selectedJob?.id === job.id}
+                  onClick={() => handleSelectJob(job)}
+                  onStatusChange={(s) => handleJobStatusChange(job.id, s)}
+                  token={token}
+                  dimWhenBypassed={activeFilter !== 'bypass'}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
