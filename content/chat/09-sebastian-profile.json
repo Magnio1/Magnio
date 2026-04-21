@@ -120,6 +120,14 @@
     "phrases": ["non-technical operators could act on", "operator usability", "stakeholder adoption", "actionable outputs"]
   },
   {
+    "id": "K56",
+    "title": "Magnio includes custom evaluation and observability infrastructure for production AI workflows",
+    "body": "Magnio does not only rely on model output inspection by hand. Sebastian built custom evaluation and observability infrastructure covering run-level analytics, latency tracking, retrieval tracing, selected-model logging, judge scorecards, decision rationale capture, recent evaluation review surfaces, and human feedback submission. This is evidence of evaluation and observability capability in production AI workflows even where named third-party platforms like LangSmith, Arize, Langfuse, or Helicone are not the documented tooling.",
+    "tags": ["magnio", "evaluation", "observability", "analytics", "latency", "retrieval", "feedback", "judge"],
+    "focus": ["fit", "agentic", "operations", "proof"],
+    "phrases": ["custom evaluation and observability", "run-level analytics", "retrieval tracing", "judge scorecards", "human feedback submission"]
+  },
+  {
     "id": "K41",
     "title": "Sebastian's stack aligns with Google Cloud style platform work",
     "body": "Sebastian's documented stack includes Python, FastAPI, REST APIs, Firebase RTDB, Firestore, Google Cloud, Docker, CI or CD, React, TypeScript, Vite, analytics pipelines, and operational dashboards. His project history emphasizes owning systems end to end, including backend services, frontend surfaces, data workflows, deployment, observability, and continuous optimization rather than only isolated prompt engineering tasks.",

@@ -357,7 +357,7 @@ ADVISOR_OPPORTUNITY_RESPONSE_SCHEMA = {
   },
 }
 
-FIT_ANALYSIS_PRIORITY_CHUNK_IDS = ("K37", "K38", "K39", "K40", "K45", "K46", "K47", "K48", "K49", "K50", "K51", "K52", "K53", "K54", "K55", "K43")
+FIT_ANALYSIS_PRIORITY_CHUNK_IDS = ("K37", "K38", "K39", "K40", "K45", "K46", "K47", "K48", "K49", "K50", "K51", "K52", "K53", "K54", "K55", "K56", "K43")
 FIT_ANALYSIS_PRIORITY_SOURCES = ("09-sebastian-profile.json",)
 
 
