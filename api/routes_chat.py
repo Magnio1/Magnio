@@ -2980,7 +2980,7 @@ def _run_advisor(query: str, requested_mode: str) -> dict[str, Any]:
           model=advisor_model,
           messages=messages,
           temperature=0.3,
-          max_tokens=1100,
+          max_tokens=2500,
         )
         answer = str(payload.get("text") or "").strip()
       else:
@@ -2988,7 +2988,7 @@ def _run_advisor(query: str, requested_mode: str) -> dict[str, Any]:
           model=advisor_model,
           messages=messages,
           temperature=0.3,
-          max_tokens=1100,
+          max_tokens=2500,
           provider=FAST_PROVIDER_PREF,
         )
         answer = extract_message_text(payload)
@@ -3238,7 +3238,7 @@ def _stream_advisor_response(query: str, requested_mode: str) -> Iterator[str]:
                 {"role": "user", "content": stream_prompt},
               ],
               temperature=0.2,
-              max_tokens=1100,
+              max_tokens=2500,
               provider=FAST_PROVIDER_PREF,
             ):
               answer_chunks.append(chunk)
@@ -3350,7 +3350,7 @@ def _stream_advisor_response(query: str, requested_mode: str) -> Iterator[str]:
               model=advisor_model,
               messages=messages,
               temperature=0.3,
-              max_tokens=1100,
+              max_tokens=2500,
               provider=FAST_PROVIDER_PREF,
             ):
               answer_chunks.append(chunk)
@@ -3361,7 +3361,7 @@ def _stream_advisor_response(query: str, requested_mode: str) -> Iterator[str]:
               model=advisor_model,
               messages=messages,
               temperature=0.3,
-              max_tokens=1100,
+              max_tokens=2500,
             )
             answer = str(payload.get("text") or "").strip()
 
